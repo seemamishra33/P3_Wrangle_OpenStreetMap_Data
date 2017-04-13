@@ -11757,6 +11757,7 @@ div#notebook {
 </ul>
 <h3 id="Issues-in-Mountiav-View-OSM-data">Issues in Mountiav View OSM data<a class="anchor-link" href="#Issues-in-Mountiav-View-OSM-data">&#182;</a></h3><ul>
 <li>There are some inconsistencies in the names of streets, some are incorrect and abbreviated.</li>
+<li>Few inconsistent zip codes.</li>
 </ul>
 <h3 id="Overview-of-Mountain-View-OSM-data">Overview of Mountain View OSM data<a class="anchor-link" href="#Overview-of-Mountain-View-OSM-data">&#182;</a></h3><p>The dataset description is given as</p>
 <h4 id="Size-of-data-file">Size of data file<a class="anchor-link" href="#Size-of-data-file">&#182;</a></h4><ul>
@@ -11772,7 +11773,7 @@ div#notebook {
 <h3 id="References">References<a class="anchor-link" href="#References">&#182;</a></h3><ol>
 <li><a href="https://docs.google.com/document/d/1F0Vs14oNEs2idFJR3C_OPxwS6L0HPliOii-QpbmrMo4/pub">Udacity Sample Data Wrangling Project</a></li>
 </ol>
-<h3 id="Code-and-Results">Code and Results<a class="anchor-link" href="#Code-and-Results">&#182;</a></h3><p>There several queries generated for look deeep insight of data.</p>
+<h3 id="Code-and-Results">Code and Results<a class="anchor-link" href="#Code-and-Results">&#182;</a></h3><p>There several queries generated for look deeep insight of data which is follwed by conclusion .</p>
 <p><b>Import Libraries</b></p>
 
 </div>
@@ -11802,13 +11803,13 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[2]:</div>
+<div class="prompt input_prompt">In&nbsp;[4]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="c1"># set up map file path</span>
 <span class="n">filename</span> <span class="o">=</span> <span class="s2">&quot;MountainView.osm&quot;</span> <span class="c1"># osm filename</span>
 <span class="c1"># filename = &quot;sample200.osm&quot; # Sample osm filename</span>
-<span class="n">path</span> <span class="o">=</span> <span class="s2">&quot;/Users/seemamishra/Desktop/Udacity/Data analyst nano degree/Data Wrangling/P3_Data&quot;</span> <span class="c1"># directory contain the osm file</span>
+<span class="n">path</span> <span class="o">=</span> <span class="s2">&quot;/Users/seemamishra/Desktop/Udacity/Data Wrangling/P3_Data&quot;</span> <span class="c1"># directory contain the osm file</span>
 <span class="n">MountainViewosm</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">filename</span><span class="p">)</span>
 
 <span class="c1"># MountainViewosm = &quot;MountainView.osm&quot; # osm filename</span>
@@ -11831,11 +11832,11 @@ div#notebook {
 <div class="output">
 
 
-<div class="output_area"><div class="prompt output_prompt">Out[2]:</div>
+<div class="output_area"><div class="prompt output_prompt">Out[4]:</div>
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>&#39;/Users/seemamishra/Desktop/Udacity/Data analyst nano degree/Data Wrangling/P3_Data/MountainView.osm&#39;</pre>
+<pre>&#39;/Users/seemamishra/Desktop/Udacity/Data Wrangling/P3_Data/MountainView.osm&#39;</pre>
 </div>
 
 </div>
@@ -11855,7 +11856,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[3]:</div>
+<div class="prompt input_prompt">In&nbsp;[5]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="c1"># Iterative parsing</span>
@@ -11907,7 +11908,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[4]:</div>
+<div class="prompt input_prompt">In&nbsp;[6]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="c1"># Tag types</span>
@@ -11972,7 +11973,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[5]:</div>
+<div class="prompt input_prompt">In&nbsp;[7]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="k">def</span> <span class="nf">audit_street_type</span><span class="p">(</span><span class="n">street_types</span><span class="p">,</span> <span class="n">street_name</span><span class="p">):</span>
@@ -12297,7 +12298,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[6]:</div>
+<div class="prompt input_prompt">In&nbsp;[11]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="c1"># Street name updatation</span>
@@ -12320,13 +12321,18 @@ div#notebook {
             <span class="s2">&quot;HIghway&quot;</span><span class="p">:</span> <span class="s2">&quot;Highway&quot;</span><span class="p">,</span>
             <span class="s2">&quot;BLDG&quot;</span><span class="p">:</span> <span class="s2">&quot;Building&quot;</span><span class="p">,</span>
             <span class="s2">&quot;APT&quot;</span><span class="p">:</span> <span class="s2">&quot;Apartment&quot;</span><span class="p">,</span>
-           <span class="s2">&quot;West Evelyn Avenue Suite #114&quot;</span><span class="p">:</span><span class="s2">&quot;West Evelyn Avenue&quot;</span><span class="p">,</span>
+           <span class="s2">&quot;West Evelyn Avenue Suite #114&quot;</span><span class="p">:</span><span class="s2">&quot;West Evelyn Avenue Suite&quot;</span><span class="p">,</span>
            <span class="s2">&quot;Showers Drive STE 2&quot;</span><span class="p">:</span> <span class="s2">&quot;Showers Drive Street&quot;</span><span class="p">,</span>
            <span class="s2">&quot;Showers Drive STE 7&quot;</span><span class="p">:</span> <span class="s2">&quot;Showers Drive Street&quot;</span><span class="p">,</span>
            <span class="s2">&quot;East Charleston Road APT 9&quot;</span><span class="p">:</span> <span class="s2">&quot;East Charleston Road Apartment&quot;</span><span class="p">,</span>
            <span class="s2">&quot;Leghorn Street #B&quot;</span><span class="p">:</span> <span class="s2">&quot;Leghorn Street&quot;</span><span class="p">,</span>
            <span class="s2">&quot;Plymouth Street #C&quot;</span><span class="p">:</span> <span class="s2">&quot;Plymouth Street&quot;</span><span class="p">,</span>
-           <span class="s2">&quot;Hamilton Ave #140&quot;</span><span class="p">:</span> <span class="s2">&quot;Hamilton Ave&quot;</span>
+           <span class="s2">&quot;Hamilton Ave #140&quot;</span><span class="p">:</span> <span class="s2">&quot;Hamilton Ave&quot;</span><span class="p">,</span>
+           <span class="s2">&quot;W. El Camino Real&quot;</span><span class="p">:</span> <span class="s2">&quot;West El Camino Real&quot;</span><span class="p">,</span>
+           <span class="s2">&quot;W El Camino Real&quot;</span><span class="p">:</span><span class="s2">&quot;West El Camino Real&quot;</span><span class="p">,</span>
+           <span class="s2">&quot;E. El Camino Real&quot;</span><span class="p">:</span> <span class="s2">&quot;East El Camino Real&quot;</span><span class="p">,</span>
+           <span class="s2">&quot;E El Camino Real&quot;</span> <span class="p">:</span> <span class="s2">&quot;East El Camino Real&quot;</span><span class="p">,</span>
+           <span class="s2">&quot;West Dana St&quot;</span><span class="p">:</span> <span class="s2">&quot;West Dana St&quot;</span>
            <span class="p">}</span>
            
                      
@@ -12360,7 +12366,7 @@ Wolfe Rd =&gt; Wolfe Road
 Homestead Rd =&gt; Homestead Road
 E Middlefield Rd =&gt; E Middlefield Road
 Embarcadero Rd =&gt; Embarcadero Road
-West Evelyn Avenue Suite #114 =&gt; West Evelyn Avenuenue
+West Evelyn Avenue Suite #114 =&gt; West Evelyn Avenuenue Suite
 Serra San Bruno =&gt; Serra San Bruno
 Devonshire Way =&gt; Devonshire Way
 Aspen Way =&gt; Aspen Way
@@ -12525,13 +12531,13 @@ Oregon Expressway =&gt; Oregon Expressway
 Foothill Expressway =&gt; Foothill Expressway
 Waverley Oaks =&gt; WAvenuenuerley Oaks
 North Fair Oaks =&gt; North Fair Oaks
-E El Camino Real =&gt; E El Camino Real
-W. El Camino Real =&gt; W. El Camino Real
+E El Camino Real =&gt; East El Camino Real
+W. El Camino Real =&gt; West El Camino Real
 East El Camino Real =&gt; East El Camino Real
 Easst El Camino Real =&gt; Easst El Camino Real
 El Camino Real =&gt; El Camino Real
 Villa Real =&gt; Villa Real
-W El Camino Real =&gt; W El Camino Real
+W El Camino Real =&gt; West El Camino Real
 West El Camino Real =&gt; West El Camino Real
 Vanderbilt Court East =&gt; Vanderbilt Court East
 Magnolia Drive North =&gt; Magnolia Drive North
@@ -12629,18 +12635,170 @@ Bella Corte =&gt; Bella Corte
 </div>
 
 </div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[15]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="c1"># zip code</span>
+<span class="k">def</span> <span class="nf">audit_zipcodes</span><span class="p">(</span><span class="n">osmfile</span><span class="p">):</span>
+    <span class="c1"># iter through all zip codes, collect all the zip codes that does not start with 94</span>
+    <span class="n">osm_file</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">osmfile</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span>
+    <span class="n">zip_codes</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">event</span><span class="p">,</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">cET</span><span class="o">.</span><span class="n">iterparse</span><span class="p">(</span><span class="n">osm_file</span><span class="p">,</span> <span class="n">events</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;start&quot;</span><span class="p">,)):</span>
+        <span class="k">if</span> <span class="n">elem</span><span class="o">.</span><span class="n">tag</span> <span class="o">==</span> <span class="s2">&quot;node&quot;</span> <span class="ow">or</span> <span class="n">elem</span><span class="o">.</span><span class="n">tag</span> <span class="o">==</span> <span class="s2">&quot;way&quot;</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">tag</span> <span class="ow">in</span> <span class="n">elem</span><span class="o">.</span><span class="n">iter</span><span class="p">(</span><span class="s2">&quot;tag&quot;</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">tag</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s1">&#39;k&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;addr:postcode&quot;</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">tag</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s1">&#39;v&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;94&#39;</span><span class="p">):</span>
+                    <span class="k">if</span> <span class="n">tag</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s1">&#39;v&#39;</span><span class="p">]</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">zip_codes</span><span class="p">:</span>
+                        <span class="n">zip_codes</span><span class="p">[</span><span class="n">tag</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s1">&#39;v&#39;</span><span class="p">]]</span> <span class="o">=</span> <span class="mi">1</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">zip_codes</span><span class="p">[</span><span class="n">tag</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s1">&#39;v&#39;</span><span class="p">]]</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="n">zip_codes</span>
+
+<span class="n">zipcodes</span> <span class="o">=</span> <span class="n">audit_zipcodes</span><span class="p">(</span><span class="n">MountainViewosm</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">zipcode</span> <span class="ow">in</span> <span class="n">zipcodes</span><span class="p">:</span>
+    <span class="k">print</span> <span class="n">zipcode</span><span class="p">,</span> <span class="n">zipcodes</span><span class="p">[</span><span class="n">zipcode</span><span class="p">]</span>
+<span class="c1"># zipcodes</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>30188 1
+95014-0137 1
+95014-6357 1
+95014-030 1
+95014-0497 1
+95014-0496 1
+95014-0495 1
+95014-0494 1
+95014-0493 1
+95014-0492 2
+95014-0556 1
+95014-0552 4
+95014-0499 1
+95014-0551 4
+95014-6340 1
+95014-6342 1
+95014-6344 1
+95014-6346 1
+95014-6348 1
+95014-0549 10
+95014-0548 10
+95014-0545 9
+95014-0547 4
+95014-0546 5
+95014-0540 5
+95014-0116 7
+95014-0117 3
+95014-0114 1
+95014-0115 6
+95014-0112 3
+95014-0113 1
+95014-0111 1
+95014-0448 6
+95051 23
+95014-0444 12
+95014-0445 8
+95014-0446 5
+95014-0447 4
+95014-0440 3
+95014-0607 1
+95014-6371 1
+95014-0102 2
+95014-0103 4
+95014-0353 1
+95014-0453 5
+95014-0451 8
+95014-0450 1
+95014-0457 10
+95014-0456 10
+95014-0455 5
+95014-0454 5
+95014-6363 1
+95014-6360 1
+95014-0565 5
+95014-0564 4
+95014-0560 3
+CA 94085 1
+CA 94086 1
+95014-0202 1
+95014-0200 1
+95014-0568 8
+95014-0500 1
+95014-0292 1
+95014-6318 5
+95014-6319 3
+95014-6316 8
+95014-6317 5
+95014-6314 3
+95014-6315 7
+95014-6561 1
+95014-6560 5
+95014-6562 5
+95014-0535 4
+95014-0536 2
+95014-0531 4
+95014-0532 5
+95014-0533 4
+95014-0538 3
+95014-0539 1
+95014-0434 1
+95014-0437 9
+95014-0436 1
+95014-0433 1
+95014-0439 1
+95014-0438 6
+95086 1
+95014-6557 9
+95014-6385 1
+95014-6381 1
+95014-0550 6
+95014-0449 8
+95014-0240 1
+95014-0400 1
+95014-6334 1
+95014-0721 1
+95014 26
+95014-6540 1
+95014-0129 2
+95014-0124 5
+95014-0123 4
+95014-0238 1
+95014-0143 3
+95014-0144 3
+95014-6322 1
+515 1
+95014-0529 5
+95014-6539 1
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
 <div class="cell border-box-sizing text_cell rendered">
 <div class="prompt input_prompt">
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
+<p>Since some of the part of the map is included of San Jose and Sunnyvalle area thats why the above result shows the zip codes starts with 95 but there are only two zip codes which are inconsistent.</p>
 <h4 id="Process-OSM-XML-file-to-JSON">Process OSM XML file to JSON<a class="anchor-link" href="#Process-OSM-XML-file-to-JSON">&#182;</a></h4>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[17]:</div>
+<div class="prompt input_prompt">In&nbsp;[19]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="n">CREATED</span> <span class="o">=</span> <span class="p">[</span> <span class="s2">&quot;version&quot;</span><span class="p">,</span> <span class="s2">&quot;changeset&quot;</span><span class="p">,</span> <span class="s2">&quot;timestamp&quot;</span><span class="p">,</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="s2">&quot;uid&quot;</span><span class="p">]</span>
@@ -12653,7 +12811,7 @@ Bella Corte =&gt; Bella Corte
 <span class="c1">#     node[&quot;cuisine&quot;] = {}</span>
     <span class="n">refs</span><span class="o">=</span><span class="p">[]</span>
     
-    <span class="c1"># we only process the node and way tags</span>
+    <span class="c1"># I only process the node and way tags</span>
     <span class="k">if</span> <span class="n">element</span><span class="o">.</span><span class="n">tag</span> <span class="o">==</span> <span class="s2">&quot;node&quot;</span> <span class="ow">or</span> <span class="n">element</span><span class="o">.</span><span class="n">tag</span> <span class="o">==</span> <span class="s2">&quot;way&quot;</span> <span class="p">:</span>
         <span class="k">if</span> <span class="s2">&quot;id&quot;</span> <span class="ow">in</span> <span class="n">element</span><span class="o">.</span><span class="n">attrib</span><span class="p">:</span>
             <span class="n">node</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">]</span><span class="o">=</span><span class="n">element</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s2">&quot;id&quot;</span><span class="p">]</span>
@@ -12729,12 +12887,13 @@ Bella Corte =&gt; Bella Corte
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[18]:</div>
+<div class="prompt input_prompt">In&nbsp;[46]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="c1"># process the file</span>
 <span class="n">data</span> <span class="o">=</span> <span class="n">process_map</span><span class="p">(</span><span class="n">MountainViewosm</span><span class="p">,</span> <span class="bp">True</span><span class="p">)</span>
-<span class="k">print</span> <span class="n">data</span>
+<span class="c1"># for d in data:</span>
+<span class="c1">#     print d</span>
 </pre></div>
 
 </div>
@@ -12753,7 +12912,7 @@ Bella Corte =&gt; Bella Corte
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[10]:</div>
+<div class="prompt input_prompt">In&nbsp;[45]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="n">client</span> <span class="o">=</span> <span class="n">MongoClient</span><span class="p">()</span>
@@ -12763,1058 +12922,6 @@ Bella Corte =&gt; Bella Corte
 </pre></div>
 
 </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area"><div class="prompt"></div>
-<div class="output_subarea output_stream output_stderr output_text">
-<pre>/anaconda/lib/python2.7/site-packages/ipykernel/__main__.py:4: DeprecationWarning: insert is deprecated. Use insert_one or insert_many instead.
-</pre>
-</div>
-</div>
-
-<div class="output_area"><div class="prompt output_prompt">Out[10]:</div>
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre>[ObjectId(&#39;58e7bf031750d201a7d2d059&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d05a&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d05b&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d05c&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d05d&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d05e&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d05f&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d060&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d061&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d062&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d063&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d064&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d065&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d066&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d067&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d068&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d069&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d06a&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d06b&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d06c&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d06d&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d06e&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d06f&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d070&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d071&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d072&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d073&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d074&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d075&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d076&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d077&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d078&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d079&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d07a&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d07b&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d07c&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d07d&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d07e&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d07f&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d080&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d081&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d082&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d083&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d084&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d085&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d086&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d087&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d088&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d089&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d08a&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d08b&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d08c&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d08d&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d08e&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d08f&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d090&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d091&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d092&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d093&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d094&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d095&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d096&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d097&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d098&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d099&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d09a&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d09b&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d09c&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d09d&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d09e&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d09f&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d0a0&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d0a1&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d0a2&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d0a3&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d0a4&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d0a5&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d0a6&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d0a7&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d0a8&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d0a9&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d0aa&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d0ab&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d0ac&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d0ad&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d0ae&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d0af&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d0b0&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d0b1&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d0b2&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d0b3&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d0b4&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d0b5&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d0b6&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d0b7&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d0b8&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d0b9&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d0ba&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d0bb&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d0bc&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d0bd&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d0be&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d0bf&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d0c0&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d0c1&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d0c2&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d0c3&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d0c4&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d0c5&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d0c6&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d0c7&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d0c8&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d0c9&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d0ca&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d0cb&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d0cc&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d0cd&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d0ce&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d0cf&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d0d0&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d0d1&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d0d2&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d0d3&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d0d4&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d0d5&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d0d6&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d0d7&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d0d8&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d0d9&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d0da&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d0db&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d0dc&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d0dd&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d0de&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d0df&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d0e0&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d0e1&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d0e2&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d0e3&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d0e4&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d0e5&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d0e6&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d0e7&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d0e8&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d0e9&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d0ea&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d0eb&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d0ec&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d0ed&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d0ee&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d0ef&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d0f0&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d0f1&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d0f2&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d0f3&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d0f4&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d0f5&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d0f6&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d0f7&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d0f8&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d0f9&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d0fa&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d0fb&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d0fc&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d0fd&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d0fe&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d0ff&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d100&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d101&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d102&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d103&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d104&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d105&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d106&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d107&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d108&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d109&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d10a&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d10b&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d10c&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d10d&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d10e&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d10f&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d110&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d111&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d112&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d113&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d114&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d115&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d116&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d117&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d118&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d119&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d11a&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d11b&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d11c&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d11d&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d11e&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d11f&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d120&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d121&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d122&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d123&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d124&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d125&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d126&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d127&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d128&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d129&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d12a&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d12b&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d12c&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d12d&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d12e&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d12f&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d130&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d131&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d132&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d133&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d134&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d135&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d136&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d137&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d138&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d139&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d13a&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d13b&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d13c&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d13d&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d13e&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d13f&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d140&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d141&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d142&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d143&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d144&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d145&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d146&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d147&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d148&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d149&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d14a&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d14b&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d14c&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d14d&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d14e&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d14f&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d150&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d151&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d152&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d153&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d154&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d155&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d156&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d157&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d158&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d159&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d15a&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d15b&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d15c&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d15d&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d15e&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d15f&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d160&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d161&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d162&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d163&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d164&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d165&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d166&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d167&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d168&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d169&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d16a&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d16b&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d16c&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d16d&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d16e&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d16f&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d170&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d171&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d172&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d173&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d174&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d175&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d176&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d177&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d178&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d179&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d17a&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d17b&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d17c&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d17d&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d17e&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d17f&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d180&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d181&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d182&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d183&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d184&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d185&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d186&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d187&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d188&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d189&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d18a&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d18b&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d18c&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d18d&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d18e&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d18f&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d190&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d191&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d192&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d193&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d194&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d195&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d196&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d197&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d198&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d199&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d19a&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d19b&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d19c&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d19d&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d19e&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d19f&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d1a0&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d1a1&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d1a2&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d1a3&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d1a4&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d1a5&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d1a6&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d1a7&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d1a8&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d1a9&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d1aa&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d1ab&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d1ac&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d1ad&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d1ae&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d1af&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d1b0&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d1b1&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d1b2&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d1b3&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d1b4&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d1b5&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d1b6&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d1b7&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d1b8&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d1b9&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d1ba&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d1bb&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d1bc&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d1bd&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d1be&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d1bf&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d1c0&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d1c1&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d1c2&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d1c3&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d1c4&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d1c5&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d1c6&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d1c7&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d1c8&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d1c9&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d1ca&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d1cb&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d1cc&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d1cd&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d1ce&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d1cf&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d1d0&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d1d1&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d1d2&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d1d3&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d1d4&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d1d5&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d1d6&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d1d7&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d1d8&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d1d9&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d1da&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d1db&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d1dc&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d1dd&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d1de&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d1df&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d1e0&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d1e1&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d1e2&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d1e3&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d1e4&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d1e5&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d1e6&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d1e7&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d1e8&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d1e9&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d1ea&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d1eb&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d1ec&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d1ed&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d1ee&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d1ef&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d1f0&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d1f1&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d1f2&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d1f3&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d1f4&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d1f5&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d1f6&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d1f7&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d1f8&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d1f9&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d1fa&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d1fb&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d1fc&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d1fd&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d1fe&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d1ff&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d200&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d201&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d202&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d203&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d204&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d205&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d206&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d207&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d208&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d209&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d20a&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d20b&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d20c&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d20d&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d20e&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d20f&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d210&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d211&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d212&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d213&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d214&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d215&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d216&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d217&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d218&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d219&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d21a&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d21b&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d21c&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d21d&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d21e&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d21f&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d220&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d221&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d222&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d223&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d224&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d225&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d226&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d227&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d228&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d229&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d22a&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d22b&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d22c&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d22d&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d22e&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d22f&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d230&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d231&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d232&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d233&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d234&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d235&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d236&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d237&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d238&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d239&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d23a&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d23b&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d23c&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d23d&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d23e&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d23f&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d240&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d241&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d242&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d243&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d244&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d245&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d246&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d247&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d248&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d249&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d24a&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d24b&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d24c&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d24d&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d24e&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d24f&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d250&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d251&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d252&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d253&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d254&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d255&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d256&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d257&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d258&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d259&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d25a&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d25b&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d25c&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d25d&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d25e&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d25f&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d260&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d261&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d262&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d263&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d264&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d265&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d266&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d267&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d268&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d269&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d26a&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d26b&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d26c&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d26d&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d26e&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d26f&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d270&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d271&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d272&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d273&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d274&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d275&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d276&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d277&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d278&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d279&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d27a&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d27b&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d27c&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d27d&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d27e&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d27f&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d280&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d281&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d282&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d283&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d284&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d285&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d286&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d287&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d288&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d289&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d28a&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d28b&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d28c&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d28d&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d28e&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d28f&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d290&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d291&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d292&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d293&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d294&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d295&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d296&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d297&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d298&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d299&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d29a&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d29b&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d29c&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d29d&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d29e&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d29f&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d2a0&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d2a1&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d2a2&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d2a3&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d2a4&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d2a5&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d2a6&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d2a7&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d2a8&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d2a9&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d2aa&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d2ab&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d2ac&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d2ad&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d2ae&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d2af&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d2b0&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d2b1&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d2b2&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d2b3&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d2b4&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d2b5&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d2b6&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d2b7&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d2b8&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d2b9&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d2ba&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d2bb&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d2bc&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d2bd&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d2be&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d2bf&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d2c0&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d2c1&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d2c2&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d2c3&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d2c4&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d2c5&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d2c6&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d2c7&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d2c8&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d2c9&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d2ca&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d2cb&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d2cc&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d2cd&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d2ce&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d2cf&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d2d0&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d2d1&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d2d2&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d2d3&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d2d4&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d2d5&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d2d6&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d2d7&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d2d8&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d2d9&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d2da&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d2db&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d2dc&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d2dd&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d2de&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d2df&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d2e0&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d2e1&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d2e2&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d2e3&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d2e4&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d2e5&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d2e6&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d2e7&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d2e8&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d2e9&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d2ea&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d2eb&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d2ec&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d2ed&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d2ee&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d2ef&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d2f0&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d2f1&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d2f2&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d2f3&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d2f4&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d2f5&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d2f6&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d2f7&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d2f8&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d2f9&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d2fa&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d2fb&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d2fc&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d2fd&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d2fe&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d2ff&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d300&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d301&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d302&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d303&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d304&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d305&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d306&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d307&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d308&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d309&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d30a&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d30b&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d30c&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d30d&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d30e&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d30f&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d310&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d311&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d312&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d313&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d314&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d315&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d316&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d317&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d318&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d319&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d31a&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d31b&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d31c&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d31d&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d31e&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d31f&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d320&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d321&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d322&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d323&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d324&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d325&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d326&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d327&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d328&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d329&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d32a&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d32b&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d32c&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d32d&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d32e&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d32f&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d330&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d331&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d332&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d333&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d334&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d335&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d336&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d337&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d338&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d339&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d33a&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d33b&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d33c&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d33d&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d33e&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d33f&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d340&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d341&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d342&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d343&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d344&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d345&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d346&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d347&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d348&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d349&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d34a&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d34b&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d34c&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d34d&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d34e&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d34f&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d350&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d351&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d352&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d353&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d354&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d355&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d356&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d357&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d358&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d359&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d35a&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d35b&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d35c&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d35d&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d35e&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d35f&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d360&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d361&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d362&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d363&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d364&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d365&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d366&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d367&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d368&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d369&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d36a&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d36b&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d36c&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d36d&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d36e&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d36f&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d370&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d371&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d372&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d373&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d374&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d375&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d376&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d377&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d378&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d379&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d37a&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d37b&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d37c&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d37d&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d37e&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d37f&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d380&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d381&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d382&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d383&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d384&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d385&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d386&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d387&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d388&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d389&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d38a&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d38b&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d38c&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d38d&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d38e&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d38f&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d390&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d391&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d392&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d393&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d394&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d395&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d396&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d397&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d398&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d399&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d39a&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d39b&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d39c&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d39d&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d39e&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d39f&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d3a0&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d3a1&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d3a2&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d3a3&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d3a4&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d3a5&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d3a6&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d3a7&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d3a8&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d3a9&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d3aa&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d3ab&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d3ac&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d3ad&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d3ae&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d3af&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d3b0&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d3b1&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d3b2&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d3b3&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d3b4&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d3b5&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d3b6&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d3b7&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d3b8&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d3b9&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d3ba&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d3bb&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d3bc&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d3bd&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d3be&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d3bf&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d3c0&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d3c1&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d3c2&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d3c3&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d3c4&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d3c5&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d3c6&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d3c7&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d3c8&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d3c9&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d3ca&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d3cb&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d3cc&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d3cd&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d3ce&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d3cf&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d3d0&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d3d1&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d3d2&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d3d3&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d3d4&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d3d5&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d3d6&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d3d7&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d3d8&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d3d9&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d3da&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d3db&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d3dc&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d3dd&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d3de&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d3df&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d3e0&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d3e1&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d3e2&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d3e3&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d3e4&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d3e5&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d3e6&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d3e7&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d3e8&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d3e9&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d3ea&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d3eb&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d3ec&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d3ed&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d3ee&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d3ef&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d3f0&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d3f1&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d3f2&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d3f3&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d3f4&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d3f5&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d3f6&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d3f7&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d3f8&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d3f9&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d3fa&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d3fb&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d3fc&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d3fd&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d3fe&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d3ff&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d400&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d401&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d402&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d403&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d404&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d405&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d406&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d407&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d408&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d409&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d40a&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d40b&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d40c&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d40d&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d40e&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d40f&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d410&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d411&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d412&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d413&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d414&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d415&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d416&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d417&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d418&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d419&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d41a&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d41b&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d41c&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d41d&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d41e&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d41f&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d420&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d421&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d422&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d423&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d424&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d425&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d426&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d427&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d428&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d429&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d42a&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d42b&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d42c&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d42d&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d42e&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d42f&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d430&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d431&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d432&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d433&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d434&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d435&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d436&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d437&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d438&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d439&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d43a&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d43b&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d43c&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d43d&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d43e&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d43f&#39;),
- ObjectId(&#39;58e7bf031750d201a7d2d440&#39;),
- ...]</pre>
-</div>
-
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[12]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython2"><pre><span></span><span class="n">collection</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area"><div class="prompt output_prompt">Out[12]:</div>
-
-
-<div class="output_text output_subarea output_execute_result">
-<pre>Collection(Database(MongoClient(host=[&#39;localhost:27017&#39;], document_class=dict, tz_aware=False, connect=True), u&#39;MountainViewosm&#39;), u&#39;MountainViewMAP&#39;)</pre>
-</div>
-
-</div>
-
 </div>
 </div>
 
@@ -13830,7 +12937,7 @@ Bella Corte =&gt; Bella Corte
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[13]:</div>
+<div class="prompt input_prompt">In&nbsp;[22]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">getsize</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s2">&quot;MountainView.osm&quot;</span><span class="p">))</span><span class="o">/</span><span class="mi">1024</span><span class="o">/</span><span class="mi">1024</span>
@@ -13844,7 +12951,7 @@ Bella Corte =&gt; Bella Corte
 <div class="output">
 
 
-<div class="output_area"><div class="prompt output_prompt">Out[13]:</div>
+<div class="output_area"><div class="prompt output_prompt">Out[22]:</div>
 
 
 <div class="output_text output_subarea output_execute_result">
@@ -14256,18 +13363,19 @@ Bella Corte =&gt; Bella Corte
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h4 id="Places-for-worship">Places for worship<a class="anchor-link" href="#Places-for-worship">&#182;</a></h4>
+<h4 id="10-Places-for-worship">10 Places for worship<a class="anchor-link" href="#10-Places-for-worship">&#182;</a></h4>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[26]:</div>
+<div class="prompt input_prompt">In&nbsp;[23]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="n">pipeline</span> <span class="o">=</span> <span class="p">[{</span><span class="s2">&quot;$match&quot;</span><span class="p">:{</span><span class="s2">&quot;amenity&quot;</span><span class="p">:{</span><span class="s2">&quot;$exists&quot;</span><span class="p">:</span><span class="mi">1</span><span class="p">},</span> <span class="s2">&quot;amenity&quot;</span><span class="p">:</span> <span class="s2">&quot;place_of_worship&quot;</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">:{</span><span class="s2">&quot;$exists&quot;</span><span class="p">:</span><span class="mi">1</span><span class="p">}}},</span>
             <span class="p">{</span><span class="s2">&quot;$group&quot;</span><span class="p">:{</span><span class="s2">&quot;_id&quot;</span><span class="p">:</span><span class="s2">&quot;$name&quot;</span><span class="p">,</span> <span class="s2">&quot;count&quot;</span><span class="p">:{</span><span class="s2">&quot;$sum&quot;</span><span class="p">:</span><span class="mi">1</span><span class="p">}}},</span>
-            <span class="p">{</span><span class="s2">&quot;$sort&quot;</span><span class="p">:{</span><span class="s2">&quot;count&quot;</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">}}]</span>
+            <span class="p">{</span><span class="s2">&quot;$sort&quot;</span><span class="p">:{</span><span class="s2">&quot;count&quot;</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">}},</span>
+           <span class="p">{</span><span class="s2">&quot;$limit&quot;</span><span class="p">:</span> <span class="mi">10</span><span class="p">}]</span>
 <span class="n">result</span> <span class="o">=</span> <span class="n">collection</span><span class="o">.</span><span class="n">aggregate</span><span class="p">(</span><span class="n">pipeline</span><span class="p">)</span>
 <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">result</span><span class="p">:</span>
     <span class="k">print</span> <span class="n">r</span>
@@ -14283,104 +13391,16 @@ Bella Corte =&gt; Bella Corte
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>{u&#39;count&#39;: 10, u&#39;_id&#39;: u&#39;The Church of Jesus Christ of Latter-day Saints&#39;}
-{u&#39;count&#39;: 10, u&#39;_id&#39;: u&#39;First Church of Christ Scientist&#39;}
-{u&#39;count&#39;: 10, u&#39;_id&#39;: u&#39;Trinity United Methodist Church&#39;}
-{u&#39;count&#39;: 10, u&#39;_id&#39;: u&#39;First United Methodist Church&#39;}
-{u&#39;count&#39;: 10, u&#39;_id&#39;: u&#39;Seventh Day Adventist Church&#39;}
-{u&#39;count&#39;: 10, u&#39;_id&#39;: u&#39;Mountain View Chinese Christian Church&#39;}
-{u&#39;count&#39;: 10, u&#39;_id&#39;: u&#39;Peninsula Bible Church&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Unity Missionary Baptist Church&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Cornerstone Community Church&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#34;Saint Mark&#39;s Missionary Baptist Church&#34;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Foothill Baptist Church&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Kannon Do Zen Meditation Center&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;New Hope International&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Holy Korean Martyrs Catholic Church&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Ch\xf9a Gi\xe1c Minh&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Open Door Church of God in Christ&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Saint Athanasius Catholic Church&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Church of the Living God Temple #266&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Mountain View Korean Seventh-Day Adventist Church&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;First Presbyterian Church of Mountain View&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Saint Mark Lutheran Church&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Fountain of Joy Church&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Sunnyvale Presbyterian Church&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;University African Methodist Episcopal Zion Church&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Church of the Resurrection&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;University Lutheran Church&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;First Congregational Church&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Wesley United Methodist Church&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Jerusalem Baptist Church&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Saint Luke Lutheran Church&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#34;The Father&#39;s House&#34;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Abundant Life Christian Fellowship&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;The Rock United Pentecostal Church&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Ananda Church of Self-Realization&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;First Baptist Church&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;First Lutheran Church&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Chabad of Greater South Bay&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Saint Marks Episcopal Church&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Our Lady of the Rosary&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Sunnyvale New Life Center Pentecostal Church of God&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Christ Episcopal Church&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Mountain View Japanese Seventh Day Adventist Church&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Iglesia de Dios Maranatha&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Palo Alto Church of Christ&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Saint Thomas Episcopal Church&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Iglesia ni Cristo&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Amitasha Buddhist Society of USA&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Sunnyvale Church of Christ&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Saint William Catholic Church&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;All Saints Episcopal Church&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Church of Christ&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Saint Pauls Lutheran Church&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;St. Cyprian Church&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Chinese Church In Christ&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;The Highway Community Church - MV&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Sunnyvale Hindu temple&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Sunnyvale Hindu Temple &amp; Community Center&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Unitarian Universalist&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;First Baptist Church of Mountain View&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Good Samaritan United Methodist Church&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Saint Simons Catholic Church&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;First Samoan Assembly of God Church&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Christian Science Reading Room&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;First Christian Church&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Los Altos United Methodist Church&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Trinity Lutheran Church&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;South Bay Chinese Seventh-day Adventist Church&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Los Altos Lutheran Church&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Temple Beth Am&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;First Orthodox Presbyterian Church&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Grace Lutheran Church&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Free Will Baptist Church&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Saint Timothy Episcopal Church&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Raynor Park Christian Church&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Central Chinese Christian Church&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Saint Herman of Alaska Orthodox Church&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;St. Nicholas&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Congregational Community Church&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Kingdom Hall of Jehovah\u2019s Witnesses&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Foothill Covenant Church&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Church of the Nazarene&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Saint Joseph Roman Catholic Church&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Samoa Congregational Christian Church of Sunnyvale&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;First Baptist Church of Sunnyvale&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Asemblea Apostolica Del F\xe9 en Cristo Jesus&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Community Christian Church&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Mountain View Spanish Seventh Day Adventist Church&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Los Altos Union Presbyterian Church&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Valley Bible Fellowship Church&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Friendly Tabernacle&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Mount Olive Missionary Baptist Church&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Saint Albert the Great Roman Catholic Church&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Menalto Baptist Church&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Living Waters Assembly of God Church&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Zen Meditation Center&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Saint Thomas Aquinas Catholic Church&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Church of Divine Man&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Lakewood Baptist Church&#39;}
+<pre>{u&#39;count&#39;: 12, u&#39;_id&#39;: u&#39;Mountain View Chinese Christian Church&#39;}
+{u&#39;count&#39;: 12, u&#39;_id&#39;: u&#39;First United Methodist Church&#39;}
+{u&#39;count&#39;: 12, u&#39;_id&#39;: u&#39;First Church of Christ Scientist&#39;}
+{u&#39;count&#39;: 12, u&#39;_id&#39;: u&#39;Peninsula Bible Church&#39;}
+{u&#39;count&#39;: 12, u&#39;_id&#39;: u&#39;Seventh Day Adventist Church&#39;}
+{u&#39;count&#39;: 12, u&#39;_id&#39;: u&#39;Trinity United Methodist Church&#39;}
+{u&#39;count&#39;: 12, u&#39;_id&#39;: u&#39;The Church of Jesus Christ of Latter-day Saints&#39;}
+{u&#39;count&#39;: 6, u&#39;_id&#39;: u&#39;Holy Korean Martyrs Catholic Church&#39;}
+{u&#39;count&#39;: 6, u&#39;_id&#39;: u&#34;Saint Mark&#39;s Missionary Baptist Church&#34;}
+{u&#39;count&#39;: 6, u&#39;_id&#39;: u&#39;New Hope International&#39;}
 </pre>
 </div>
 </div>
@@ -14389,18 +13409,14 @@ Bella Corte =&gt; Bella Corte
 </div>
 
 </div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython2"><pre><span></span><span class="c1">#### Gas stations ####</span>
-</pre></div>
-
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="Gas-stations">Gas stations<a class="anchor-link" href="#Gas-stations">&#182;</a></h4>
 </div>
 </div>
-</div>
-
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
@@ -14452,27 +13468,24 @@ Bella Corte =&gt; Bella Corte
 </div>
 
 </div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython2"><pre><span></span><span class="c1">#### Most popular Fast food cuisines ####</span>
-</pre></div>
-
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="10-Most-popular-Fast-food-cuisines">10 Most popular Fast food cuisines<a class="anchor-link" href="#10-Most-popular-Fast-food-cuisines">&#182;</a></h4>
 </div>
 </div>
-</div>
-
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[28]:</div>
+<div class="prompt input_prompt">In&nbsp;[24]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="n">pipeline</span> <span class="o">=</span> <span class="p">[{</span><span class="s2">&quot;$match&quot;</span><span class="p">:{</span><span class="s2">&quot;amenity&quot;</span><span class="p">:{</span><span class="s2">&quot;$exists&quot;</span><span class="p">:</span><span class="mi">1</span><span class="p">},</span> <span class="s2">&quot;amenity&quot;</span><span class="p">:</span> <span class="s2">&quot;fast_food&quot;</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">:{</span><span class="s2">&quot;$exists&quot;</span><span class="p">:</span><span class="mi">1</span><span class="p">}}},</span>
             <span class="p">{</span><span class="s2">&quot;$group&quot;</span><span class="p">:{</span><span class="s2">&quot;_id&quot;</span><span class="p">:</span><span class="s2">&quot;$name&quot;</span><span class="p">,</span> <span class="s2">&quot;count&quot;</span><span class="p">:{</span><span class="s2">&quot;$sum&quot;</span><span class="p">:</span><span class="mi">1</span><span class="p">}}},</span>
-            <span class="p">{</span><span class="s2">&quot;$sort&quot;</span><span class="p">:{</span><span class="s2">&quot;count&quot;</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">}}]</span>
+            <span class="p">{</span><span class="s2">&quot;$sort&quot;</span><span class="p">:{</span><span class="s2">&quot;count&quot;</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">}},</span>
+            <span class="p">{</span><span class="s2">&quot;$limit&quot;</span><span class="p">:</span> <span class="mi">10</span><span class="p">}]</span>
 <span class="n">result</span> <span class="o">=</span> <span class="n">collection</span><span class="o">.</span><span class="n">aggregate</span><span class="p">(</span><span class="n">pipeline</span><span class="p">)</span>
 <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">result</span><span class="p">:</span>
     <span class="k">print</span> <span class="n">r</span>
@@ -14488,94 +13501,16 @@ Bella Corte =&gt; Bella Corte
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>{u&#39;count&#39;: 70, u&#39;_id&#39;: u&#39;Subway&#39;}
-{u&#39;count&#39;: 35, u&#39;_id&#39;: u&#34;McDonald&#39;s&#34;}
-{u&#39;count&#39;: 25, u&#39;_id&#39;: u&#34;Togo&#39;s&#34;}
-{u&#39;count&#39;: 25, u&#39;_id&#39;: u&#39;Taco Bell&#39;}
-{u&#39;count&#39;: 15, u&#39;_id&#39;: u&#39;Burger King&#39;}
-{u&#39;count&#39;: 15, u&#39;_id&#39;: u&#39;Round Table Pizza&#39;}
-{u&#39;count&#39;: 15, u&#39;_id&#39;: u&#39;KFC&#39;}
-{u&#39;count&#39;: 10, u&#39;_id&#39;: u&#39;Jack In The Box&#39;}
-{u&#39;count&#39;: 10, u&#39;_id&#39;: u&#39;In-N-Out Burger&#39;}
-{u&#39;count&#39;: 10, u&#39;_id&#39;: u&#39;Jack in the Box&#39;}
-{u&#39;count&#39;: 10, u&#39;_id&#39;: u&#39;Jamba Juice&#39;}
-{u&#39;count&#39;: 10, u&#39;_id&#39;: u&#34;Wendy&#39;s&#34;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Falafel Stop&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Peninsula Creamery&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#34;Domino&#39;s Pizza&#34;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Chick-Fil-A&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#34;Carls&#39; Jr.&#34;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Burger Town&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Tacobell-KFC&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Adamsons French Dipp&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;El Pollo Loco&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#34;Arby&#39;s&#34;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#34;In&#39;n Out Burger&#34;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;zpizza&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Zume Pizza&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Cosmic Caf\xe9&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Hon Sushi&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Baskin-Robbins&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Real Ice Cream&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Donuts &amp; Sandwiches&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Una Mas&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Domino\u2019s Pizza&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Sunny Bowl&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Wingstop&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Honeyberry&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#34;The Market Kitchen @ Ava&#39;s&#34;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Super Burrito&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Tutti Frutti&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#34;Ruby&#39;s Pan Dulce&#34;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Cheese Steak Shop&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Happi House&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Fro Yo&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Posh Bagel&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Yoogl&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#34;Baskin Robin&#39;s&#34;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;The New Orient&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Falafel &amp; Kebab&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;KFC and Long John Silvers&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Donut Basket&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Baja Fresh&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Chilly &amp; Munch&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Togo&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Panda Express&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Five Guys Burgers and Fries&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39; Los Altos Taqueria&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Jack in the box&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;The Country Deli&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Szechuan Garden Express&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Starbird chicken&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#34;Lee&#39;s&#34;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Jakes pizza sandwiches&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Popeyes Louisiana Kitchen&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#34;Kirk&#39;s Steaksburger&#34;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Krispy Kreme&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Cafeteria&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Target Cafe&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Togo\u2019s&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Chipotle Mexican Grill&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Dish n Dash&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Mi Pueblo Taquer\xeda&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Village Cheese House&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;subway&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Baskin &amp; Robbins Ice Cream&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Subway Shop&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Quiznos&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Papa Murphys pizza&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#34;Papa Murphy&#39;s Pizza&#34;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#34;Erik&#39;s DeliCafe&#34;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#34;Erik&#39;s Deli Cafe&#34;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Slice of New York&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#34;Bhavika&#39;s Chatpat&#34;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Classico Gelato&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#34;Marty&#39;s Donuts&#34;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;The Sandwich Spot&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;The Better Bagel&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Frozos frozen yogurt&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#34;Carl&#39;s Jr&#34;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Spice Hut&#39;}
+<pre>{u&#39;count&#39;: 84, u&#39;_id&#39;: u&#39;Subway&#39;}
+{u&#39;count&#39;: 42, u&#39;_id&#39;: u&#34;McDonald&#39;s&#34;}
+{u&#39;count&#39;: 30, u&#39;_id&#39;: u&#39;Taco Bell&#39;}
+{u&#39;count&#39;: 30, u&#39;_id&#39;: u&#34;Togo&#39;s&#34;}
+{u&#39;count&#39;: 18, u&#39;_id&#39;: u&#39;KFC&#39;}
+{u&#39;count&#39;: 18, u&#39;_id&#39;: u&#39;Round Table Pizza&#39;}
+{u&#39;count&#39;: 18, u&#39;_id&#39;: u&#39;Burger King&#39;}
+{u&#39;count&#39;: 12, u&#39;_id&#39;: u&#39;Jack in the Box&#39;}
+{u&#39;count&#39;: 12, u&#39;_id&#39;: u&#39;Jamba Juice&#39;}
+{u&#39;count&#39;: 12, u&#39;_id&#39;: u&#39;In-N-Out Burger&#39;}
 </pre>
 </div>
 </div>
@@ -14584,18 +13519,14 @@ Bella Corte =&gt; Bella Corte
 </div>
 
 </div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython2"><pre><span></span><span class="c1">#### Number of hospitals ####</span>
-</pre></div>
-
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="Number-of-hospitals">Number of hospitals<a class="anchor-link" href="#Number-of-hospitals">&#182;</a></h4>
 </div>
 </div>
-</div>
-
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
@@ -14638,18 +13569,14 @@ Bella Corte =&gt; Bella Corte
 </div>
 
 </div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython2"><pre><span></span><span class="c1">#### Beauty Salon ####</span>
-</pre></div>
-
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="Beauty-Salon">Beauty Salon<a class="anchor-link" href="#Beauty-Salon">&#182;</a></h4>
 </div>
 </div>
-</div>
-
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
@@ -14684,18 +13611,14 @@ Bella Corte =&gt; Bella Corte
 </div>
 
 </div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython2"><pre><span></span><span class="c1">#### Libraries ####</span>
-</pre></div>
-
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="Libraries">Libraries<a class="anchor-link" href="#Libraries">&#182;</a></h4>
 </div>
 </div>
-</div>
-
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
@@ -14729,27 +13652,24 @@ Bella Corte =&gt; Bella Corte
 </div>
 
 </div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython2"><pre><span></span><span class="c1">#### Schools ####</span>
-</pre></div>
-
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="10-most-poular-schools">10 most poular schools<a class="anchor-link" href="#10-most-poular-schools">&#182;</a></h4>
 </div>
 </div>
-</div>
-
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[32]:</div>
+<div class="prompt input_prompt">In&nbsp;[26]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="n">pipeline</span> <span class="o">=</span> <span class="p">[{</span><span class="s2">&quot;$match&quot;</span><span class="p">:{</span><span class="s2">&quot;amenity&quot;</span><span class="p">:{</span><span class="s2">&quot;$exists&quot;</span><span class="p">:</span><span class="mi">1</span><span class="p">},</span> <span class="s2">&quot;amenity&quot;</span><span class="p">:</span> <span class="s2">&quot;school&quot;</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">:{</span><span class="s2">&quot;$exists&quot;</span><span class="p">:</span><span class="mi">1</span><span class="p">}}},</span>
             <span class="p">{</span><span class="s2">&quot;$group&quot;</span><span class="p">:{</span><span class="s2">&quot;_id&quot;</span><span class="p">:</span><span class="s2">&quot;$name&quot;</span><span class="p">,</span> <span class="s2">&quot;count&quot;</span><span class="p">:{</span><span class="s2">&quot;$sum&quot;</span><span class="p">:</span><span class="mi">1</span><span class="p">}}},</span>
-            <span class="p">{</span><span class="s2">&quot;$sort&quot;</span><span class="p">:{</span><span class="s2">&quot;count&quot;</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">}}]</span>
+            <span class="p">{</span><span class="s2">&quot;$sort&quot;</span><span class="p">:{</span><span class="s2">&quot;count&quot;</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">}},</span>
+           <span class="p">{</span><span class="s2">&quot;$limit&quot;</span><span class="p">:</span> <span class="mi">10</span><span class="p">}]</span>
 <span class="n">result</span> <span class="o">=</span> <span class="n">collection</span><span class="o">.</span><span class="n">aggregate</span><span class="p">(</span><span class="n">pipeline</span><span class="p">)</span>
 <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">result</span><span class="p">:</span>
     <span class="k">print</span> <span class="n">r</span>
@@ -14765,164 +13685,16 @@ Bella Corte =&gt; Bella Corte
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>{u&#39;count&#39;: 10, u&#39;_id&#39;: u&#39;Lucille M Nixon Elementary School&#39;}
-{u&#39;count&#39;: 10, u&#39;_id&#39;: u&#39;Palo Verde Elementary School&#39;}
-{u&#39;count&#39;: 10, u&#39;_id&#39;: u&#39;Ohlone Elementary School&#39;}
-{u&#39;count&#39;: 10, u&#39;_id&#39;: u&#39;Pinewood School&#39;}
-{u&#39;count&#39;: 10, u&#39;_id&#39;: u&#39;Union Academy&#39;}
-{u&#39;count&#39;: 10, u&#39;_id&#39;: u&#39;Stratford School&#39;}
-{u&#39;count&#39;: 10, u&#39;_id&#39;: u&#39;Laurelwood Elementary School&#39;}
-{u&#39;count&#39;: 10, u&#39;_id&#39;: u&#39;Athena Academy&#39;}
-{u&#39;count&#39;: 10, u&#39;_id&#39;: u&#39;Kumon&#39;}
-{u&#39;count&#39;: 8, u&#39;_id&#39;: u&#39;Jane Lathrop Stanford Middle School&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Bullis Charter School - South Campus&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Saint Elizabeth Ann Seton School&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Egan Junior High School&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Mountain View Los Altos Adult Education&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#34;Mountain View-Los Altos Montessori Children&#39;s Centerter&#34;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Terman Middle School&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Saint Simon Elemntary School&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Fairmeadow Elementary School&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Edison Brentwood Academy&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Palo Alto Preschool&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;AJ Tutoring&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Sunnyvale-Cupertino Adult School&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Hoover Elementary School&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Good Samaritan Preschool&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Russian School of Music and Art&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Footsteps Preschool&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;El Carmelo Elementary School&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Palo Alto Unified School District&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Alta Vista High School&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Grant School&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Gideon Hausner Jewish Day School&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Serra School&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Resurrection Catholic School&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Benjamin Bubb Elementary School&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Challenger School&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;German American International School&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Waldorf School of the Peninsula&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Admissions Academy&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Barron Park Elementary School&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Columbia Middle School, Madrone Junior-High School&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Stocklmeir School&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Isaac Newton Graham Middle School&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Kenneth N Slater Elementary School&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Mountain View Adult Education Center&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Mountain View Grammar School (historical)&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Springer Elementary School&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Ponderosa Elementary School&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Escondido Elementary School&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;David Starr Jordan Middle School&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;The Kings Academy&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Sequoia Academy&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;West Valley Elementary School&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;San Miguel Elementary School&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Braly Elementary School&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Saint Francis High School&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Willow Oaks Elementary School&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Peterson Middle School&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Lakewood Elementary School&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Henry M. Gunn High School&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Bowman International School&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;German-American International School&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;GanTorah Preschool&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Pinewood High School&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;School of Rock&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Miramonte Elementary School&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Georgina P Blach Intermediate School&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;German International School of Silicon Valley&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Monta Loma Elementary School&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Mountain View High&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;South Peninsula Hebrew Day School&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Saint Martins School&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Cupertino Middle School&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Duveneck Elementary School&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Santa Rita Elementary School&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Vargas Elementary School&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Young Builders&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Almond Elementary School&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Oak Avenue Elementary School&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Saint Simon Elementary School&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Sunnyvale Middle School&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Covington Elementary School&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Cherry Chase Elementary School&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Frank L Huff Elementary School&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Bing Nursery School&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Fremont High School&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Homestead High School&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Saint Josephs School&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Pacific Graduate School of Psychology&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Palo Alto High School&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Theuerkauf Elementary School&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;The Music School&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Oliver de Visser School&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Loyola Elementary School&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Canterbury Christian School&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Crittenden Middle School&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Art Time Studios&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Building Kidz Preschool&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Chester W Nimitz Elementary School&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Saint Cyprian Elementary School&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Education&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#34;The King&#39;s Academy High School&#34;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Stanford Driving School&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Gymboree&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;East Side Preparatory&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Saint Nicholas School&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#34;College Terrace Children&#39;s Center&#34;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;De Anza School&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Pilates Palo Alto&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Harker School&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Western Montessori&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;International Technological University&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Our Lady of the Rosary School&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Early Music Minds&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Eastside Preparatory School&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Bishop Elementary&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Gardner Bullis Elementary School&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;West Coast Martial Arts&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Institute of Transpersonal Psychology&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Ventura Community Center&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Patrick Henry School (historical)&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Marian A Peterson Middle School&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Addison Elementary School&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;East Palo Alto High School&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Walter Hays Elementary School&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;International School of the Peninsula&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Miramonte School&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Kehillah Jewish High School&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Young Chefs Academy&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Portola School&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Greendell Elementary School&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Tiger martial arts academy&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;East Palo Alto Academy&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Ortega School (historical)&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Boost Up Kids Academy&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Ellis Elementary School&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Los Altos Christian High School&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;School for Independant Learning&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Montclaire Elementary School&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Castilleja High School&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Stratford Middle School&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Cogswell Polytechnical College&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Mid Peninsula Education Center&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Stratford  School&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Edison Ronald McNair Academy&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Crescent Park School (historical)&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Purissima School&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Edith Landels Elementary School&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Juana Briones Elementary School&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Mountain View High School (historical)&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Christian Leadership institute&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Foothill College&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Saint Timothy School&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Los Altos High School&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Cumberland Elementary School&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Palo Alto Military Academy (historical)&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Menlo Oaks Elementary School (historical)&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Ravenswood Elementary School&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Inverness School&#39;}
+<pre>{u&#39;count&#39;: 12, u&#39;_id&#39;: u&#39;Union Academy&#39;}
+{u&#39;count&#39;: 12, u&#39;_id&#39;: u&#39;Pinewood School&#39;}
+{u&#39;count&#39;: 12, u&#39;_id&#39;: u&#39;Laurelwood Elementary School&#39;}
+{u&#39;count&#39;: 12, u&#39;_id&#39;: u&#39;Stratford School&#39;}
+{u&#39;count&#39;: 12, u&#39;_id&#39;: u&#39;Palo Verde Elementary School&#39;}
+{u&#39;count&#39;: 12, u&#39;_id&#39;: u&#39;Kumon&#39;}
+{u&#39;count&#39;: 12, u&#39;_id&#39;: u&#39;Athena Academy&#39;}
+{u&#39;count&#39;: 12, u&#39;_id&#39;: u&#39;Ohlone Elementary School&#39;}
+{u&#39;count&#39;: 12, u&#39;_id&#39;: u&#39;Lucille M Nixon Elementary School&#39;}
+{u&#39;count&#39;: 9, u&#39;_id&#39;: u&#39;Jane Lathrop Stanford Middle School&#39;}
 </pre>
 </div>
 </div>
@@ -14931,27 +13703,24 @@ Bella Corte =&gt; Bella Corte
 </div>
 
 </div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython2"><pre><span></span><span class="c1">#### Parkings ####</span>
-</pre></div>
-
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="10-Most-popular-Parkings">10 Most popular Parkings<a class="anchor-link" href="#10-Most-popular-Parkings">&#182;</a></h4>
 </div>
 </div>
-</div>
-
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[33]:</div>
+<div class="prompt input_prompt">In&nbsp;[27]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="n">pipeline</span> <span class="o">=</span> <span class="p">[{</span><span class="s2">&quot;$match&quot;</span><span class="p">:{</span><span class="s2">&quot;amenity&quot;</span><span class="p">:{</span><span class="s2">&quot;$exists&quot;</span><span class="p">:</span><span class="mi">1</span><span class="p">},</span> <span class="s2">&quot;amenity&quot;</span><span class="p">:</span> <span class="s2">&quot;parking&quot;</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">:{</span><span class="s2">&quot;$exists&quot;</span><span class="p">:</span><span class="mi">1</span><span class="p">}}},</span>
             <span class="p">{</span><span class="s2">&quot;$group&quot;</span><span class="p">:{</span><span class="s2">&quot;_id&quot;</span><span class="p">:</span><span class="s2">&quot;$name&quot;</span><span class="p">,</span> <span class="s2">&quot;count&quot;</span><span class="p">:{</span><span class="s2">&quot;$sum&quot;</span><span class="p">:</span><span class="mi">1</span><span class="p">}}},</span>
-            <span class="p">{</span><span class="s2">&quot;$sort&quot;</span><span class="p">:{</span><span class="s2">&quot;count&quot;</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">}}]</span>
+            <span class="p">{</span><span class="s2">&quot;$sort&quot;</span><span class="p">:{</span><span class="s2">&quot;count&quot;</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">}},</span>
+           <span class="p">{</span><span class="s2">&quot;$limit&quot;</span><span class="p">:</span> <span class="mi">10</span><span class="p">}]</span>
 <span class="n">result</span> <span class="o">=</span> <span class="n">collection</span><span class="o">.</span><span class="n">aggregate</span><span class="p">(</span><span class="n">pipeline</span><span class="p">)</span>
 <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">result</span><span class="p">:</span>
     <span class="k">print</span> <span class="n">r</span>
@@ -14967,66 +13736,16 @@ Bella Corte =&gt; Bella Corte
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>{u&#39;count&#39;: 65, u&#39;_id&#39;: u&#34;Visitor&#39;s Parking&#34;}
-{u&#39;count&#39;: 53, u&#39;_id&#39;: u&#39;Apartment Visitor Parking&#39;}
-{u&#39;count&#39;: 15, u&#39;_id&#39;: u&#39;Customer Parking&#39;}
-{u&#39;count&#39;: 15, u&#39;_id&#39;: u&#39;Employee Parking&#39;}
-{u&#39;count&#39;: 10, u&#39;_id&#39;: u&#39;Lot 1&#39;}
-{u&#39;count&#39;: 10, u&#39;_id&#39;: u&#39;Lot 4&#39;}
-{u&#39;count&#39;: 10, u&#39;_id&#39;: u&#39;Sunnyvale Caltrain Station&#39;}
-{u&#39;count&#39;: 10, u&#39;_id&#39;: u&#39;Lot 8&#39;}
-{u&#39;count&#39;: 10, u&#39;_id&#39;: u&#39;Lot 6&#39;}
-{u&#39;count&#39;: 10, u&#39;_id&#39;: u&#39;Lot 7&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Parking Lot A&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;San Antonio Park and Ride&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;SAP Vehicles Network Demo - Parking&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Civic Center Parking&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Car parking&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Car Parking&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Whisman&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;San Antonio&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;California Avenue&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Apple Mathilda 4&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Ted Thompson Parking Garage&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Lot 3&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;parking lot&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Post office parking lot&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Orange Garage&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Visitor parking&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Lot 2-A&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Lot 1-B&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Visitor Parking&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Lot 1-E&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Varsity Lot&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Lot 1-H&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Future Resident Parking&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Google Quad parking&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Lot 2&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Lot 1-G&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Lot 1-D&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Parking for Building 152&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Lot 1-C&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Milk Pail parking lot&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Gilman/Waverly Lot (Lot G)&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Gilman/Bryant Lot (Lot E)&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Brandon Fan Parking Lot&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Lots 2 &amp; 3&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Hamilton/Waverly Lot (Lot D)&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Lot 1-A&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Bullis Charter School - South Campus&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Lot H&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Staff Parking&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Pear Garage&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Construction Parking Only&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Omnicell Parking&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Parking for Building 503&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Evelyn VTA Parking Lot&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Parking for Bldg. 152&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Moffett Park&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Lot WC&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Student Parking&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Lot 5&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Mountain View&#39;}
+<pre>{u&#39;count&#39;: 78, u&#39;_id&#39;: u&#34;Visitor&#39;s Parking&#34;}
+{u&#39;count&#39;: 63, u&#39;_id&#39;: u&#39;Apartment Visitor Parking&#39;}
+{u&#39;count&#39;: 18, u&#39;_id&#39;: u&#39;Employee Parking&#39;}
+{u&#39;count&#39;: 18, u&#39;_id&#39;: u&#39;Customer Parking&#39;}
+{u&#39;count&#39;: 12, u&#39;_id&#39;: u&#39;Lot 8&#39;}
+{u&#39;count&#39;: 12, u&#39;_id&#39;: u&#39;Lot 6&#39;}
+{u&#39;count&#39;: 12, u&#39;_id&#39;: u&#39;Sunnyvale Caltrain Station&#39;}
+{u&#39;count&#39;: 12, u&#39;_id&#39;: u&#39;Lot 7&#39;}
+{u&#39;count&#39;: 12, u&#39;_id&#39;: u&#39;Lot 4&#39;}
+{u&#39;count&#39;: 12, u&#39;_id&#39;: u&#39;Lot 1&#39;}
 </pre>
 </div>
 </div>
@@ -15035,18 +13754,14 @@ Bella Corte =&gt; Bella Corte
 </div>
 
 </div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython2"><pre><span></span><span class="c1">#### Car wash ####</span>
-</pre></div>
-
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="10-Most-popular-Car-wash">10 Most popular Car wash<a class="anchor-link" href="#10-Most-popular-Car-wash">&#182;</a></h4>
 </div>
 </div>
-</div>
-
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
@@ -15087,18 +13802,14 @@ Bella Corte =&gt; Bella Corte
 </div>
 
 </div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython2"><pre><span></span><span class="c1">#### Post officess ####</span>
-</pre></div>
-
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="Post-office">Post office<a class="anchor-link" href="#Post-office">&#182;</a></h4>
 </div>
 </div>
-</div>
-
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
@@ -15132,27 +13843,24 @@ Bella Corte =&gt; Bella Corte
 </div>
 
 </div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
 <div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython2"><pre><span></span><span class="c1">#### Coffe shops ####</span>
-</pre></div>
-
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="10-most-populr-Coffe-shops">10 most populr Coffe shops<a class="anchor-link" href="#10-most-populr-Coffe-shops">&#182;</a></h4>
 </div>
 </div>
-</div>
-
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[36]:</div>
+<div class="prompt input_prompt">In&nbsp;[29]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="n">pipeline</span> <span class="o">=</span> <span class="p">[{</span><span class="s2">&quot;$match&quot;</span><span class="p">:{</span><span class="s2">&quot;amenity&quot;</span><span class="p">:{</span><span class="s2">&quot;$exists&quot;</span><span class="p">:</span><span class="mi">1</span><span class="p">},</span> <span class="s2">&quot;amenity&quot;</span><span class="p">:</span> <span class="s2">&quot;cafe&quot;</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">:{</span><span class="s2">&quot;$exists&quot;</span><span class="p">:</span><span class="mi">1</span><span class="p">}}},</span>
             <span class="p">{</span><span class="s2">&quot;$group&quot;</span><span class="p">:{</span><span class="s2">&quot;_id&quot;</span><span class="p">:</span><span class="s2">&quot;$name&quot;</span><span class="p">,</span> <span class="s2">&quot;count&quot;</span><span class="p">:{</span><span class="s2">&quot;$sum&quot;</span><span class="p">:</span><span class="mi">1</span><span class="p">}}},</span>
-            <span class="p">{</span><span class="s2">&quot;$sort&quot;</span><span class="p">:{</span><span class="s2">&quot;count&quot;</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">}}]</span>
+            <span class="p">{</span><span class="s2">&quot;$sort&quot;</span><span class="p">:{</span><span class="s2">&quot;count&quot;</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">}},</span>
+           <span class="p">{</span><span class="s2">&quot;$limit&quot;</span><span class="p">:</span> <span class="mi">10</span><span class="p">}]</span>
 <span class="n">result</span> <span class="o">=</span> <span class="n">collection</span><span class="o">.</span><span class="n">aggregate</span><span class="p">(</span><span class="n">pipeline</span><span class="p">)</span>
 <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">result</span><span class="p">:</span>
     <span class="k">print</span> <span class="n">r</span>
@@ -15168,91 +13876,16 @@ Bella Corte =&gt; Bella Corte
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>{u&#39;count&#39;: 105, u&#39;_id&#39;: u&#39;Starbucks&#39;}
-{u&#39;count&#39;: 15, u&#39;_id&#39;: u&#39;Starbucks Coffee&#39;}
-{u&#39;count&#39;: 15, u&#39;_id&#39;: u&#39;Tea Era&#39;}
-{u&#39;count&#39;: 10, u&#39;_id&#39;: u&#39;Philz Coffee&#39;}
-{u&#39;count&#39;: 10, u&#39;_id&#39;: u&#39;Cloud Cafe&#39;}
-{u&#39;count&#39;: 10, u&#39;_id&#39;: u&#34;Peet&#39;s Coffee&#34;}
-{u&#39;count&#39;: 10, u&#39;_id&#39;: u&#34;Peet&#39;s Coffee &amp; Tea&#34;}
-{u&#39;count&#39;: 10, u&#39;_id&#39;: u&#39;Peets Coffee&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Happy Donuts&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Island Cafe&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Dana Street Roasting Company&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Maverick&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Badaal&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;MiXiT Charleston&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Threads&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;WAN&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;California Mochi Mini&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Big Bites Vietnamese Eatery&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Taj Cafe&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Big Table&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#34;Charlie&#39;s cafe&#34;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;The Lunch Box&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;moma2&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Portal Cafe&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Backyard&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Halftime Cafe&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#34;Specialty&#39;s Cafe &amp; Bakery&#34;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Deli and Cafe Pommard&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;cocohodo&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Main Street Cafe and Books&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Red Berry Coffee Bar&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Palo Alto Cafe&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Olympus Caff\xe8 &amp; Bakery&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Ocha&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Costa&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Bikaner Sweets Chaat Cafe&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Bean Scene&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Nektar Juice Bar&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Teaspoon&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Dharma Coffee&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Plaza deli&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#34;Erik&#39;s DeliCaf\xe9&#34;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Jamba Juice&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Panera Bread&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Pearl Coffee and Tea&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;House of Bagels&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Masa&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Verde Tea Cafe&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Los Altos Bakery and Cafe&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Fishfood&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;The Liquid Menu&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Peet\u2019s Coffee and Tea&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Cafe Zoe&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Tin Pot Creamery&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Sufi&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Le Boulanger Sunnyvale/Mathilda&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Cafe Moma&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Coffee-n-More&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Tapioca Express&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Hangout Cafe&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#34;Printer&#39;s Cafe&#34;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Starbucks/ Target Cafe&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Bagel Street Cafe&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#34;Peet&#39;s coffee and tea&#34;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#34;Bridget&#39;s Market&#34;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Clocktower Coffee&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#34;Peet&#39;s Coffee and Tea&#34;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;KitchenSync&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Cafe Zombie&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Calafia&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Beta C&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Sunnyvale Gallery Cafe&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Heritage&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Regal Bagel Cafe&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Bagel Cafe&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Sweet Shop&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#34;Shaw&#39;s Sandwiches&#34;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#34;Yoshka&#39;s&#34;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#34;Cho&#39;s&#34;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Red Rock Coffee&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Caffe Romanza&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Caffino&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;The Bean Scene Cafe&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Douce France&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#34;Tom&#39;s Depot&#34;}
+<pre>{u&#39;count&#39;: 126, u&#39;_id&#39;: u&#39;Starbucks&#39;}
+{u&#39;count&#39;: 18, u&#39;_id&#39;: u&#39;Starbucks Coffee&#39;}
+{u&#39;count&#39;: 18, u&#39;_id&#39;: u&#39;Tea Era&#39;}
+{u&#39;count&#39;: 12, u&#39;_id&#39;: u&#34;Peet&#39;s Coffee &amp; Tea&#34;}
+{u&#39;count&#39;: 12, u&#39;_id&#39;: u&#39;Peets Coffee&#39;}
+{u&#39;count&#39;: 12, u&#39;_id&#39;: u&#34;Peet&#39;s Coffee&#34;}
+{u&#39;count&#39;: 12, u&#39;_id&#39;: u&#39;Cloud Cafe&#39;}
+{u&#39;count&#39;: 12, u&#39;_id&#39;: u&#39;Philz Coffee&#39;}
+{u&#39;count&#39;: 6, u&#39;_id&#39;: u&#39;Threads&#39;}
+{u&#39;count&#39;: 6, u&#39;_id&#39;: u&#39;Dana Street Roasting Company&#39;}
 </pre>
 </div>
 </div>
@@ -15261,18 +13894,331 @@ Bella Corte =&gt; Bella Corte
 </div>
 
 </div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Other-Ideas-about-data-set">Other Ideas about data set<a class="anchor-link" href="#Other-Ideas-about-data-set">&#182;</a></h3><h4 id="Top-10-unique-contributor-of-data">Top 10 unique contributor of data<a class="anchor-link" href="#Top-10-unique-contributor-of-data">&#182;</a></h4>
+</div>
+</div>
+</div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[31]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython2"><pre><span></span> 
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">pipeline</span> <span class="o">=</span><span class="p">[{</span><span class="s2">&quot;$group&quot;</span><span class="p">:{</span><span class="s2">&quot;_id&quot;</span><span class="p">:</span><span class="s2">&quot;$created.user&quot;</span><span class="p">,</span> <span class="s2">&quot;count&quot;</span><span class="p">:{</span><span class="s2">&quot;$sum&quot;</span><span class="p">:</span><span class="mi">1</span><span class="p">}}},</span>
+            <span class="p">{</span><span class="s2">&quot;$sort&quot;</span><span class="p">:{</span><span class="s2">&quot;count&quot;</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">}},</span>
+           <span class="p">{</span><span class="s2">&quot;$limit&quot;</span><span class="p">:</span> <span class="mi">10</span><span class="p">}]</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">collection</span><span class="o">.</span><span class="n">aggregate</span><span class="p">(</span><span class="n">pipeline</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">result</span><span class="p">:</span>
+    <span class="k">print</span> <span class="n">r</span>
 </pre></div>
 
 </div>
 </div>
 </div>
 
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>{u&#39;count&#39;: 912096, u&#39;_id&#39;: u&#39;RichRico&#39;}
+{u&#39;count&#39;: 848559, u&#39;_id&#39;: u&#39;ediyes&#39;}
+{u&#39;count&#39;: 721083, u&#39;_id&#39;: u&#39;samely&#39;}
+{u&#39;count&#39;: 698475, u&#39;_id&#39;: u&#39;karitotp&#39;}
+{u&#39;count&#39;: 526563, u&#39;_id&#39;: u&#39;calfarome&#39;}
+{u&#39;count&#39;: 420660, u&#39;_id&#39;: u&#39;oldtopos&#39;}
+{u&#39;count&#39;: 361137, u&#39;_id&#39;: u&#39;dannykath&#39;}
+{u&#39;count&#39;: 316620, u&#39;_id&#39;: u&#39;n76&#39;}
+{u&#39;count&#39;: 297894, u&#39;_id&#39;: u&#39;Luis36995&#39;}
+{u&#39;count&#39;: 225096, u&#39;_id&#39;: u&#39;matthieun&#39;}
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="Top-10-version-of-contribution-of-data">Top 10 version of contribution of data<a class="anchor-link" href="#Top-10-version-of-contribution-of-data">&#182;</a></h4>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[39]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">pipeline</span> <span class="o">=</span><span class="p">[{</span><span class="s2">&quot;$group&quot;</span><span class="p">:{</span><span class="s2">&quot;_id&quot;</span><span class="p">:</span><span class="s2">&quot;$created.version&quot;</span><span class="p">,</span> <span class="s2">&quot;count&quot;</span><span class="p">:{</span><span class="s2">&quot;$sum&quot;</span><span class="p">:</span><span class="mi">1</span><span class="p">}}},</span>
+            <span class="p">{</span><span class="s2">&quot;$sort&quot;</span><span class="p">:{</span><span class="s2">&quot;count&quot;</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">}},</span>
+           <span class="p">{</span><span class="s2">&quot;$limit&quot;</span><span class="p">:</span> <span class="mi">10</span><span class="p">}]</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">collection</span><span class="o">.</span><span class="n">aggregate</span><span class="p">(</span><span class="n">pipeline</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">result</span><span class="p">:</span>
+    <span class="k">print</span> <span class="n">r</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>{u&#39;count&#39;: 4786041, u&#39;_id&#39;: u&#39;1&#39;}
+{u&#39;count&#39;: 1625298, u&#39;_id&#39;: u&#39;2&#39;}
+{u&#39;count&#39;: 290949, u&#39;_id&#39;: u&#39;3&#39;}
+{u&#39;count&#39;: 96186, u&#39;_id&#39;: u&#39;4&#39;}
+{u&#39;count&#39;: 37587, u&#39;_id&#39;: u&#39;5&#39;}
+{u&#39;count&#39;: 21669, u&#39;_id&#39;: u&#39;6&#39;}
+{u&#39;count&#39;: 13233, u&#39;_id&#39;: u&#39;7&#39;}
+{u&#39;count&#39;: 7656, u&#39;_id&#39;: u&#39;8&#39;}
+{u&#39;count&#39;: 5469, u&#39;_id&#39;: u&#39;9&#39;}
+{u&#39;count&#39;: 3681, u&#39;_id&#39;: u&#39;10&#39;}
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="Top-10-timestamps-when-the-data-is--contributed">Top 10 timestamps when the data is  contributed<a class="anchor-link" href="#Top-10-timestamps-when-the-data-is--contributed">&#182;</a></h4>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[40]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">pipeline</span> <span class="o">=</span><span class="p">[{</span><span class="s2">&quot;$group&quot;</span><span class="p">:{</span><span class="s2">&quot;_id&quot;</span><span class="p">:</span><span class="s2">&quot;$created.timestamp&quot;</span><span class="p">,</span> <span class="s2">&quot;count&quot;</span><span class="p">:{</span><span class="s2">&quot;$sum&quot;</span><span class="p">:</span><span class="mi">1</span><span class="p">}}},</span>
+            <span class="p">{</span><span class="s2">&quot;$sort&quot;</span><span class="p">:{</span><span class="s2">&quot;count&quot;</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">}},</span>
+           <span class="p">{</span><span class="s2">&quot;$limit&quot;</span><span class="p">:</span> <span class="mi">10</span><span class="p">}]</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">collection</span><span class="o">.</span><span class="n">aggregate</span><span class="p">(</span><span class="n">pipeline</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">result</span><span class="p">:</span>
+    <span class="k">print</span> <span class="n">r</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>{u&#39;count&#39;: 885, u&#39;_id&#39;: u&#39;2016-02-05T18:42:04Z&#39;}
+{u&#39;count&#39;: 873, u&#39;_id&#39;: u&#39;2016-01-15T15:11:35Z&#39;}
+{u&#39;count&#39;: 855, u&#39;_id&#39;: u&#39;2016-01-15T15:11:34Z&#39;}
+{u&#39;count&#39;: 837, u&#39;_id&#39;: u&#39;2016-02-04T19:41:43Z&#39;}
+{u&#39;count&#39;: 795, u&#39;_id&#39;: u&#39;2016-02-03T16:54:41Z&#39;}
+{u&#39;count&#39;: 795, u&#39;_id&#39;: u&#39;2016-02-08T14:25:39Z&#39;}
+{u&#39;count&#39;: 792, u&#39;_id&#39;: u&#39;2016-02-03T16:54:40Z&#39;}
+{u&#39;count&#39;: 792, u&#39;_id&#39;: u&#39;2016-02-04T19:05:40Z&#39;}
+{u&#39;count&#39;: 783, u&#39;_id&#39;: u&#39;2015-11-23T16:53:08Z&#39;}
+{u&#39;count&#39;: 780, u&#39;_id&#39;: u&#39;2016-02-04T19:05:39Z&#39;}
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="Types-and-number-of-ways-in-mountain-view">Types and number of ways in mountain view<a class="anchor-link" href="#Types-and-number-of-ways-in-mountain-view">&#182;</a></h4>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[43]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">pipeline</span> <span class="o">=</span><span class="p">[{</span><span class="s2">&quot;$group&quot;</span><span class="p">:{</span><span class="s2">&quot;_id&quot;</span><span class="p">:</span><span class="s2">&quot;$highway&quot;</span><span class="p">,</span> <span class="s2">&quot;count&quot;</span><span class="p">:{</span><span class="s2">&quot;$sum&quot;</span><span class="p">:</span><span class="mi">1</span><span class="p">}}},</span>
+            <span class="p">{</span><span class="s2">&quot;$sort&quot;</span><span class="p">:{</span><span class="s2">&quot;count&quot;</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">}}</span>
+           <span class="p">]</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">collection</span><span class="o">.</span><span class="n">aggregate</span><span class="p">(</span><span class="n">pipeline</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">result</span><span class="p">:</span>
+    <span class="k">print</span> <span class="n">r</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>{u&#39;count&#39;: 6760065, u&#39;_id&#39;: None}
+{u&#39;count&#39;: 44328, u&#39;_id&#39;: u&#39;service&#39;}
+{u&#39;count&#39;: 24006, u&#39;_id&#39;: u&#39;residential&#39;}
+{u&#39;count&#39;: 15066, u&#39;_id&#39;: u&#39;footway&#39;}
+{u&#39;count&#39;: 10425, u&#39;_id&#39;: u&#39;stop&#39;}
+{u&#39;count&#39;: 9462, u&#39;_id&#39;: u&#39;secondary&#39;}
+{u&#39;count&#39;: 8067, u&#39;_id&#39;: u&#39;turning_circle&#39;}
+{u&#39;count&#39;: 5187, u&#39;_id&#39;: u&#39;traffic_signals&#39;}
+{u&#39;count&#39;: 4626, u&#39;_id&#39;: u&#39;tertiary&#39;}
+{u&#39;count&#39;: 4407, u&#39;_id&#39;: u&#39;primary&#39;}
+{u&#39;count&#39;: 2640, u&#39;_id&#39;: u&#39;crossing&#39;}
+{u&#39;count&#39;: 2226, u&#39;_id&#39;: u&#39;unclassified&#39;}
+{u&#39;count&#39;: 1842, u&#39;_id&#39;: u&#39;motorway_link&#39;}
+{u&#39;count&#39;: 1425, u&#39;_id&#39;: u&#39;cycleway&#39;}
+{u&#39;count&#39;: 1227, u&#39;_id&#39;: u&#39;trunk&#39;}
+{u&#39;count&#39;: 1071, u&#39;_id&#39;: u&#39;path&#39;}
+{u&#39;count&#39;: 864, u&#39;_id&#39;: u&#39;trunk_link&#39;}
+{u&#39;count&#39;: 840, u&#39;_id&#39;: u&#39;bus_stop&#39;}
+{u&#39;count&#39;: 750, u&#39;_id&#39;: u&#39;motorway&#39;}
+{u&#39;count&#39;: 705, u&#39;_id&#39;: u&#39;primary_link&#39;}
+{u&#39;count&#39;: 681, u&#39;_id&#39;: u&#39;street_lamp&#39;}
+{u&#39;count&#39;: 408, u&#39;_id&#39;: u&#39;secondary_link&#39;}
+{u&#39;count&#39;: 378, u&#39;_id&#39;: u&#39;motorway_junction&#39;}
+{u&#39;count&#39;: 291, u&#39;_id&#39;: u&#39;give_way&#39;}
+{u&#39;count&#39;: 279, u&#39;_id&#39;: u&#39;track&#39;}
+{u&#39;count&#39;: 270, u&#39;_id&#39;: u&#39;steps&#39;}
+{u&#39;count&#39;: 138, u&#39;_id&#39;: u&#39;living_street&#39;}
+{u&#39;count&#39;: 126, u&#39;_id&#39;: u&#39;tertiary_link&#39;}
+{u&#39;count&#39;: 108, u&#39;_id&#39;: u&#39;turning_loop&#39;}
+{u&#39;count&#39;: 84, u&#39;_id&#39;: u&#39;construction&#39;}
+{u&#39;count&#39;: 84, u&#39;_id&#39;: u&#39;sign&#39;}
+{u&#39;count&#39;: 72, u&#39;_id&#39;: u&#39;pedestrian&#39;}
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="Types-and-number-of-ways-in-mountain-view">Types and number of ways in mountain view<a class="anchor-link" href="#Types-and-number-of-ways-in-mountain-view">&#182;</a></h4>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[44]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">pipeline</span> <span class="o">=</span><span class="p">[{</span><span class="s2">&quot;$group&quot;</span><span class="p">:{</span><span class="s2">&quot;_id&quot;</span><span class="p">:</span><span class="s2">&quot;$exit_to&quot;</span><span class="p">,</span> <span class="s2">&quot;count&quot;</span><span class="p">:{</span><span class="s2">&quot;$sum&quot;</span><span class="p">:</span><span class="mi">1</span><span class="p">}}},</span>
+            <span class="p">{</span><span class="s2">&quot;$sort&quot;</span><span class="p">:{</span><span class="s2">&quot;count&quot;</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">}}</span>
+           <span class="p">]</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">collection</span><span class="o">.</span><span class="n">aggregate</span><span class="p">(</span><span class="n">pipeline</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">result</span><span class="p">:</span>
+    <span class="k">print</span> <span class="n">r</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>{u&#39;count&#39;: 6901788, u&#39;_id&#39;: None}
+{u&#39;count&#39;: 18, u&#39;_id&#39;: u&#39;Mathilda Avenue South&#39;}
+{u&#39;count&#39;: 12, u&#39;_id&#39;: u&#39;El Monte Road;Moody Road&#39;}
+{u&#39;count&#39;: 12, u&#39;_id&#39;: u&#39;US-101 South;Mathilda Avenue&#39;}
+{u&#39;count&#39;: 12, u&#39;_id&#39;: u&#39;Middlefield Road;Maude Avenue&#39;}
+{u&#39;count&#39;: 12, u&#39;_id&#39;: u&#39;Mathilda Avenue North&#39;}
+{u&#39;count&#39;: 12, u&#39;_id&#39;: u&#39;SR-82 South;Sunnyvale;El Camino Real&#39;}
+{u&#39;count&#39;: 12, u&#39;_id&#39;: u&#39;Moffett Boulevard;NASA Parkway&#39;}
+{u&#39;count&#39;: 12, u&#39;_id&#39;: u&#39;Ellis Street;Moffett South Gate&#39;}
+{u&#39;count&#39;: 12, u&#39;_id&#39;: u&#39;SR-85 South;Cupertino;Santa Cruz&#39;}
+{u&#39;count&#39;: 12, u&#39;_id&#39;: u&#39;Evelyn Avenue&#39;}
+{u&#39;count&#39;: 12, u&#39;_id&#39;: u&#39;SR-82 North;Mountain View;El Camino Real&#39;}
+{u&#39;count&#39;: 12, u&#39;_id&#39;: u&#39;US-101 North&#39;}
+{u&#39;count&#39;: 12, u&#39;_id&#39;: u&#39;Fair Oaks Avenue&#39;}
+{u&#39;count&#39;: 12, u&#39;_id&#39;: u&#39;University Avenue&#39;}
+{u&#39;count&#39;: 12, u&#39;_id&#39;: u&#39;Rengstorff Avenue&#39;}
+{u&#39;count&#39;: 6, u&#39;_id&#39;: u&#39;SR-237 East;Alviso;Milpitas&#39;}
+{u&#39;count&#39;: 6, u&#39;_id&#39;: u&#39;Moffett Boulevard&#39;}
+{u&#39;count&#39;: 6, u&#39;_id&#39;: u&#39;US-101 South;San Jose&#39;}
+{u&#39;count&#39;: 6, u&#39;_id&#39;: u&#39;Homestead Road&#39;}
+{u&#39;count&#39;: 6, u&#39;_id&#39;: u&#39;SR-237 West;Mountain View Road;Alviso Road&#39;}
+{u&#39;count&#39;: 6, u&#39;_id&#39;: u&#39;Lawrence Expressway;Caribbean Drive&#39;}
+{u&#39;count&#39;: 6, u&#39;_id&#39;: u&#39;Fremont Avenue;Los Altos&#39;}
+{u&#39;count&#39;: 6, u&#39;_id&#39;: u&#39;Amphitheater Parkway&#39;}
+{u&#39;count&#39;: 6, u&#39;_id&#39;: u&#39;San Antonio Road&#39;}
+{u&#39;count&#39;: 6, u&#39;_id&#39;: u&#39;Old Middlefield Way&#39;}
+{u&#39;count&#39;: 6, u&#39;_id&#39;: u&#39;Los Altos;San Antonio Road South&#39;}
+{u&#39;count&#39;: 6, u&#39;_id&#39;: u&#39;Fair Oaks Avenue North&#39;}
+{u&#39;count&#39;: 6, u&#39;_id&#39;: u&#39;Embarcadero Road;Oregon Expressway&#39;}
+{u&#39;count&#39;: 6, u&#39;_id&#39;: u&#39;Arques / Fair Oaks&#39;}
+{u&#39;count&#39;: 6, u&#39;_id&#39;: u&#39;Mountain View;Shoreline Blvd&#39;}
+{u&#39;count&#39;: 6, u&#39;_id&#39;: u&#39;Sunnyvale;Mathilda Avenue&#39;}
+{u&#39;count&#39;: 6, u&#39;_id&#39;: u&#39;Page Mill Road;Palo Alto&#39;}
+{u&#39;count&#39;: 6, u&#39;_id&#39;: u&#39;Magdalena Avenue&#39;}
+{u&#39;count&#39;: 6, u&#39;_id&#39;: u&#39;Fair Oaks Avenue South&#39;}
+{u&#39;count&#39;: 6, u&#39;_id&#39;: u&#39;Central Expressway&#39;}
+{u&#39;count&#39;: 6, u&#39;_id&#39;: u&#39;San Antonio Road North&#39;}
+{u&#39;count&#39;: 6, u&#39;_id&#39;: u&#39;Dana Street;Whisman Road&#39;}
+{u&#39;count&#39;: 6, u&#39;_id&#39;: u&#39;Lawrence Expressway&#39;}
+{u&#39;count&#39;: 6, u&#39;_id&#39;: u&#39;Fremont Avenue&#39;}
+{u&#39;count&#39;: 6, u&#39;_id&#39;: u&#39;I-280&#39;}
+{u&#39;count&#39;: 6, u&#39;_id&#39;: u&#39;Mathilda Avenue North;SR-237 East&#39;}
+{u&#39;count&#39;: 6, u&#39;_id&#39;: u&#39;Shoreline Boulevard&#39;}
+{u&#39;count&#39;: 6, u&#39;_id&#39;: u&#39;SR-237;US-101 South&#39;}
+{u&#39;count&#39;: 6, u&#39;_id&#39;: u&#39;Magdelena Avenue&#39;}
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Conclusion">Conclusion<a class="anchor-link" href="#Conclusion">&#182;</a></h3>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>After reviewing the data of mountain view, much of the information has been extracted about the city. The data has been well cleaned for the purpose of enough information extraction. Thinking about the compnies and startups established in Mountain view, i couldn't find any information regarding that. If the data is stored as in the name of comapnies and startups buildings, it would be really helpful to gain insight of number of the comapanies establishd in given city.</p>
+
+</div>
+</div>
 </div>
     </div>
   </div>
