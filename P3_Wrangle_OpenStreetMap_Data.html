@@ -11751,27 +11751,37 @@ div#notebook {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Introduction">Introduction<a class="anchor-link" href="#Introduction">&#182;</a></h3><p>The aim of the priject is to select the map from the region of world, get the data, audit the data and fix the problems encountered in data. Then import the cleaned data into databse and perform several queries against it.</p>
 <h3 id="OSM-Data">OSM Data<a class="anchor-link" href="#OSM-Data">&#182;</a></h3><ul>
-<li>I am using OpenStreetMap data of Mountain View city downloaded from <a href="https://mapzen.com/data/metro-extracts/">mapzen</a>. The date of downloading the dataset is March 27, 2017 at 10:21 AM.</li>
+<li>I am using OpenStreetMap data of Mountain View city, California downloaded from <a href="https://mapzen.com/data/metro-extracts/">mapzen</a>. The date of downloading the dataset is March 27, 2017 at 10:21 AM.</li>
 <li>The format of datafile is in XML format, and we can find the description og Open Street XML format <a href="http://wiki.openstreetmap.org/wiki/OSM_XML">here</a>.</li>
+</ul>
+<h3 id="Database">Database<a class="anchor-link" href="#Database">&#182;</a></h3><ul>
+<li>MongoDB</li>
 </ul>
 <h3 id="Issues-in-Mountiav-View-OSM-data">Issues in Mountiav View OSM data<a class="anchor-link" href="#Issues-in-Mountiav-View-OSM-data">&#182;</a></h3><ul>
 <li>There are some inconsistencies in the names of streets, some are incorrect and abbreviated.</li>
 <li>Few inconsistent zip codes.</li>
+<li>There ae inconsistency in phone numbers stored by users.</li>
 </ul>
 <h3 id="Overview-of-Mountain-View-OSM-data">Overview of Mountain View OSM data<a class="anchor-link" href="#Overview-of-Mountain-View-OSM-data">&#182;</a></h3><p>The dataset description is given as</p>
 <h4 id="Size-of-data-file">Size of data file<a class="anchor-link" href="#Size-of-data-file">&#182;</a></h4><ul>
 <li>MountainView.osm(The original downloaded OpenStreetMap in xml format): 209MB</li>
 <li>MountainView.osm.json(The processed OpenStreetMap in json format): 346MB</li>
 </ul>
-<h4 id="Summary-statistics-of-dataset">Summary statistics of dataset<a class="anchor-link" href="#Summary-statistics-of-dataset">&#182;</a></h4><ul>
+<h4 id="Summary-of-descriptive-statistics-of-dataset">Summary of descriptive statistics of dataset<a class="anchor-link" href="#Summary-of-descriptive-statistics-of-dataset">&#182;</a></h4><ul>
 <li>Number of documents: 5754659</li>
 <li>Number of unique users: 880</li>
 <li>Number of nodes: 5136303</li>
 <li>Number of ways: 618301</li>
 </ul>
 <h3 id="References">References<a class="anchor-link" href="#References">&#182;</a></h3><ol>
-<li><a href="https://docs.google.com/document/d/1F0Vs14oNEs2idFJR3C_OPxwS6L0HPliOii-QpbmrMo4/pub">Udacity Sample Data Wrangling Project</a></li>
+<li><p><a href="https://docs.google.com/document/d/1F0Vs14oNEs2idFJR3C_OPxwS6L0HPliOii-QpbmrMo4/pub">Udacity Sample Data Wrangling Project</a></p>
+</li>
+<li><p><a href="https://zelite.github.io/Wrangle-OpenStreetMap-Data/">https://zelite.github.io/Wrangle-OpenStreetMap-Data/</a></p>
+</li>
+<li><p><a href="https://english.stackexchange.com/questions/29009/standard-format-for-phone-numbers">https://english.stackexchange.com/questions/29009/standard-format-for-phone-numbers</a></p>
+</li>
 </ol>
 <h3 id="Code-and-Results">Code and Results<a class="anchor-link" href="#Code-and-Results">&#182;</a></h3><p>There several queries generated for look deeep insight of data which is follwed by conclusion .</p>
 <p><b>Import Libraries</b></p>
@@ -11781,7 +11791,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[1]:</div>
+<div class="prompt input_prompt">In&nbsp;[2]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="c1"># load libraries</span>
@@ -11803,13 +11813,13 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[4]:</div>
+<div class="prompt input_prompt">In&nbsp;[3]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="c1"># set up map file path</span>
 <span class="n">filename</span> <span class="o">=</span> <span class="s2">&quot;MountainView.osm&quot;</span> <span class="c1"># osm filename</span>
 <span class="c1"># filename = &quot;sample200.osm&quot; # Sample osm filename</span>
-<span class="n">path</span> <span class="o">=</span> <span class="s2">&quot;/Users/seemamishra/Desktop/Udacity/Data Wrangling/P3_Data&quot;</span> <span class="c1"># directory contain the osm file</span>
+<span class="n">path</span> <span class="o">=</span> <span class="s2">&quot;/Users/seemamishra/Desktop/Udacity/Data_Wrangling/P3_Data&quot;</span> <span class="c1"># directory contain the osm file</span>
 <span class="n">MountainViewosm</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">filename</span><span class="p">)</span>
 
 <span class="c1"># MountainViewosm = &quot;MountainView.osm&quot; # osm filename</span>
@@ -11820,7 +11830,7 @@ div#notebook {
 <span class="n">street_type_re</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s1">r&#39;\b\S+\.?$&#39;</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">IGNORECASE</span><span class="p">)</span>
 <span class="c1"># initial version of expected street names</span>
 <span class="n">expected</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Street&quot;</span><span class="p">,</span> <span class="s2">&quot;Avenue&quot;</span><span class="p">,</span> <span class="s2">&quot;Boulevard&quot;</span><span class="p">,</span> <span class="s2">&quot;Drive&quot;</span><span class="p">,</span> <span class="s2">&quot;Court&quot;</span><span class="p">,</span> <span class="s2">&quot;Place&quot;</span><span class="p">,</span> <span class="s2">&quot;Square&quot;</span><span class="p">,</span> <span class="s2">&quot;Lane&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;Road&quot;</span><span class="p">,</span> <span class="s2">&quot;Trail&quot;</span><span class="p">,</span> <span class="s2">&quot;Parkway&quot;</span><span class="p">,</span> <span class="s2">&quot;Commons&quot;</span><span class="p">]</span>
+            <span class="s2">&quot;Road&quot;</span><span class="p">,</span> <span class="s2">&quot;Trail&quot;</span><span class="p">,</span> <span class="s2">&quot;Parkway&quot;</span><span class="p">,</span> <span class="s2">&quot;Commons&quot;</span><span class="p">,</span> <span class="s2">&quot;highway&quot;</span><span class="p">]</span>
 <span class="n">MountainViewosm</span>
 </pre></div>
 
@@ -11832,11 +11842,11 @@ div#notebook {
 <div class="output">
 
 
-<div class="output_area"><div class="prompt output_prompt">Out[4]:</div>
+<div class="output_area"><div class="prompt output_prompt">Out[3]:</div>
 
 
 <div class="output_text output_subarea output_execute_result">
-<pre>&#39;/Users/seemamishra/Desktop/Udacity/Data Wrangling/P3_Data/MountainView.osm&#39;</pre>
+<pre>&#39;/Users/seemamishra/Desktop/Udacity/Data_Wrangling/P3_Data/MountainView.osm&#39;</pre>
 </div>
 
 </div>
@@ -11856,7 +11866,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[5]:</div>
+<div class="prompt input_prompt">In&nbsp;[4]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="c1"># Iterative parsing</span>
@@ -11908,7 +11918,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[6]:</div>
+<div class="prompt input_prompt">In&nbsp;[5]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="c1"># Tag types</span>
@@ -11973,7 +11983,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[7]:</div>
+<div class="prompt input_prompt">In&nbsp;[6]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="k">def</span> <span class="nf">audit_street_type</span><span class="p">(</span><span class="n">street_types</span><span class="p">,</span> <span class="n">street_name</span><span class="p">):</span>
@@ -12298,7 +12308,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[11]:</div>
+<div class="prompt input_prompt">In&nbsp;[7]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="c1"># Street name updatation</span>
@@ -12332,7 +12342,7 @@ div#notebook {
            <span class="s2">&quot;W El Camino Real&quot;</span><span class="p">:</span><span class="s2">&quot;West El Camino Real&quot;</span><span class="p">,</span>
            <span class="s2">&quot;E. El Camino Real&quot;</span><span class="p">:</span> <span class="s2">&quot;East El Camino Real&quot;</span><span class="p">,</span>
            <span class="s2">&quot;E El Camino Real&quot;</span> <span class="p">:</span> <span class="s2">&quot;East El Camino Real&quot;</span><span class="p">,</span>
-           <span class="s2">&quot;West Dana St&quot;</span><span class="p">:</span> <span class="s2">&quot;West Dana St&quot;</span>
+           <span class="s2">&quot;West Dana St&quot;</span><span class="p">:</span> <span class="s2">&quot;West Dana Street&quot;</span>
            <span class="p">}</span>
            
                      
@@ -12637,7 +12647,7 @@ Bella Corte =&gt; Bella Corte
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[15]:</div>
+<div class="prompt input_prompt">In&nbsp;[8]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="c1"># zip code</span>
@@ -12791,14 +12801,209 @@ CA 94086 1
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Since some of the part of the map is included of San Jose and Sunnyvalle area thats why the above result shows the zip codes starts with 95 but there are only two zip codes which are inconsistent.</p>
-<h4 id="Process-OSM-XML-file-to-JSON">Process OSM XML file to JSON<a class="anchor-link" href="#Process-OSM-XML-file-to-JSON">&#182;</a></h4>
+<h4 id="strategy-for-updating-zip-code">strategy for updating zip code<a class="anchor-link" href="#strategy-for-updating-zip-code">&#182;</a></h4><p>Since the data also includes the area of Santa Clara, Cupetino, San Jose and Sunnyvale. I have only updated he zipcode of Moutain view which stats from '94' using mapping dictionary.</p>
+
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[19]:</div>
+<div class="prompt input_prompt">In&nbsp;[70]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">mapping</span> <span class="o">=</span> <span class="p">{</span> <span class="s2">&quot;CA 94085&quot;</span><span class="p">:</span><span class="s2">&quot;94085&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;CA 94086&quot;</span><span class="p">:</span><span class="s2">&quot;94086&quot;</span>
+           <span class="p">}</span>
+           
+                     
+<span class="c1"># function that corrects incorrect street names</span>
+<span class="k">def</span> <span class="nf">update_zipcode</span><span class="p">(</span><span class="n">zipcode</span><span class="p">,</span> <span class="n">mapping</span><span class="p">):</span>    
+    <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">mapping</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">zipcode</span><span class="p">:</span>
+            <span class="n">zipcode</span> <span class="o">=</span> <span class="n">string</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">zipcode</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span><span class="n">mapping</span><span class="p">[</span><span class="n">key</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">zipcode</span>
+       
+          
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">zipcode</span> <span class="ow">in</span> <span class="n">zipcodes</span><span class="p">:</span>
+        <span class="n">better_zipcode</span> <span class="o">=</span> <span class="n">update_zipcode</span><span class="p">(</span><span class="n">zipcode</span><span class="p">,</span> <span class="n">mapping</span><span class="p">)</span>
+        <span class="k">print</span> <span class="n">zipcode</span><span class="p">,</span> <span class="s2">&quot;=&gt;&quot;</span><span class="p">,</span> <span class="n">better_zipcode</span>
+        
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>30188 =&gt; 30188
+95014-0137 =&gt; 95014-0137
+95014-6357 =&gt; 95014-6357
+95014-030 =&gt; 95014-030
+95014-0497 =&gt; 95014-0497
+95014-0496 =&gt; 95014-0496
+95014-0495 =&gt; 95014-0495
+95014-0494 =&gt; 95014-0494
+95014-0493 =&gt; 95014-0493
+95014-0492 =&gt; 95014-0492
+95014-0556 =&gt; 95014-0556
+95014-0552 =&gt; 95014-0552
+95014-0499 =&gt; 95014-0499
+95014-0551 =&gt; 95014-0551
+95014-6340 =&gt; 95014-6340
+95014-6342 =&gt; 95014-6342
+95014-6344 =&gt; 95014-6344
+95014-6346 =&gt; 95014-6346
+95014-6348 =&gt; 95014-6348
+95014-0549 =&gt; 95014-0549
+95014-0548 =&gt; 95014-0548
+95014-0545 =&gt; 95014-0545
+95014-0547 =&gt; 95014-0547
+95014-0546 =&gt; 95014-0546
+95014-0540 =&gt; 95014-0540
+95014-0116 =&gt; 95014-0116
+95014-0117 =&gt; 95014-0117
+95014-0114 =&gt; 95014-0114
+95014-0115 =&gt; 95014-0115
+95014-0112 =&gt; 95014-0112
+95014-0113 =&gt; 95014-0113
+95014-0111 =&gt; 95014-0111
+95014-0448 =&gt; 95014-0448
+95051 =&gt; 95051
+95014-0444 =&gt; 95014-0444
+95014-0445 =&gt; 95014-0445
+95014-0446 =&gt; 95014-0446
+95014-0447 =&gt; 95014-0447
+95014-0440 =&gt; 95014-0440
+95014-0607 =&gt; 95014-0607
+95014-6371 =&gt; 95014-6371
+95014-0102 =&gt; 95014-0102
+95014-0103 =&gt; 95014-0103
+95014-0353 =&gt; 95014-0353
+95014-0453 =&gt; 95014-0453
+95014-0451 =&gt; 95014-0451
+95014-0450 =&gt; 95014-0450
+95014-0457 =&gt; 95014-0457
+95014-0456 =&gt; 95014-0456
+95014-0455 =&gt; 95014-0455
+95014-0454 =&gt; 95014-0454
+95014-6363 =&gt; 95014-6363
+95014-6360 =&gt; 95014-6360
+95014-0565 =&gt; 95014-0565
+95014-0564 =&gt; 95014-0564
+95014-0560 =&gt; 95014-0560
+CA 94085 =&gt; 94085
+CA 94086 =&gt; CA 94086
+95014-0202 =&gt; 95014-0202
+95014-0200 =&gt; 95014-0200
+95014-0568 =&gt; 95014-0568
+95014-0500 =&gt; 95014-0500
+95014-0292 =&gt; 95014-0292
+95014-6318 =&gt; 95014-6318
+95014-6319 =&gt; 95014-6319
+95014-6316 =&gt; 95014-6316
+95014-6317 =&gt; 95014-6317
+95014-6314 =&gt; 95014-6314
+95014-6315 =&gt; 95014-6315
+95014-6561 =&gt; 95014-6561
+95014-6560 =&gt; 95014-6560
+95014-6562 =&gt; 95014-6562
+95014-0535 =&gt; 95014-0535
+95014-0536 =&gt; 95014-0536
+95014-0531 =&gt; 95014-0531
+95014-0532 =&gt; 95014-0532
+95014-0533 =&gt; 95014-0533
+95014-0538 =&gt; 95014-0538
+95014-0539 =&gt; 95014-0539
+95014-0434 =&gt; 95014-0434
+95014-0437 =&gt; 95014-0437
+95014-0436 =&gt; 95014-0436
+95014-0433 =&gt; 95014-0433
+95014-0439 =&gt; 95014-0439
+95014-0438 =&gt; 95014-0438
+95086 =&gt; 95086
+95014-6557 =&gt; 95014-6557
+95014-6385 =&gt; 95014-6385
+95014-6381 =&gt; 95014-6381
+95014-0550 =&gt; 95014-0550
+95014-0449 =&gt; 95014-0449
+95014-0240 =&gt; 95014-0240
+95014-0400 =&gt; 95014-0400
+95014-6334 =&gt; 95014-6334
+95014-0721 =&gt; 95014-0721
+95014 =&gt; 95014
+95014-6540 =&gt; 95014-6540
+95014-0129 =&gt; 95014-0129
+95014-0124 =&gt; 95014-0124
+95014-0123 =&gt; 95014-0123
+95014-0238 =&gt; 95014-0238
+95014-0143 =&gt; 95014-0143
+95014-0144 =&gt; 95014-0144
+95014-6322 =&gt; 95014-6322
+515 =&gt; 515
+95014-0529 =&gt; 95014-0529
+95014-6539 =&gt; 95014-6539
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="c1"># Audit phone number</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="Process-OSM-XML-file-to-JSON">Process OSM XML file to JSON<a class="anchor-link" href="#Process-OSM-XML-file-to-JSON">&#182;</a></h4><p>Only the elements of type “node” and “way” will be imported to the database. The data model we’re going to use follows the format of this example:
+{
+"id": "2406124091",
+"type: "node",
+"visible":"true",
+"created": {
+         "version":"2",
+         "changeset":"17206049",
+         "timestamp":"2013-08-03T16:43:42Z",
+         "user":"linuxUser16",
+         "uid":"1219059"
+       },
+"pos": [41.9757030, -87.6921867],
+"address": {
+         "housenumber": "5157",
+         "postcode": "60625",
+         "street": "North Lincoln Ave"
+       },
+"amenity": "restaurant",
+"cuisine": "mexican",
+"name": "La Cabana De Don Luis",
+"phone": "1 (773)-271-5176"
+}</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[11]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="n">CREATED</span> <span class="o">=</span> <span class="p">[</span> <span class="s2">&quot;version&quot;</span><span class="p">,</span> <span class="s2">&quot;changeset&quot;</span><span class="p">,</span> <span class="s2">&quot;timestamp&quot;</span><span class="p">,</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="s2">&quot;uid&quot;</span><span class="p">]</span>
@@ -12887,7 +13092,7 @@ CA 94086 1
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[46]:</div>
+<div class="prompt input_prompt">In&nbsp;[21]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="c1"># process the file</span>
@@ -12912,7 +13117,7 @@ CA 94086 1
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[45]:</div>
+<div class="prompt input_prompt">In&nbsp;[22]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="n">client</span> <span class="o">=</span> <span class="n">MongoClient</span><span class="p">()</span>
@@ -13264,6 +13469,58 @@ CA 94086 1
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Top-10-amenity">Top 10 amenity<a class="anchor-link" href="#Top-10-amenity">&#182;</a></h3>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[18]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">pipeline</span> <span class="o">=</span> <span class="p">[{</span><span class="s1">&#39;$match&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;amenity&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;$exists&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">}}},</span> 
+                                <span class="p">{</span><span class="s1">&#39;$group&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;_id&#39;</span><span class="p">:</span> <span class="s1">&#39;$amenity&#39;</span><span class="p">,</span> 
+                                            <span class="s1">&#39;count&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;$sum&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">}}},</span> 
+                                <span class="p">{</span><span class="s1">&#39;$sort&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;count&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mi">1</span><span class="p">}},</span> 
+                                <span class="p">{</span><span class="s1">&#39;$limit&#39;</span><span class="p">:</span> <span class="mi">10</span><span class="p">}]</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">collection</span><span class="o">.</span><span class="n">aggregate</span><span class="p">(</span><span class="n">pipeline</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">result</span><span class="p">:</span>
+    <span class="k">print</span> <span class="n">r</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>{u&#39;count&#39;: 4593458, u&#39;_id&#39;: {}}
+{u&#39;count&#39;: 6007, u&#39;_id&#39;: u&#39;parking&#39;}
+{u&#39;count&#39;: 2905, u&#39;_id&#39;: u&#39;restaurant&#39;}
+{u&#39;count&#39;: 2254, u&#39;_id&#39;: u&#39;bicycle_parking&#39;}
+{u&#39;count&#39;: 1442, u&#39;_id&#39;: u&#39;bench&#39;}
+{u&#39;count&#39;: 1221, u&#39;_id&#39;: u&#39;school&#39;}
+{u&#39;count&#39;: 917, u&#39;_id&#39;: u&#39;fast_food&#39;}
+{u&#39;count&#39;: 871, u&#39;_id&#39;: u&#39;post_box&#39;}
+{u&#39;count&#39;: 819, u&#39;_id&#39;: u&#39;cafe&#39;}
+{u&#39;count&#39;: 756, u&#39;_id&#39;: u&#39;place_of_worship&#39;}
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
 <h4 id="Most-popular-fast-food-resturant">Most popular fast food resturant<a class="anchor-link" href="#Most-popular-fast-food-resturant">&#182;</a></h4>
 </div>
 </div>
@@ -13530,7 +13787,7 @@ CA 94086 1
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[29]:</div>
+<div class="prompt input_prompt">In&nbsp;[27]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="n">pipeline</span> <span class="o">=</span> <span class="p">[{</span><span class="s2">&quot;$match&quot;</span><span class="p">:{</span><span class="s2">&quot;amenity&quot;</span><span class="p">:{</span><span class="s2">&quot;$exists&quot;</span><span class="p">:</span><span class="mi">1</span><span class="p">},</span> <span class="s2">&quot;amenity&quot;</span><span class="p">:</span> <span class="s2">&quot;hospital&quot;</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">:{</span><span class="s2">&quot;$exists&quot;</span><span class="p">:</span><span class="mi">1</span><span class="p">}}},</span>
@@ -13551,16 +13808,16 @@ CA 94086 1
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Grant Cuesta Sub Acute Rehabilitation Center&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;VA Palo Alto Health Care System&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;VA Medical Center Menlo Park&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;El Camino Hospital&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;PAMF Menlo Park Surgical Hospital&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Kaiser Permanente&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Kaiser Permanente Santa Clara Medical Center&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Camino Medical Group&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Palo Alto Medical Foundation&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Health Services&#39;}
+<pre>{u&#39;count&#39;: 7, u&#39;_id&#39;: u&#39;Grant Cuesta Sub Acute Rehabilitation Center&#39;}
+{u&#39;count&#39;: 7, u&#39;_id&#39;: u&#39;VA Palo Alto Health Care System&#39;}
+{u&#39;count&#39;: 7, u&#39;_id&#39;: u&#39;VA Medical Center Menlo Park&#39;}
+{u&#39;count&#39;: 7, u&#39;_id&#39;: u&#39;El Camino Hospital&#39;}
+{u&#39;count&#39;: 7, u&#39;_id&#39;: u&#39;PAMF Menlo Park Surgical Hospital&#39;}
+{u&#39;count&#39;: 7, u&#39;_id&#39;: u&#39;Kaiser Permanente&#39;}
+{u&#39;count&#39;: 7, u&#39;_id&#39;: u&#39;Kaiser Permanente Santa Clara Medical Center&#39;}
+{u&#39;count&#39;: 7, u&#39;_id&#39;: u&#39;Camino Medical Group&#39;}
+{u&#39;count&#39;: 7, u&#39;_id&#39;: u&#39;Palo Alto Medical Foundation&#39;}
+{u&#39;count&#39;: 7, u&#39;_id&#39;: u&#39;Health Services&#39;}
 </pre>
 </div>
 </div>
@@ -13899,7 +14156,7 @@ CA 94086 1
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Other-Ideas-about-data-set">Other Ideas about data set<a class="anchor-link" href="#Other-Ideas-about-data-set">&#182;</a></h3><h4 id="Top-10-unique-contributor-of-data">Top 10 unique contributor of data<a class="anchor-link" href="#Top-10-unique-contributor-of-data">&#182;</a></h4>
+<h4 id="Top-10-unique-contributor-of-data">Top 10 unique contributor of data<a class="anchor-link" href="#Top-10-unique-contributor-of-data">&#182;</a></h4>
 </div>
 </div>
 </div>
@@ -14005,7 +14262,7 @@ CA 94086 1
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[40]:</div>
+<div class="prompt input_prompt">In&nbsp;[25]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="n">pipeline</span> <span class="o">=</span><span class="p">[{</span><span class="s2">&quot;$group&quot;</span><span class="p">:{</span><span class="s2">&quot;_id&quot;</span><span class="p">:</span><span class="s2">&quot;$created.timestamp&quot;</span><span class="p">,</span> <span class="s2">&quot;count&quot;</span><span class="p">:{</span><span class="s2">&quot;$sum&quot;</span><span class="p">:</span><span class="mi">1</span><span class="p">}}},</span>
@@ -14026,16 +14283,16 @@ CA 94086 1
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>{u&#39;count&#39;: 885, u&#39;_id&#39;: u&#39;2016-02-05T18:42:04Z&#39;}
-{u&#39;count&#39;: 873, u&#39;_id&#39;: u&#39;2016-01-15T15:11:35Z&#39;}
-{u&#39;count&#39;: 855, u&#39;_id&#39;: u&#39;2016-01-15T15:11:34Z&#39;}
-{u&#39;count&#39;: 837, u&#39;_id&#39;: u&#39;2016-02-04T19:41:43Z&#39;}
-{u&#39;count&#39;: 795, u&#39;_id&#39;: u&#39;2016-02-03T16:54:41Z&#39;}
-{u&#39;count&#39;: 795, u&#39;_id&#39;: u&#39;2016-02-08T14:25:39Z&#39;}
-{u&#39;count&#39;: 792, u&#39;_id&#39;: u&#39;2016-02-03T16:54:40Z&#39;}
-{u&#39;count&#39;: 792, u&#39;_id&#39;: u&#39;2016-02-04T19:05:40Z&#39;}
-{u&#39;count&#39;: 783, u&#39;_id&#39;: u&#39;2015-11-23T16:53:08Z&#39;}
-{u&#39;count&#39;: 780, u&#39;_id&#39;: u&#39;2016-02-04T19:05:39Z&#39;}
+<pre>{u&#39;count&#39;: 1032, u&#39;_id&#39;: u&#39;2016-02-05T18:42:04Z&#39;}
+{u&#39;count&#39;: 1018, u&#39;_id&#39;: u&#39;2016-01-15T15:11:35Z&#39;}
+{u&#39;count&#39;: 997, u&#39;_id&#39;: u&#39;2016-01-15T15:11:34Z&#39;}
+{u&#39;count&#39;: 976, u&#39;_id&#39;: u&#39;2016-02-04T19:41:43Z&#39;}
+{u&#39;count&#39;: 927, u&#39;_id&#39;: u&#39;2016-02-03T16:54:41Z&#39;}
+{u&#39;count&#39;: 927, u&#39;_id&#39;: u&#39;2016-02-08T14:25:39Z&#39;}
+{u&#39;count&#39;: 924, u&#39;_id&#39;: u&#39;2016-02-03T16:54:40Z&#39;}
+{u&#39;count&#39;: 923, u&#39;_id&#39;: u&#39;2016-02-04T19:05:40Z&#39;}
+{u&#39;count&#39;: 913, u&#39;_id&#39;: u&#39;2015-11-23T16:53:08Z&#39;}
+{u&#39;count&#39;: 910, u&#39;_id&#39;: u&#39;2016-02-04T19:05:39Z&#39;}
 </pre>
 </div>
 </div>
@@ -14049,17 +14306,18 @@ CA 94086 1
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h4 id="Types-and-number-of-ways-in-mountain-view">Types and number of ways in mountain view<a class="anchor-link" href="#Types-and-number-of-ways-in-mountain-view">&#182;</a></h4>
+<h4 id="Highway-ways-in-mountain-view">Highway ways in mountain view<a class="anchor-link" href="#Highway-ways-in-mountain-view">&#182;</a></h4>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[43]:</div>
+<div class="prompt input_prompt">In&nbsp;[24]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="n">pipeline</span> <span class="o">=</span><span class="p">[{</span><span class="s2">&quot;$group&quot;</span><span class="p">:{</span><span class="s2">&quot;_id&quot;</span><span class="p">:</span><span class="s2">&quot;$highway&quot;</span><span class="p">,</span> <span class="s2">&quot;count&quot;</span><span class="p">:{</span><span class="s2">&quot;$sum&quot;</span><span class="p">:</span><span class="mi">1</span><span class="p">}}},</span>
-            <span class="p">{</span><span class="s2">&quot;$sort&quot;</span><span class="p">:{</span><span class="s2">&quot;count&quot;</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">}}</span>
+            <span class="p">{</span><span class="s2">&quot;$sort&quot;</span><span class="p">:{</span><span class="s2">&quot;count&quot;</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">}},</span>
+           <span class="p">{</span><span class="s2">&quot;$limit&quot;</span><span class="p">:</span> <span class="mi">10</span><span class="p">}</span>
            <span class="p">]</span>
 <span class="n">result</span> <span class="o">=</span> <span class="n">collection</span><span class="o">.</span><span class="n">aggregate</span><span class="p">(</span><span class="n">pipeline</span><span class="p">)</span>
 <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">result</span><span class="p">:</span>
@@ -14076,38 +14334,16 @@ CA 94086 1
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>{u&#39;count&#39;: 6760065, u&#39;_id&#39;: None}
-{u&#39;count&#39;: 44328, u&#39;_id&#39;: u&#39;service&#39;}
-{u&#39;count&#39;: 24006, u&#39;_id&#39;: u&#39;residential&#39;}
-{u&#39;count&#39;: 15066, u&#39;_id&#39;: u&#39;footway&#39;}
-{u&#39;count&#39;: 10425, u&#39;_id&#39;: u&#39;stop&#39;}
-{u&#39;count&#39;: 9462, u&#39;_id&#39;: u&#39;secondary&#39;}
-{u&#39;count&#39;: 8067, u&#39;_id&#39;: u&#39;turning_circle&#39;}
-{u&#39;count&#39;: 5187, u&#39;_id&#39;: u&#39;traffic_signals&#39;}
-{u&#39;count&#39;: 4626, u&#39;_id&#39;: u&#39;tertiary&#39;}
-{u&#39;count&#39;: 4407, u&#39;_id&#39;: u&#39;primary&#39;}
-{u&#39;count&#39;: 2640, u&#39;_id&#39;: u&#39;crossing&#39;}
-{u&#39;count&#39;: 2226, u&#39;_id&#39;: u&#39;unclassified&#39;}
-{u&#39;count&#39;: 1842, u&#39;_id&#39;: u&#39;motorway_link&#39;}
-{u&#39;count&#39;: 1425, u&#39;_id&#39;: u&#39;cycleway&#39;}
-{u&#39;count&#39;: 1227, u&#39;_id&#39;: u&#39;trunk&#39;}
-{u&#39;count&#39;: 1071, u&#39;_id&#39;: u&#39;path&#39;}
-{u&#39;count&#39;: 864, u&#39;_id&#39;: u&#39;trunk_link&#39;}
-{u&#39;count&#39;: 840, u&#39;_id&#39;: u&#39;bus_stop&#39;}
-{u&#39;count&#39;: 750, u&#39;_id&#39;: u&#39;motorway&#39;}
-{u&#39;count&#39;: 705, u&#39;_id&#39;: u&#39;primary_link&#39;}
-{u&#39;count&#39;: 681, u&#39;_id&#39;: u&#39;street_lamp&#39;}
-{u&#39;count&#39;: 408, u&#39;_id&#39;: u&#39;secondary_link&#39;}
-{u&#39;count&#39;: 378, u&#39;_id&#39;: u&#39;motorway_junction&#39;}
-{u&#39;count&#39;: 291, u&#39;_id&#39;: u&#39;give_way&#39;}
-{u&#39;count&#39;: 279, u&#39;_id&#39;: u&#39;track&#39;}
-{u&#39;count&#39;: 270, u&#39;_id&#39;: u&#39;steps&#39;}
-{u&#39;count&#39;: 138, u&#39;_id&#39;: u&#39;living_street&#39;}
-{u&#39;count&#39;: 126, u&#39;_id&#39;: u&#39;tertiary_link&#39;}
-{u&#39;count&#39;: 108, u&#39;_id&#39;: u&#39;turning_loop&#39;}
-{u&#39;count&#39;: 84, u&#39;_id&#39;: u&#39;construction&#39;}
-{u&#39;count&#39;: 84, u&#39;_id&#39;: u&#39;sign&#39;}
-{u&#39;count&#39;: 72, u&#39;_id&#39;: u&#39;pedestrian&#39;}
+<pre>{u&#39;count&#39;: 7883934, u&#39;_id&#39;: None}
+{u&#39;count&#39;: 51700, u&#39;_id&#39;: u&#39;service&#39;}
+{u&#39;count&#39;: 27995, u&#39;_id&#39;: u&#39;residential&#39;}
+{u&#39;count&#39;: 17572, u&#39;_id&#39;: u&#39;footway&#39;}
+{u&#39;count&#39;: 12156, u&#39;_id&#39;: u&#39;stop&#39;}
+{u&#39;count&#39;: 11033, u&#39;_id&#39;: u&#39;secondary&#39;}
+{u&#39;count&#39;: 9408, u&#39;_id&#39;: u&#39;turning_circle&#39;}
+{u&#39;count&#39;: 6050, u&#39;_id&#39;: u&#39;traffic_signals&#39;}
+{u&#39;count&#39;: 5395, u&#39;_id&#39;: u&#39;tertiary&#39;}
+{u&#39;count&#39;: 5140, u&#39;_id&#39;: u&#39;primary&#39;}
 </pre>
 </div>
 </div>
@@ -14127,11 +14363,12 @@ CA 94086 1
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[44]:</div>
+<div class="prompt input_prompt">In&nbsp;[26]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="n">pipeline</span> <span class="o">=</span><span class="p">[{</span><span class="s2">&quot;$group&quot;</span><span class="p">:{</span><span class="s2">&quot;_id&quot;</span><span class="p">:</span><span class="s2">&quot;$exit_to&quot;</span><span class="p">,</span> <span class="s2">&quot;count&quot;</span><span class="p">:{</span><span class="s2">&quot;$sum&quot;</span><span class="p">:</span><span class="mi">1</span><span class="p">}}},</span>
-            <span class="p">{</span><span class="s2">&quot;$sort&quot;</span><span class="p">:{</span><span class="s2">&quot;count&quot;</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">}}</span>
+            <span class="p">{</span><span class="s2">&quot;$sort&quot;</span><span class="p">:{</span><span class="s2">&quot;count&quot;</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">}},</span>
+           <span class="p">{</span><span class="s2">&quot;$limit&quot;</span><span class="p">:</span> <span class="mi">10</span><span class="p">}</span>
            <span class="p">]</span>
 <span class="n">result</span> <span class="o">=</span> <span class="n">collection</span><span class="o">.</span><span class="n">aggregate</span><span class="p">(</span><span class="n">pipeline</span><span class="p">)</span>
 <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">result</span><span class="p">:</span>
@@ -14148,51 +14385,16 @@ CA 94086 1
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>{u&#39;count&#39;: 6901788, u&#39;_id&#39;: None}
-{u&#39;count&#39;: 18, u&#39;_id&#39;: u&#39;Mathilda Avenue South&#39;}
-{u&#39;count&#39;: 12, u&#39;_id&#39;: u&#39;El Monte Road;Moody Road&#39;}
-{u&#39;count&#39;: 12, u&#39;_id&#39;: u&#39;US-101 South;Mathilda Avenue&#39;}
-{u&#39;count&#39;: 12, u&#39;_id&#39;: u&#39;Middlefield Road;Maude Avenue&#39;}
-{u&#39;count&#39;: 12, u&#39;_id&#39;: u&#39;Mathilda Avenue North&#39;}
-{u&#39;count&#39;: 12, u&#39;_id&#39;: u&#39;SR-82 South;Sunnyvale;El Camino Real&#39;}
-{u&#39;count&#39;: 12, u&#39;_id&#39;: u&#39;Moffett Boulevard;NASA Parkway&#39;}
-{u&#39;count&#39;: 12, u&#39;_id&#39;: u&#39;Ellis Street;Moffett South Gate&#39;}
-{u&#39;count&#39;: 12, u&#39;_id&#39;: u&#39;SR-85 South;Cupertino;Santa Cruz&#39;}
-{u&#39;count&#39;: 12, u&#39;_id&#39;: u&#39;Evelyn Avenue&#39;}
-{u&#39;count&#39;: 12, u&#39;_id&#39;: u&#39;SR-82 North;Mountain View;El Camino Real&#39;}
-{u&#39;count&#39;: 12, u&#39;_id&#39;: u&#39;US-101 North&#39;}
-{u&#39;count&#39;: 12, u&#39;_id&#39;: u&#39;Fair Oaks Avenue&#39;}
-{u&#39;count&#39;: 12, u&#39;_id&#39;: u&#39;University Avenue&#39;}
-{u&#39;count&#39;: 12, u&#39;_id&#39;: u&#39;Rengstorff Avenue&#39;}
-{u&#39;count&#39;: 6, u&#39;_id&#39;: u&#39;SR-237 East;Alviso;Milpitas&#39;}
-{u&#39;count&#39;: 6, u&#39;_id&#39;: u&#39;Moffett Boulevard&#39;}
-{u&#39;count&#39;: 6, u&#39;_id&#39;: u&#39;US-101 South;San Jose&#39;}
-{u&#39;count&#39;: 6, u&#39;_id&#39;: u&#39;Homestead Road&#39;}
-{u&#39;count&#39;: 6, u&#39;_id&#39;: u&#39;SR-237 West;Mountain View Road;Alviso Road&#39;}
-{u&#39;count&#39;: 6, u&#39;_id&#39;: u&#39;Lawrence Expressway;Caribbean Drive&#39;}
-{u&#39;count&#39;: 6, u&#39;_id&#39;: u&#39;Fremont Avenue;Los Altos&#39;}
-{u&#39;count&#39;: 6, u&#39;_id&#39;: u&#39;Amphitheater Parkway&#39;}
-{u&#39;count&#39;: 6, u&#39;_id&#39;: u&#39;San Antonio Road&#39;}
-{u&#39;count&#39;: 6, u&#39;_id&#39;: u&#39;Old Middlefield Way&#39;}
-{u&#39;count&#39;: 6, u&#39;_id&#39;: u&#39;Los Altos;San Antonio Road South&#39;}
-{u&#39;count&#39;: 6, u&#39;_id&#39;: u&#39;Fair Oaks Avenue North&#39;}
-{u&#39;count&#39;: 6, u&#39;_id&#39;: u&#39;Embarcadero Road;Oregon Expressway&#39;}
-{u&#39;count&#39;: 6, u&#39;_id&#39;: u&#39;Arques / Fair Oaks&#39;}
-{u&#39;count&#39;: 6, u&#39;_id&#39;: u&#39;Mountain View;Shoreline Blvd&#39;}
-{u&#39;count&#39;: 6, u&#39;_id&#39;: u&#39;Sunnyvale;Mathilda Avenue&#39;}
-{u&#39;count&#39;: 6, u&#39;_id&#39;: u&#39;Page Mill Road;Palo Alto&#39;}
-{u&#39;count&#39;: 6, u&#39;_id&#39;: u&#39;Magdalena Avenue&#39;}
-{u&#39;count&#39;: 6, u&#39;_id&#39;: u&#39;Fair Oaks Avenue South&#39;}
-{u&#39;count&#39;: 6, u&#39;_id&#39;: u&#39;Central Expressway&#39;}
-{u&#39;count&#39;: 6, u&#39;_id&#39;: u&#39;San Antonio Road North&#39;}
-{u&#39;count&#39;: 6, u&#39;_id&#39;: u&#39;Dana Street;Whisman Road&#39;}
-{u&#39;count&#39;: 6, u&#39;_id&#39;: u&#39;Lawrence Expressway&#39;}
-{u&#39;count&#39;: 6, u&#39;_id&#39;: u&#39;Fremont Avenue&#39;}
-{u&#39;count&#39;: 6, u&#39;_id&#39;: u&#39;I-280&#39;}
-{u&#39;count&#39;: 6, u&#39;_id&#39;: u&#39;Mathilda Avenue North;SR-237 East&#39;}
-{u&#39;count&#39;: 6, u&#39;_id&#39;: u&#39;Shoreline Boulevard&#39;}
-{u&#39;count&#39;: 6, u&#39;_id&#39;: u&#39;SR-237;US-101 South&#39;}
-{u&#39;count&#39;: 6, u&#39;_id&#39;: u&#39;Magdelena Avenue&#39;}
+<pre>{u&#39;count&#39;: 8049217, u&#39;_id&#39;: None}
+{u&#39;count&#39;: 21, u&#39;_id&#39;: u&#39;Mathilda Avenue South&#39;}
+{u&#39;count&#39;: 14, u&#39;_id&#39;: u&#39;Moffett Boulevard;NASA Parkway&#39;}
+{u&#39;count&#39;: 14, u&#39;_id&#39;: u&#39;SR-85 South;Cupertino;Santa Cruz&#39;}
+{u&#39;count&#39;: 14, u&#39;_id&#39;: u&#39;Ellis Street;Moffett South Gate&#39;}
+{u&#39;count&#39;: 14, u&#39;_id&#39;: u&#39;Mathilda Avenue North&#39;}
+{u&#39;count&#39;: 14, u&#39;_id&#39;: u&#39;El Monte Road;Moody Road&#39;}
+{u&#39;count&#39;: 14, u&#39;_id&#39;: u&#39;SR-82 North;Mountain View;El Camino Real&#39;}
+{u&#39;count&#39;: 14, u&#39;_id&#39;: u&#39;Evelyn Avenue&#39;}
+{u&#39;count&#39;: 14, u&#39;_id&#39;: u&#39;SR-82 South;Sunnyvale;El Camino Real&#39;}
 </pre>
 </div>
 </div>
@@ -14206,7 +14408,19 @@ CA 94086 1
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Conclusion">Conclusion<a class="anchor-link" href="#Conclusion">&#182;</a></h3>
+<h3 id="Other-Ideas-about-data-set">Other Ideas about data set<a class="anchor-link" href="#Other-Ideas-about-data-set">&#182;</a></h3><p>Since the data consist of inconsistent phone numbers like "650-322-2554", "+16508570333" etc. During the collection of the data from user, it should follow the rule format of phone number of given country or area which is generraly in ITU E.123 standard:</p>
+<ul>
+<li>"+"</li>
+<li>the national code (1 for the USA)</li>
+<li>space</li>
+<li>the area/regional code</li>
+<li>space</li>
+<li>the local exchange</li>
+<li>space</li>
+<li>the local number</li>
+</ul>
+<p>There are some fields of node is missing like County, the data collection should follow the structured format. But it trivial because Nosql database can pretty much handle the non structured data.</p>
+
 </div>
 </div>
 </div>
@@ -14215,7 +14429,7 @@ CA 94086 1
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>After reviewing the data of mountain view, much of the information has been extracted about the city. The data has been well cleaned for the purpose of enough information extraction. Thinking about the compnies and startups established in Mountain view, i couldn't find any information regarding that. If the data is stored as in the name of comapnies and startups buildings, it would be really helpful to gain insight of number of the comapanies establishd in given city.</p>
+<h3 id="Conclusion">Conclusion<a class="anchor-link" href="#Conclusion">&#182;</a></h3><p>After reviewing the data of mountain view, much of the information has been extracted about the city. The data has been well cleaned for the purpose of enough information extraction. Thinking about the compnies and startups established in Mountain view, i couldn't find any information regarding that. If the data is stored as in the name of comapnies and startups buildings, it would be really helpful to gain insight of number of the comapanies establishd in given city.</p>
 
 </div>
 </div>
