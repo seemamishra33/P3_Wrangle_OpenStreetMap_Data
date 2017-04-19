@@ -15,11 +15,13 @@
 # 
 # * MongoDB
 # 
-# ### Issues in Mountiav View OSM data ###
+# ### Problem encoutered  in Mountain View OSM map ###
 # 
-# * There are some inconsistencies in the names of streets, some are incorrect and abbreviated.
+# * There are some inconsistencies in the names of streets, some are incorrect and overabbreviated("S California Ave", "Wolfe Rd").
 # * Few inconsistent zip codes.
-# * There ae inconsistency in phone numbers stored by users.
+# * There ae inconsistency in phone numbers stored by users("650-322-2554", "+16508570333","(650) 327-1688").
+# 
+# * This been noticed the OSM data extracted from mapzen extracts tool cotains data about others cities besides the chosen one. So other cities data is also exhibited durig queries.
 # 
 # 
 # ### Overview of Mountain View OSM data ###
@@ -47,7 +49,7 @@
 # 3. <https://english.stackexchange.com/questions/29009/standard-format-for-phone-numbers>
 # 
 # ### Code and Results ###
-# There several queries generated for look deeep insight of data which is follwed by conclusion .
+# There are several queries generated for looking deep insight of data which is follwed by conclusion .
 # 
 # 
 # 
@@ -55,7 +57,7 @@
 # 
 # <b>Import Libraries</b>
 
-# In[2]:
+# In[102]:
 
 # load libraries
 import os
@@ -67,9 +69,12 @@ import codecs
 import json
 import string
 from pymongo import MongoClient
+from cleaning import *
+from audit import *
+from process_map import *
 
 
-# In[3]:
+# In[103]:
 
 # set up map file path
 filename = "MountainView.osm" # osm filename
@@ -91,22 +96,8 @@ MountainViewosm
 
 # #### Count the number of Tags ###
 
-# In[4]:
+# In[104]:
 
-# Iterative parsing
-def count_tags(filename):
-    
-    # make empty defaultdict
-#     from collections import defaultdict
-    tags_dict = defaultdict(int)
-    
-    # use the iterparse method to find all the tags
-    for event, element in cET.iterparse(filename, events=("start", "end")):
-#         print event
-        tags_dict[element.tag] += 1
-        
-    # return your results 
-    return tags_dict
 
 if __name__ == "__main__":
     print count_tags(MountainViewosm)
@@ -114,34 +105,7 @@ if __name__ == "__main__":
 
 # ####  Tags types ###
 
-# In[5]:
-
-# Tag types
-def key_type(element, keys):
-    if element.tag == "tag":
-    
-        k = element.attrib['k']
-#         print k
-        # serach k to see if it matches each regular expression
-        if lower.search(k):
-            keys['lower'] += 1
-        elif lower_colon.search(k):
-            keys['lower_colon'] += 1
-        elif problemchars.search(k):
-            keys['problemchars'] += 1
-        else:
-            keys['other'] += 1
-           
-    return keys
-
-
-
-def process_map(filename):
-    keys = {"lower": 0, "lower_colon": 0, "problemchars": 0, "other": 0}
-    for _, element in cET.iterparse(filename):
-        keys = key_type(element, keys)
-
-    return keys
+# In[105]:
 
 
 if __name__ == "__main__":
@@ -150,47 +114,24 @@ if __name__ == "__main__":
 
 # #### Audit the street names ###
 
-# In[6]:
+# In[72]:
 
-def audit_street_type(street_types, street_name):
-    # add unexpected street name to a list
-    m = street_type_re.search(street_name)
-#     print m
-    if m:
-        street_type = m.group()
-#         street_type
-        if street_type not in expected:
-            street_types[street_type].add(street_name)
-            
-def is_street_name(elem):
-    # determine whether a element is a street name
-    return (elem.attrib['k'] == "addr:street")
 
-def audit_street(osmfile):
-    # iter through all street name tag under node or way and audit the street name value
-    osm_file = open(osmfile, "r")
-    street_types = defaultdict(set)
-    for event, elem in cET.iterparse(osm_file, events=("start","end")):
-        if elem.tag == "node" or elem.tag == "way":
-            for tag in elem.iter("tag"):
-                if is_street_name(tag):
-                    audit_street_type(street_types, tag.attrib['v'])
-    return street_types
 if __name__ == '__main__':
     st_types = audit_street(MountainViewosm)
     # print out unexpected street names
-    pprint.pprint(dict(st_types))
+#     pprint.pprint(dict(st_types))
 
 
 
 
 # #### Update the street name ###
 
-# In[7]:
+# In[99]:
 
 # Street name updatation
 # creating a dictionary for correcting street names
-mapping = { "AA" :"Aberdeen Athletic Center",
+mapping_street = { "AA" :"Aberdeen Athletic Center",
             "Ct": "Court",
             "Ct.": "Court",
             "St.": "Street",
@@ -222,74 +163,43 @@ mapping = { "AA" :"Aberdeen Athletic Center",
            "West Dana St": "West Dana Street"
            }
            
-                     
-# function that corrects incorrect street names
-def update_name(name, mapping):    
-    for key in mapping:
-        if key in name:
-            name = string.replace(name,key,mapping[key])
-    return name
+                
 if __name__ == '__main__':
     for st_type, ways in st_types.iteritems():
         for name in ways:
-            better_name = update_name(name, mapping)
-            print name, "=>", better_name
+            better_name = update_name(name, mapping_street)
+#             print name, "=>", better_name
 
 
-# In[8]:
+# #### Audit zip codes
 
-# zip code
-def audit_zipcodes(osmfile):
-    # iter through all zip codes, collect all the zip codes that does not start with 94
-    osm_file = open(osmfile, "r")
-    zip_codes = {}
-    for event, elem in cET.iterparse(osm_file, events=("start",)):
-        if elem.tag == "node" or elem.tag == "way":
-            for tag in elem.iter("tag"):
-                if tag.attrib['k'] == "addr:postcode" and not tag.attrib['v'].startswith('94'):
-                    if tag.attrib['v'] not in zip_codes:
-                        zip_codes[tag.attrib['v']] = 1
-                    else:
-                        zip_codes[tag.attrib['v']] += 1
-    return zip_codes
+# In[107]:
 
-zipcodes = audit_zipcodes(MountainViewosm)
-for zipcode in zipcodes:
-    print zipcode, zipcodes[zipcode]
+
+if __name__ == '__main__':
+    zipcodes = audit_zipcodes(MountainViewosm)
+# for zipcode in zipcodes:
+#     print zipcode, zipcodes[zipcode]
 # zipcodes
 
 
 # #### strategy for updating zip code ###
 # 
-# Since the data also includes the area of Santa Clara, Cupetino, San Jose and Sunnyvale. I have only updated he zipcode of Moutain view which stats from '94' using mapping dictionary.
+# Since the data also includes the area of Santa Clara, Cupetino, San Jose and Sunnyvale. I have only updated he zipcode of Moutain view which starts from '94' using mapping dictionary.
 
-# In[70]:
+# In[92]:
 
 
-
-mapping = { "CA 94085":"94085",
+mapping_zipcode = { "CA 94085":"94085",
             "CA 94086":"94086"
-           }
-           
-                     
-# function that corrects incorrect street names
-def update_zipcode(zipcode, mapping):    
-    for key in mapping:
-        if key in zipcode:
-            zipcode = string.replace(zipcode, key,mapping[key])
-        return zipcode
-       
+           }          
+                          
           
 if __name__ == '__main__':
     for zipcode in zipcodes:
-        better_zipcode = update_zipcode(zipcode, mapping)
-        print zipcode, "=>", better_zipcode
+        better_zipcode = update_zipcode(zipcode, mapping_zipcode)
+#         print zipcode, "=>", better_zipcode
         
-
-
-# In[ ]:
-
-# Audit phone number
 
 
 # 
@@ -321,9 +231,11 @@ if __name__ == '__main__':
 # 
 # 
 
-# In[11]:
+# #### Insert the JSON data into MongoDB Database ####
 
+# In[100]:
 
+# process the file
 CREATED = [ "version", "changeset", "timestamp", "user", "uid"]
 def shape_element(element):
     node = {}
@@ -364,11 +276,11 @@ def shape_element(element):
                     
                 if tag.attrib['k'] == "addr:postcode":
                     node["address"]["postcode"]=tag.attrib['v']
-                
+                    node["address"]["postcode"] = update_name(node["address"]["postcode"], mapping_zipcode)
                 # handling the street attribute, update incorrect names using the strategy developed before   
                 if tag.attrib['k'] == "addr:street":
                     node["address"]["street"]=tag.attrib['v']
-                    node["address"]["street"] = update_name(node["address"]["street"], mapping)
+                    node["address"]["street"] = update_zipcode(node["address"]["street"], mapping_street)
 
                 if tag.attrib['k'].find("addr")==-1:
                     node[tag.attrib['k']]=tag.attrib['v']
@@ -385,35 +297,13 @@ def shape_element(element):
         return node
     else:
         return None
-
-
-
-def process_map(file_in, pretty = False):
-    file_out = "{0}.json".format(file_in)
-    data = []
-    with codecs.open(file_out, "w") as fo:
-        for _, element in cET.iterparse(file_in):
-            el = shape_element(element)
-            if el:
-                data.append(el)
-                if pretty:
-                    fo.write(json.dumps(el, indent=2)+"\n")
-                else:
-                    fo.write(json.dumps(el) + "\n")
-    return data
-
-
-# In[21]:
-
-# process the file
-data = process_map(MountainViewosm, True)
+if __name__ == '__main__':
+    data = process_map(MountainViewosm, True)
 # for d in data:
 #     print d
 
 
-# #### Insert the JSON data into MongoDB Database ####
-
-# In[22]:
+# In[74]:
 
 client = MongoClient()
 db = client.MountainViewosm
@@ -467,15 +357,14 @@ collection.find({"type":"node"}).count()
 collection.find({"type":"way"}).count()
 
 
-# #### Top 10 methods used to create data entry ####
+# #### Top 5 methods used to create data entry ####
 
-# In[38]:
+# In[65]:
 
 
-pipeline = [{"$group":{"_id": "$created_by",
-                       "count": {"$sum": 1}}},
+pipeline = [{"$group":{"_id": "$created_by","count": {"$sum": 1}}},
                      {"$sort": {"count": -1}},
-                    {"$limit": 10}]
+                    {"$limit": 5}]
            
 result = collection.aggregate(pipeline)
 for r in result:
@@ -488,41 +377,34 @@ for r in result:
 
 # #### Top 5 users contributions ####
 
-# In[23]:
+# In[42]:
 
+import csv
 # top three users with most contributions
 pipeline = [{"$group":{"_id": "$created.user",
                        "count": {"$sum": 1}}},
             {"$sort": {"count": -1}},
-            {"$limit": 5}]
+            {"$limit": 5}
+            ]
 result = collection.aggregate(pipeline)
 for r in result:
     print r
 
 
-# ### Top 10 amenity
 
-# In[18]:
 
-pipeline = [{'$match': {'amenity': {'$exists': 1}}}, 
-                                {'$group': {'_id': '$amenity', 
-                                            'count': {'$sum': 1}}}, 
-                                {'$sort': {'count': -1}}, 
-                                {'$limit': 10}]
-result = collection.aggregate(pipeline)
-for r in result:
-    print r
 
+# ### Additional Data exploration
 
 # #### Most popular fast food resturant ####
 
-# In[24]:
+# In[45]:
 
 # Most popular cuisines
 pipeline = [{"$match":{"amenity":{"$exists":1}, "amenity":"restaurant", "cuisine":{"$exists":1}}}, 
             {"$group":{"_id":"$cuisine", "count":{"$sum":1}}},        
             {"$sort":{"count":-1}}, 
-            {"$limit":10}]
+            {"$limit":5}]
 result = collection.aggregate(pipeline)
 for r in result:
     print r
@@ -541,39 +423,40 @@ for r in result:
     print r
 
 
-# #### 10 Places for worship ####
+# ####  Places for worship ####
 
-# In[23]:
+# In[83]:
 
 pipeline = [{"$match":{"amenity":{"$exists":1}, "amenity": "place_of_worship", "name":{"$exists":1}}},
             {"$group":{"_id":"$name", "count":{"$sum":1}}},
             {"$sort":{"count":-1}},
-           {"$limit": 10}]
+           {"$limit": 5}]
 result = collection.aggregate(pipeline)
-for r in result:
-    print r
+# for r in result:
+#     print r
 
 
 # #### Gas stations ####
 
-# In[27]:
+# In[82]:
 
 pipeline = [{"$match":{"amenity":{"$exists":1}, "amenity": "fuel", "name":{"$exists":1}}},
             {"$group":{"_id":"$name", "count":{"$sum":1}}},
-            {"$sort":{"count":-1}}]
+            {"$sort":{"count":-1}},
+           {"$limit": 5}]
 result = collection.aggregate(pipeline)
-for r in result:
-    print r
+# for r in result:
+#     print r
 
 
-# #### 10 Most popular Fast food cuisines ####
+# #### Most popular Fast food cuisines ####
 
-# In[24]:
+# In[48]:
 
 pipeline = [{"$match":{"amenity":{"$exists":1}, "amenity": "fast_food", "name":{"$exists":1}}},
             {"$group":{"_id":"$name", "count":{"$sum":1}}},
             {"$sort":{"count":-1}},
-            {"$limit": 10}]
+            {"$limit": 5}]
 result = collection.aggregate(pipeline)
 for r in result:
     print r
@@ -593,86 +476,88 @@ for r in result:
 
 # #### Beauty Salon ####
 
-# In[30]:
+# In[81]:
 
 pipeline = [{"$match":{"amenity":{"$exists":1}, "amenity": "beauty", "name":{"$exists":1}}},
             {"$group":{"_id":"$name", "count":{"$sum":1}}},
             {"$sort":{"count":-1}}]
 result = collection.aggregate(pipeline)
-for r in result:
-    print r
+# for r in result:
+#     print r
 
 
 # #### Libraries ####
 
-# In[31]:
+# In[54]:
 
-pipeline = [{"$match":{"amenity":{"$exists":1}, "amenity": "public_bookcase", "name":{"$exists":1}}},
-            {"$group":{"_id":"$name", "count":{"$sum":1}}},
+pipeline = [{"$match":{"amenity":{"$exists":1}, "amenity": "library", "name":{"$exists":1}}},
+            {"$group":{"_id":"$name"}},
             {"$sort":{"count":-1}}]
 result = collection.aggregate(pipeline)
-for r in result:
-    print r
+# for r in result:
+#     print r
 
 
-# #### 10 most poular schools ####
+# ####  most poular schools ####
 
-# In[26]:
+# In[55]:
 
 pipeline = [{"$match":{"amenity":{"$exists":1}, "amenity": "school", "name":{"$exists":1}}},
             {"$group":{"_id":"$name", "count":{"$sum":1}}},
             {"$sort":{"count":-1}},
-           {"$limit": 10}]
+           {"$limit": 5}]
 result = collection.aggregate(pipeline)
 for r in result:
     print r
 
 
-# #### 10 Most popular Parkings ####
+# #### Most popular Parkings ####
 
-# In[27]:
+# In[80]:
 
 pipeline = [{"$match":{"amenity":{"$exists":1}, "amenity": "parking", "name":{"$exists":1}}},
             {"$group":{"_id":"$name", "count":{"$sum":1}}},
             {"$sort":{"count":-1}},
-           {"$limit": 10}]
+           {"$limit": 3}]
 result = collection.aggregate(pipeline)
-for r in result:
-    print r
+# for r in result:
+#     print r
 
 
-# ####  10 Most popular Car wash ####
+# ####  Popular Car wash ####
 
-# In[34]:
+# In[79]:
 
 pipeline = [{"$match":{"amenity":{"$exists":1}, "amenity": "car_wash", "name":{"$exists":1}}},
             {"$group":{"_id":"$name", "count":{"$sum":1}}},
-            {"$sort":{"count":-1}}]
+            {"$sort":{"count":-1}},
+            {"$sort":{"count":-1}},
+           {"$limit": 3}]
 result = collection.aggregate(pipeline)
-for r in result:
-    print r
+# for r in result:
+#     print r
 
 
 # #### Post office ####
 
-# In[35]:
+# In[78]:
 
 pipeline = [{"$match":{"amenity":{"$exists":1}, "amenity": "post_box", "name":{"$exists":1}}},
             {"$group":{"_id":"$name", "count":{"$sum":1}}},
             {"$sort":{"count":-1}}]
 result = collection.aggregate(pipeline)
-for r in result:
-    print r
+# for r in result:
+#     print r
 
 
-# #### 10 most populr Coffe shops ####
+# #### most populr Coffe shops ####
 
-# In[29]:
+# In[58]:
 
 pipeline = [{"$match":{"amenity":{"$exists":1}, "amenity": "cafe", "name":{"$exists":1}}},
             {"$group":{"_id":"$name", "count":{"$sum":1}}},
             {"$sort":{"count":-1}},
-           {"$limit": 10}]
+           {"$limit": 5}]
 result = collection.aggregate(pipeline)
 for r in result:
     print r
@@ -680,37 +565,25 @@ for r in result:
 
 # 
 # 
-# #### Top 10 unique contributor of data ####
+# #### Top 5 unique contributor of data ####
 
-# In[31]:
+# In[59]:
 
 pipeline =[{"$group":{"_id":"$created.user", "count":{"$sum":1}}},
             {"$sort":{"count":-1}},
-           {"$limit": 10}]
+           {"$limit": 5}]
 result = collection.aggregate(pipeline)
 for r in result:
     print r
 
 
-# #### Top 10 version of contribution of data ####
+# #### Top 5 timestamps when the data is  contributed  ####
 
-# In[39]:
-
-pipeline =[{"$group":{"_id":"$created.version", "count":{"$sum":1}}},
-            {"$sort":{"count":-1}},
-           {"$limit": 10}]
-result = collection.aggregate(pipeline)
-for r in result:
-    print r
-
-
-# #### Top 10 timestamps when the data is  contributed  ####
-
-# In[25]:
+# In[68]:
 
 pipeline =[{"$group":{"_id":"$created.timestamp", "count":{"$sum":1}}},
             {"$sort":{"count":-1}},
-           {"$limit": 10}]
+           {"$limit": 5}]
 result = collection.aggregate(pipeline)
 for r in result:
     print r
@@ -718,11 +591,11 @@ for r in result:
 
 # #### Highway ways in mountain view  ####
 
-# In[24]:
+# In[67]:
 
 pipeline =[{"$group":{"_id":"$highway", "count":{"$sum":1}}},
             {"$sort":{"count":-1}},
-           {"$limit": 10}
+           {"$limit":5}
            ]
 result = collection.aggregate(pipeline)
 for r in result:
@@ -731,29 +604,46 @@ for r in result:
 
 # #### Types and number of ways in mountain view  ####
 
-# In[26]:
+# In[66]:
 
 pipeline =[{"$group":{"_id":"$exit_to", "count":{"$sum":1}}},
             {"$sort":{"count":-1}},
-           {"$limit": 10}
+           {"$limit": 5}
            ]
 result = collection.aggregate(pipeline)
 for r in result:
     print r
 
 
+# #### Most common building types
+
+# In[77]:
+
+pipeline =  [{'$match': {'building': {'$exists': 1}}}, 
+    {'$group': { '_id': '$building','count': {'$sum': 1}}},
+    {'$sort': {'count': -1}}, {'$limit': 5}
+]
+result = collection.aggregate(pipeline)
+for r in result:
+    print r
+
+
 # ### Other Ideas about data set 
-# Since the data consist of inconsistent phone numbers like "650-322-2554", "+16508570333" etc. During the collection of the data from user, it should follow the rule format of phone number of given country or area which is generraly in ITU E.123 standard:
-# * "+"
-# * the national code (1 for the USA)
-# * space
-# * the area/regional code
-# * space
-# * the local exchange
-# * space
-# * the local number
+# 1. Since the data consist of inconsistent phone numbers like "650-322-2554", "+16508570333" etc. During the collection of the data from user, it should follow the rule format of phone number of given country or area which is generraly in ITU E.123 standard:
+#   - "+"
+#   - 1.2 the national code (1 for the USA)
+#   - space
+#   - the area/regional code
+#   - space
+#   - the local exchange
+#   - space
+#   - the local number<br />
 # 
-# There are some fields of node is missing like County, the data collection should follow the structured format. But it trivial because Nosql database can pretty much handle the non structured data.
+# 2. There are some fields of node is missing like County, the data collection should follow the structured format. But it trivial because Nosql database can pretty much handle the non structured data.<br />
+# 
+# 3. To ensure the data collections lead to rich infomation about the nodes, the interface of website may follow some protocols while entering data using some altert like user can only enter data within this range depends on the region for which data is being entered.<br />
+# 
+# 4. To encourange contribution in data collection there might be some kind of gamification for the people.
 
 # ### Conclusion
 # After reviewing the data of mountain view, much of the information has been extracted about the city. The data has been well cleaned for the purpose of enough information extraction. Thinking about the compnies and startups established in Mountain view, i couldn't find any information regarding that. If the data is stored as in the name of comapnies and startups buildings, it would be really helpful to gain insight of number of the comapanies establishd in given city.

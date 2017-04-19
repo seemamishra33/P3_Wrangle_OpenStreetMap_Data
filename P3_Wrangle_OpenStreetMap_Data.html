@@ -11759,10 +11759,13 @@ div#notebook {
 <h3 id="Database">Database<a class="anchor-link" href="#Database">&#182;</a></h3><ul>
 <li>MongoDB</li>
 </ul>
-<h3 id="Issues-in-Mountiav-View-OSM-data">Issues in Mountiav View OSM data<a class="anchor-link" href="#Issues-in-Mountiav-View-OSM-data">&#182;</a></h3><ul>
-<li>There are some inconsistencies in the names of streets, some are incorrect and abbreviated.</li>
+<h3 id="Problem-encoutered--in-Mountain-View-OSM-map">Problem encoutered  in Mountain View OSM map<a class="anchor-link" href="#Problem-encoutered--in-Mountain-View-OSM-map">&#182;</a></h3><ul>
+<li>There are some inconsistencies in the names of streets, some are incorrect and overabbreviated("S California Ave", "Wolfe Rd").</li>
 <li>Few inconsistent zip codes.</li>
-<li>There ae inconsistency in phone numbers stored by users.</li>
+<li><p>There ae inconsistency in phone numbers stored by users("650-322-2554", "+16508570333","(650) 327-1688").</p>
+</li>
+<li><p>This been noticed the OSM data extracted from mapzen extracts tool cotains data about others cities besides the chosen one. So other cities data is also exhibited durig queries.</p>
+</li>
 </ul>
 <h3 id="Overview-of-Mountain-View-OSM-data">Overview of Mountain View OSM data<a class="anchor-link" href="#Overview-of-Mountain-View-OSM-data">&#182;</a></h3><p>The dataset description is given as</p>
 <h4 id="Size-of-data-file">Size of data file<a class="anchor-link" href="#Size-of-data-file">&#182;</a></h4><ul>
@@ -11783,7 +11786,7 @@ div#notebook {
 <li><p><a href="https://english.stackexchange.com/questions/29009/standard-format-for-phone-numbers">https://english.stackexchange.com/questions/29009/standard-format-for-phone-numbers</a></p>
 </li>
 </ol>
-<h3 id="Code-and-Results">Code and Results<a class="anchor-link" href="#Code-and-Results">&#182;</a></h3><p>There several queries generated for look deeep insight of data which is follwed by conclusion .</p>
+<h3 id="Code-and-Results">Code and Results<a class="anchor-link" href="#Code-and-Results">&#182;</a></h3><p>There are several queries generated for looking deep insight of data which is follwed by conclusion .</p>
 <p><b>Import Libraries</b></p>
 
 </div>
@@ -11791,7 +11794,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[2]:</div>
+<div class="prompt input_prompt">In&nbsp;[102]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="c1"># load libraries</span>
@@ -11804,6 +11807,9 @@ div#notebook {
 <span class="kn">import</span> <span class="nn">json</span>
 <span class="kn">import</span> <span class="nn">string</span>
 <span class="kn">from</span> <span class="nn">pymongo</span> <span class="kn">import</span> <span class="n">MongoClient</span>
+<span class="kn">from</span> <span class="nn">cleaning</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">audit</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">process_map</span> <span class="kn">import</span> <span class="o">*</span>
 </pre></div>
 
 </div>
@@ -11813,7 +11819,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[3]:</div>
+<div class="prompt input_prompt">In&nbsp;[103]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="c1"># set up map file path</span>
@@ -11842,7 +11848,7 @@ div#notebook {
 <div class="output">
 
 
-<div class="output_area"><div class="prompt output_prompt">Out[3]:</div>
+<div class="output_area"><div class="prompt output_prompt">Out[103]:</div>
 
 
 <div class="output_text output_subarea output_execute_result">
@@ -11866,25 +11872,10 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[4]:</div>
+<div class="prompt input_prompt">In&nbsp;[104]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython2"><pre><span></span><span class="c1"># Iterative parsing</span>
-<span class="k">def</span> <span class="nf">count_tags</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
-    
-    <span class="c1"># make empty defaultdict</span>
-<span class="c1">#     from collections import defaultdict</span>
-    <span class="n">tags_dict</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
-    
-    <span class="c1"># use the iterparse method to find all the tags</span>
-    <span class="k">for</span> <span class="n">event</span><span class="p">,</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">cET</span><span class="o">.</span><span class="n">iterparse</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">events</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;start&quot;</span><span class="p">,</span> <span class="s2">&quot;end&quot;</span><span class="p">)):</span>
-<span class="c1">#         print event</span>
-        <span class="n">tags_dict</span><span class="p">[</span><span class="n">element</span><span class="o">.</span><span class="n">tag</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
-        
-    <span class="c1"># return your results </span>
-    <span class="k">return</span> <span class="n">tags_dict</span>
-
-<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+<div class=" highlight hl-ipython2"><pre><span></span><span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
     <span class="k">print</span> <span class="n">count_tags</span><span class="p">(</span><span class="n">MountainViewosm</span><span class="p">)</span>
 </pre></div>
 
@@ -11918,56 +11909,14 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[5]:</div>
+<div class="prompt input_prompt">In&nbsp;[105]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython2"><pre><span></span><span class="c1"># Tag types</span>
-<span class="k">def</span> <span class="nf">key_type</span><span class="p">(</span><span class="n">element</span><span class="p">,</span> <span class="n">keys</span><span class="p">):</span>
-    <span class="k">if</span> <span class="n">element</span><span class="o">.</span><span class="n">tag</span> <span class="o">==</span> <span class="s2">&quot;tag&quot;</span><span class="p">:</span>
-    
-        <span class="n">k</span> <span class="o">=</span> <span class="n">element</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s1">&#39;k&#39;</span><span class="p">]</span>
-<span class="c1">#         print k</span>
-        <span class="c1"># serach k to see if it matches each regular expression</span>
-        <span class="k">if</span> <span class="n">lower</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">k</span><span class="p">):</span>
-            <span class="n">keys</span><span class="p">[</span><span class="s1">&#39;lower&#39;</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
-        <span class="k">elif</span> <span class="n">lower_colon</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">k</span><span class="p">):</span>
-            <span class="n">keys</span><span class="p">[</span><span class="s1">&#39;lower_colon&#39;</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
-        <span class="k">elif</span> <span class="n">problemchars</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">k</span><span class="p">):</span>
-            <span class="n">keys</span><span class="p">[</span><span class="s1">&#39;problemchars&#39;</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">keys</span><span class="p">[</span><span class="s1">&#39;other&#39;</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
-           
-    <span class="k">return</span> <span class="n">keys</span>
-
-
-
-<span class="k">def</span> <span class="nf">process_map</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
-    <span class="n">keys</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;lower&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;lower_colon&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;problemchars&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">&quot;other&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">}</span>
-    <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">cET</span><span class="o">.</span><span class="n">iterparse</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
-        <span class="n">keys</span> <span class="o">=</span> <span class="n">key_type</span><span class="p">(</span><span class="n">element</span><span class="p">,</span> <span class="n">keys</span><span class="p">)</span>
-
-    <span class="k">return</span> <span class="n">keys</span>
-
-
-<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+<div class=" highlight hl-ipython2"><pre><span></span><span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
     <span class="k">print</span> <span class="n">process_map</span><span class="p">(</span><span class="n">MountainViewosm</span><span class="p">)</span>
 </pre></div>
 
 </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area"><div class="prompt"></div>
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>{&#39;problemchars&#39;: 25, &#39;lower&#39;: 226487, &#39;other&#39;: 4962, &#39;lower_colon&#39;: 186321}
-</pre>
-</div>
-</div>
-
 </div>
 </div>
 
@@ -11983,316 +11932,16 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[6]:</div>
+<div class="prompt input_prompt">In&nbsp;[72]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython2"><pre><span></span><span class="k">def</span> <span class="nf">audit_street_type</span><span class="p">(</span><span class="n">street_types</span><span class="p">,</span> <span class="n">street_name</span><span class="p">):</span>
-    <span class="c1"># add unexpected street name to a list</span>
-    <span class="n">m</span> <span class="o">=</span> <span class="n">street_type_re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">street_name</span><span class="p">)</span>
-<span class="c1">#     print m</span>
-    <span class="k">if</span> <span class="n">m</span><span class="p">:</span>
-        <span class="n">street_type</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">()</span>
-<span class="c1">#         street_type</span>
-        <span class="k">if</span> <span class="n">street_type</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">expected</span><span class="p">:</span>
-            <span class="n">street_types</span><span class="p">[</span><span class="n">street_type</span><span class="p">]</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">street_name</span><span class="p">)</span>
-            
-<span class="k">def</span> <span class="nf">is_street_name</span><span class="p">(</span><span class="n">elem</span><span class="p">):</span>
-    <span class="c1"># determine whether a element is a street name</span>
-    <span class="k">return</span> <span class="p">(</span><span class="n">elem</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s1">&#39;k&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;addr:street&quot;</span><span class="p">)</span>
-
-<span class="k">def</span> <span class="nf">audit_street</span><span class="p">(</span><span class="n">osmfile</span><span class="p">):</span>
-    <span class="c1"># iter through all street name tag under node or way and audit the street name value</span>
-    <span class="n">osm_file</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">osmfile</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span>
-    <span class="n">street_types</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="nb">set</span><span class="p">)</span>
-    <span class="k">for</span> <span class="n">event</span><span class="p">,</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">cET</span><span class="o">.</span><span class="n">iterparse</span><span class="p">(</span><span class="n">osm_file</span><span class="p">,</span> <span class="n">events</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;start&quot;</span><span class="p">,</span><span class="s2">&quot;end&quot;</span><span class="p">)):</span>
-        <span class="k">if</span> <span class="n">elem</span><span class="o">.</span><span class="n">tag</span> <span class="o">==</span> <span class="s2">&quot;node&quot;</span> <span class="ow">or</span> <span class="n">elem</span><span class="o">.</span><span class="n">tag</span> <span class="o">==</span> <span class="s2">&quot;way&quot;</span><span class="p">:</span>
-            <span class="k">for</span> <span class="n">tag</span> <span class="ow">in</span> <span class="n">elem</span><span class="o">.</span><span class="n">iter</span><span class="p">(</span><span class="s2">&quot;tag&quot;</span><span class="p">):</span>
-                <span class="k">if</span> <span class="n">is_street_name</span><span class="p">(</span><span class="n">tag</span><span class="p">):</span>
-                    <span class="n">audit_street_type</span><span class="p">(</span><span class="n">street_types</span><span class="p">,</span> <span class="n">tag</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s1">&#39;v&#39;</span><span class="p">])</span>
-    <span class="k">return</span> <span class="n">street_types</span>
-<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+<div class=" highlight hl-ipython2"><pre><span></span><span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
     <span class="n">st_types</span> <span class="o">=</span> <span class="n">audit_street</span><span class="p">(</span><span class="n">MountainViewosm</span><span class="p">)</span>
     <span class="c1"># print out unexpected street names</span>
-    <span class="n">pprint</span><span class="o">.</span><span class="n">pprint</span><span class="p">(</span><span class="nb">dict</span><span class="p">(</span><span class="n">st_types</span><span class="p">))</span>
+<span class="c1">#     pprint.pprint(dict(st_types))</span>
 </pre></div>
 
 </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area"><div class="prompt"></div>
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>{&#39;114&#39;: set([&#39;West Evelyn Avenue Suite #114&#39;]),
- &#39;140&#39;: set([&#39;Hamilton Ave #140&#39;]),
- &#39;2&#39;: set([&#39;Showers Drive STE 2&#39;]),
- &#39;7&#39;: set([&#39;Showers Drive STE 7&#39;]),
- &#39;9&#39;: set([&#39;East Charleston Road APT 9&#39;]),
- &#39;AA&#39;: set([&#39;Showers Drive BLDG AA&#39;]),
- &#39;Alley&#39;: set([&#39;Jackson Alley&#39;]),
- &#39;Ave&#39;: set([&#39;California Ave&#39;,
-             &#39;E Duane Ave&#39;,
-             &#39;El Monte Ave&#39;,
-             &#39;Hollenbeck Ave&#39;,
-             &#39;Portage Ave&#39;,
-             &#39;S California Ave&#39;,
-             &#39;University Ave&#39;,
-             &#39;W Maude Ave&#39;,
-             &#39;W Washington Ave&#39;]),
- &#39;Ave.&#39;: set([&#39;Menalto Ave.&#39;]),
- &#39;B&#39;: set([&#39;Leghorn Street #B&#39;]),
- &#39;Bruno&#39;: set([&#39;Serra San Bruno&#39;]),
- &#39;C&#39;: set([&#39;Plymouth Street #C&#39;]),
- &#39;Calle&#39;: set([&#39;La Calle&#39;]),
- &#39;Central&#39;: set([&#39;Plaza Central&#39;]),
- &#39;Circle&#39;: set([&#39;Bobolink Circle&#39;,
-                &#39;Carlson Circle&#39;,
-                &#39;Comstock Circle&#39;,
-                &#39;Continental Circle&#39;,
-                &#39;Distel Circle&#39;,
-                &#39;Duluth Circle&#39;,
-                &#39;East Meadow Circle&#39;,
-                &#39;Los Palos Circle&#39;,
-                &#39;Marcelli Circle&#39;,
-                &#39;Metro Circle&#39;,
-                &#39;Moffett Circle&#39;,
-                &#39;Redwood Circle&#39;,
-                &#39;Rincon Circle&#39;,
-                &#39;Roosevelt Circle&#39;,
-                &#39;San Antonio Circle&#39;,
-                &#39;San Marcos Circle&#39;,
-                &#39;Starr King Circle&#39;,
-                &#39;Van Auken Circle&#39;,
-                &#39;Van Buren Circle&#39;]),
- &#39;Corners&#39;: set([&#39;Midrock Corners&#39;]),
- &#39;Corte&#39;: set([&#39;Bella Corte&#39;]),
- &#39;Ct.&#39;: set([&#39;Stierlin Ct.&#39;]),
- &#39;East&#39;: set([&#39;Vanderbilt Court East&#39;]),
- &#39;Evelyn&#39;: set([&#39;West Evelyn&#39;]),
- &#39;Expressway&#39;: set([&#39;Foothill Expressway&#39;, &#39;Oregon Expressway&#39;]),
- &#39;Green&#39;: set([&#39;Miranda Green&#39;]),
- &#39;Maclane&#39;: set([&#39;Maclane&#39;]),
- &#39;North&#39;: set([&#39;Magnolia Drive North&#39;]),
- &#39;Oaks&#39;: set([&#39;North Fair Oaks&#39;, &#39;Waverley Oaks&#39;]),
- &#39;Paviso&#39;: set([&#39;Via Paviso&#39;]),
- &#39;Rd&#39;: set([&#39;E Middlefield Rd&#39;, &#39;Embarcadero Rd&#39;, &#39;Homestead Rd&#39;, &#39;Wolfe Rd&#39;]),
- &#39;Real&#39;: set([&#39;E El Camino Real&#39;,
-              &#39;Easst El Camino Real&#39;,
-              &#39;East El Camino Real&#39;,
-              &#39;El Camino Real&#39;,
-              &#39;Villa Real&#39;,
-              &#39;W El Camino Real&#39;,
-              &#39;W. El Camino Real&#39;,
-              &#39;West El Camino Real&#39;]),
- &#39;Ridge&#39;: set([&#39;Roble Ridge&#39;]),
- &#39;Siding&#39;: set([&#39;Bonair Siding&#39;]),
- &#39;Sorrento&#39;: set([&#39;Via Sorrento&#39;]),
- &#39;South&#39;: set([&#39;Magnolia Drive South&#39;]),
- &#39;St&#39;: set([&#39;W Dana St&#39;]),
- &#39;Terrace&#39;: set([&#39;Amherst Terrace&#39;,
-                 &#39;Anaheim Terrace&#39;,
-                 &#39;Avon Terrace&#39;,
-                 &#39;Avoset Terrace&#39;,
-                 &#39;Belmont Terrace&#39;,
-                 &#39;Brea Terrace&#39;,
-                 &#39;Bridgeport Terrace&#39;,
-                 &#39;Bristol Terrace&#39;,
-                 &#39;Cedarbrook Terrace&#39;,
-                 &#39;Chabot Terrace&#39;,
-                 &#39;Costa Mesa Terrace&#39;,
-                 &#39;Crown Point Terrace&#39;,
-                 &#39;Devona Terrace&#39;,
-                 &#39;Fontana Terrace&#39;,
-                 &#39;Hogarth Terrace&#39;,
-                 &#39;Holthouse Terrace&#39;,
-                 &#39;Isla Vista Terrace&#39;,
-                 &#39;Karby Terrace&#39;,
-                 &#39;Kearny Terrace&#39;,
-                 &#39;Lautrec Terrace&#39;,
-                 &#39;Lessing Terrace&#39;,
-                 &#39;Leuven Terrace&#39;,
-                 &#39;Liege Terrace&#39;,
-                 &#39;Manet Terrace&#39;,
-                 &#39;Markham Terrace&#39;,
-                 &#39;Miller Terrace&#39;,
-                 &#39;Oak Point Terrace&#39;,
-                 &#39;Panache Terrace&#39;,
-                 &#39;Pasito Terrace&#39;,
-                 &#39;Pennyroyal Terrace&#39;,
-                 &#39;Pescadero Terrace&#39;,
-                 &#39;Pine Pass Terrace&#39;,
-                 &#39;Pinnacles Terrace&#39;,
-                 &#39;Pismo Terrace&#39;,
-                 &#39;Pistachio Terrace&#39;,
-                 &#39;Pumpkin Terrace&#39;,
-                 &#39;Pyracantha Terrace&#39;,
-                 &#39;Raines Terrace&#39;,
-                 &#39;Redondo Terrace&#39;,
-                 &#39;Reston Terrace&#39;,
-                 &#39;Riorden Terrace&#39;,
-                 &#39;Santa Rosalia Terrace&#39;,
-                 &#39;Satsuma Terrace&#39;,
-                 &#39;Seneca Terrace&#39;,
-                 &#39;Spencer Terrace&#39;,
-                 &#39;Springer Terrace&#39;,
-                 &#39;Springfield Terrace&#39;,
-                 &#39;Vernon Terrace&#39;,
-                 &#39;Wilmington Terrace&#39;,
-                 &#39;Windsor Terrace&#39;,
-                 &#39;Wright Terrace&#39;,
-                 &#39;Yellowstone Terrace&#39;]),
- &#39;Vera&#39;: set([&#39;Villa Vera&#39;]),
- &#39;Village&#39;: set([&#39;Town and Country Village&#39;]),
- &#39;Vista&#39;: set([&#39;Villa Vista&#39;]),
- &#39;Volante&#39;: set([&#39;Via Volante&#39;]),
- &#39;Walk&#39;: set([&#39;Altaire Walk&#39;]),
- &#39;Way&#39;: set([&#39;Acacia Way&#39;,
-             &#39;Agnes Way&#39;,
-             &#39;All America Way&#39;,
-             &#39;Alley Way&#39;,
-             &#39;Allison Way&#39;,
-             &#39;Altair Way&#39;,
-             &#39;Anaconda Way&#39;,
-             &#39;Aries Way&#39;,
-             &#39;Arrowhead Way&#39;,
-             &#39;Asbury Way&#39;,
-             &#39;Aspen Way&#39;,
-             &#39;Avellino Way&#39;,
-             &#39;Aztec Way&#39;,
-             &#39;Barnsley Way&#39;,
-             &#39;Belfry Way&#39;,
-             &#39;Belleville Way&#39;,
-             &#39;Bellingham Way&#39;,
-             &#39;Berwick Way&#39;,
-             &#39;Black Oak Way&#39;,
-             &#39;Blanchard Way&#39;,
-             &#39;Bond Way&#39;,
-             &#39;Bonneville Way&#39;,
-             &#39;Brahms Way&#39;,
-             &#39;Briarwood Way&#39;,
-             &#39;Burnham Way&#39;,
-             &#39;Cardinal Way&#39;,
-             &#39;Carlisle Way&#39;,
-             &#39;Cass Way&#39;,
-             &#39;Cerrito Way&#39;,
-             &#39;Cheshire Way&#39;,
-             &#34;Coeur D&#39;Alene Way&#34;,
-             &#39;Colinton Way&#39;,
-             &#39;Connemara Way&#39;,
-             &#39;Corina Way&#39;,
-             &#39;Cork Oak Way&#39;,
-             &#39;Corporation Way&#39;,
-             &#39;Creek Way&#39;,
-             &#39;Dartshire Way&#39;,
-             &#39;Davenport Way&#39;,
-             &#39;Devonshire Way&#39;,
-             &#39;Dorset Way&#39;,
-             &#39;Dublin Way&#39;,
-             &#39;Duncardine Way&#39;,
-             &#39;Dunford Way&#39;,
-             &#39;Dunholme Way&#39;,
-             &#39;Dunnock Way&#39;,
-             &#39;Durshire Way&#39;,
-             &#39;Duval Way&#39;,
-             &#39;Edmonds Way&#39;,
-             &#39;El Cajon Way&#39;,
-             &#39;El Camino Way&#39;,
-             &#39;Elbridge Way&#39;,
-             &#39;Embarcadero Way&#39;,
-             &#39;Enderby Way&#39;,
-             &#39;Ensign Way&#39;,
-             &#39;Enterprise Way&#39;,
-             &#39;Fabian Way&#39;,
-             &#39;Fay Way&#39;,
-             &#39;Federation Way&#39;,
-             &#39;Fife Way&#39;,
-             &#39;Firebird Way&#39;,
-             &#39;Flamingo Way&#39;,
-             &#39;Flicker Way&#39;,
-             &#39;Flin Way&#39;,
-             &#39;Fordham Way&#39;,
-             &#39;Forge Way&#39;,
-             &#39;Gantry Way&#39;,
-             &#39;Golden Way&#39;,
-             &#39;Greenmeadow Way&#39;,
-             &#39;Hansen Way&#39;,
-             &#39;Harney Way&#39;,
-             &#39;Heatherstone Way&#39;,
-             &#39;Heron Way&#39;,
-             &#39;Hudson Way&#39;,
-             &#39;Humewick Way&#39;,
-             &#39;Ilima Way&#39;,
-             &#39;Innovation Way&#39;,
-             &#39;Interdale Way&#39;,
-             &#39;Iris Way&#39;,
-             &#39;Janice Way&#39;,
-             &#39;Kelly Way&#39;,
-             &#39;Kingfisher Way&#39;,
-             &#39;La Jennifer Way&#39;,
-             &#39;La Mata Way&#39;,
-             &#39;Laguna Way&#39;,
-             &#39;Lennox Way&#39;,
-             &#39;Locksunart Way&#39;,
-             &#39;Lynn Way&#39;,
-             &#39;Mackall Way&#39;,
-             &#39;Madera Way&#39;,
-             &#39;Madison Way&#39;,
-             &#39;Mallard Way&#39;,
-             &#39;Manuela Way&#39;,
-             &#39;Mardell Way&#39;,
-             &#39;Marine Way&#39;,
-             &#39;Maybell Way&#39;,
-             &#39;McGregor Way&#39;,
-             &#39;Miette Way&#39;,
-             &#39;Military Way&#39;,
-             &#39;Murray Way&#39;,
-             &#39;Nandina Way&#39;,
-             &#39;Nathan Way&#39;,
-             &#39;Nelson Way&#39;,
-             &#39;Old Middlefield Way&#39;,
-             &#39;Ormonde Way&#39;,
-             &#39;Paradise Way&#39;,
-             &#39;Parma Way&#39;,
-             &#39;Pioneer Way&#39;,
-             &#39;Primrose Way&#39;,
-             &#39;Prince Edward Way&#39;,
-             &#39;Pyrus Way&#39;,
-             &#39;Radcliff Way&#39;,
-             &#39;Reflection Way&#39;,
-             &#39;Revelstoke Way&#39;,
-             &#34;Rickey&#39;s Way&#34;,
-             &#39;Rorke Way&#39;,
-             &#39;Saffron Way&#39;,
-             &#39;Saint Julien Way&#39;,
-             &#39;San Clemente Way&#39;,
-             &#39;San Luisito Way&#39;,
-             &#39;San Pierre Way&#39;,
-             &#39;Scarff Way&#39;,
-             &#39;Seminole Way&#39;,
-             &#39;Shorebird Way&#39;,
-             &#39;Spencer Way&#39;,
-             &#39;Stanley Way&#39;,
-             &#39;Susan Way&#39;,
-             &#39;Tangerine Way&#39;,
-             &#39;Tartarian Way&#39;,
-             &#39;Thain Way&#39;,
-             &#39;Towle Way&#39;,
-             &#39;Warren Way&#39;,
-             &#39;Wellsbury Way&#39;,
-             &#39;Whitclem Way&#39;,
-             &#39;Wild Rose Way&#39;,
-             &#39;Wilkie Way&#39;,
-             &#39;Wintergreen Way&#39;,
-             &#39;Ynigo Way&#39;,
-             &#39;Zinfandel Way&#39;]),
- &#39;West&#39;: set([&#39;Vanderbilt Court West&#39;])}
-</pre>
-</div>
-</div>
-
 </div>
 </div>
 
@@ -12308,12 +11957,12 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[7]:</div>
+<div class="prompt input_prompt">In&nbsp;[99]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="c1"># Street name updatation</span>
 <span class="c1"># creating a dictionary for correcting street names</span>
-<span class="n">mapping</span> <span class="o">=</span> <span class="p">{</span> <span class="s2">&quot;AA&quot;</span> <span class="p">:</span><span class="s2">&quot;Aberdeen Athletic Center&quot;</span><span class="p">,</span>
+<span class="n">mapping_street</span> <span class="o">=</span> <span class="p">{</span> <span class="s2">&quot;AA&quot;</span> <span class="p">:</span><span class="s2">&quot;Aberdeen Athletic Center&quot;</span><span class="p">,</span>
             <span class="s2">&quot;Ct&quot;</span><span class="p">:</span> <span class="s2">&quot;Court&quot;</span><span class="p">,</span>
             <span class="s2">&quot;Ct.&quot;</span><span class="p">:</span> <span class="s2">&quot;Court&quot;</span><span class="p">,</span>
             <span class="s2">&quot;St.&quot;</span><span class="p">:</span> <span class="s2">&quot;Street&quot;</span><span class="p">,</span>
@@ -12345,453 +11994,15 @@ div#notebook {
            <span class="s2">&quot;West Dana St&quot;</span><span class="p">:</span> <span class="s2">&quot;West Dana Street&quot;</span>
            <span class="p">}</span>
            
-                     
-<span class="c1"># function that corrects incorrect street names</span>
-<span class="k">def</span> <span class="nf">update_name</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">mapping</span><span class="p">):</span>    
-    <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">mapping</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">name</span><span class="p">:</span>
-            <span class="n">name</span> <span class="o">=</span> <span class="n">string</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">name</span><span class="p">,</span><span class="n">key</span><span class="p">,</span><span class="n">mapping</span><span class="p">[</span><span class="n">key</span><span class="p">])</span>
-    <span class="k">return</span> <span class="n">name</span>
+                
 <span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
     <span class="k">for</span> <span class="n">st_type</span><span class="p">,</span> <span class="n">ways</span> <span class="ow">in</span> <span class="n">st_types</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
         <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">ways</span><span class="p">:</span>
-            <span class="n">better_name</span> <span class="o">=</span> <span class="n">update_name</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">mapping</span><span class="p">)</span>
-            <span class="k">print</span> <span class="n">name</span><span class="p">,</span> <span class="s2">&quot;=&gt;&quot;</span><span class="p">,</span> <span class="n">better_name</span>
+            <span class="n">better_name</span> <span class="o">=</span> <span class="n">update_name</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">mapping_street</span><span class="p">)</span>
+<span class="c1">#             print name, &quot;=&gt;&quot;, better_name</span>
 </pre></div>
 
 </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area"><div class="prompt"></div>
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>Villa Vista =&gt; Villa Vista
-Roble Ridge =&gt; Roble Ridge
-Vanderbilt Court West =&gt; Vanderbilt Court West
-Wolfe Rd =&gt; Wolfe Road
-Homestead Rd =&gt; Homestead Road
-E Middlefield Rd =&gt; E Middlefield Road
-Embarcadero Rd =&gt; Embarcadero Road
-West Evelyn Avenue Suite #114 =&gt; West Evelyn Avenuenue Suite
-Serra San Bruno =&gt; Serra San Bruno
-Devonshire Way =&gt; Devonshire Way
-Aspen Way =&gt; Aspen Way
-Flicker Way =&gt; Flicker Way
-Asbury Way =&gt; Asbury Way
-Davenport Way =&gt; DAvenuenuenport Way
-Madera Way =&gt; Madera Way
-Wintergreen Way =&gt; Wintergreen Way
-La Jennifer Way =&gt; La Jennifer Way
-Hansen Way =&gt; Hansen Way
-Murray Way =&gt; Murray Way
-Elbridge Way =&gt; Elbridge Way
-Enderby Way =&gt; Enderby Way
-Acacia Way =&gt; Acacia Way
-Alley Way =&gt; Alley Way
-Brahms Way =&gt; Brahms Way
-Primrose Way =&gt; Primrose Way
-Bond Way =&gt; Bond Way
-Hudson Way =&gt; Hudson Way
-Dunnock Way =&gt; Dunnock Way
-Golden Way =&gt; Golden Way
-Forge Way =&gt; Forge Way
-Anaconda Way =&gt; Anaconda Way
-Prince Edward Way =&gt; Prince Edward Way
-Old Middlefield Way =&gt; Old Middlefield Way
-Allison Way =&gt; Allison Way
-Cerrito Way =&gt; Cerrito Way
-Laguna Way =&gt; Laguna Way
-Duncardine Way =&gt; Duncardine Way
-Lennox Way =&gt; Lennox Way
-Kelly Way =&gt; Kelly Way
-Firebird Way =&gt; Firebird Way
-Ormonde Way =&gt; Ormonde Way
-McGregor Way =&gt; McGregor Way
-Mackall Way =&gt; Mackall Way
-Stanley Way =&gt; Stanley Way
-Fabian Way =&gt; Fabian Way
-Enterprise Way =&gt; Enterprise Way
-Edmonds Way =&gt; Edmonds Way
-Aries Way =&gt; Aries Way
-Corina Way =&gt; Corina Way
-Cheshire Way =&gt; Cheshire Way
-Janice Way =&gt; Janice Way
-Berwick Way =&gt; Berwick Way
-Harney Way =&gt; Harney Way
-Iris Way =&gt; Iris Way
-Fordham Way =&gt; Fordham Way
-Saffron Way =&gt; Saffron Way
-Wilkie Way =&gt; Wilkie Way
-Fay Way =&gt; Fay Way
-Briarwood Way =&gt; Briarwood Way
-Nathan Way =&gt; Nathan Way
-Dunford Way =&gt; Dunford Way
-Ensign Way =&gt; Ensign Way
-Connemara Way =&gt; Connemara Way
-Reflection Way =&gt; Reflection Way
-Flin Way =&gt; Flin Way
-Mardell Way =&gt; Mardell Way
-Innovation Way =&gt; Innovation Way
-Interdale Way =&gt; Interdale Way
-Mallard Way =&gt; Mallard Way
-Marine Way =&gt; Marine Way
-Ilima Way =&gt; Ilima Way
-Black Oak Way =&gt; Black Oak Way
-Belfry Way =&gt; Belfry Way
-Warren Way =&gt; Warren Way
-Gantry Way =&gt; Gantry Way
-Barnsley Way =&gt; Barnsley Way
-Heatherstone Way =&gt; Heatherstone Way
-Scarff Way =&gt; Scarff Way
-Manuela Way =&gt; Manuela Way
-Blanchard Way =&gt; Blanchard Way
-Corporation Way =&gt; Corporation Way
-Madison Way =&gt; Madison Way
-Flamingo Way =&gt; Flamingo Way
-Locksunart Way =&gt; Locksunart Way
-Ynigo Way =&gt; Ynigo Way
-Dorset Way =&gt; Dorset Way
-Lynn Way =&gt; Lynn Way
-Arrowhead Way =&gt; Arrowhead Way
-Durshire Way =&gt; Durshire Way
-Carlisle Way =&gt; Carlisle Way
-Spencer Way =&gt; Spencer Way
-Agnes Way =&gt; Agnes Way
-Rickey&#39;s Way =&gt; Rickey&#39;s Way
-Pyrus Way =&gt; Pyrus Way
-La Mata Way =&gt; La Mata Way
-Embarcadero Way =&gt; Embarcadero Way
-Rorke Way =&gt; Rorke Way
-Shorebird Way =&gt; Shorebird Way
-San Pierre Way =&gt; San Pierre Way
-Bellingham Way =&gt; Bellingham Way
-Humewick Way =&gt; Humewick Way
-Wild Rose Way =&gt; Wild Rose Way
-Miette Way =&gt; Miette Way
-Saint Julien Way =&gt; Saint Julien Way
-Dartshire Way =&gt; Dartshire Way
-El Camino Way =&gt; El Camino Way
-Coeur D&#39;Alene Way =&gt; Coeur D&#39;Alene Way
-Dublin Way =&gt; Dublin Way
-Seminole Way =&gt; Seminole Way
-Federation Way =&gt; Federation Way
-Tartarian Way =&gt; Tartarian Way
-Parma Way =&gt; Parma Way
-Towle Way =&gt; Towle Way
-Whitclem Way =&gt; Whitclem Way
-Burnham Way =&gt; Burnham Way
-Creek Way =&gt; Creek Way
-Fife Way =&gt; Fife Way
-Heron Way =&gt; Heron Way
-Wellsbury Way =&gt; Wellsbury Way
-Pioneer Way =&gt; Pioneer Way
-Aztec Way =&gt; Aztec Way
-Altair Way =&gt; Altair Way
-Maybell Way =&gt; Maybell Way
-Duval Way =&gt; Duval Way
-Paradise Way =&gt; Paradise Way
-Colinton Way =&gt; Colinton Way
-Radcliff Way =&gt; Radcliff Way
-San Clemente Way =&gt; San Clemente Way
-Dunholme Way =&gt; Dunholme Way
-Bonneville Way =&gt; Bonneville Way
-Nandina Way =&gt; Nandina Way
-Greenmeadow Way =&gt; Greenmeadow Way
-Thain Way =&gt; Thain Way
-Revelstoke Way =&gt; Revelstoke Way
-San Luisito Way =&gt; San Luisito Way
-All America Way =&gt; All America Way
-Tangerine Way =&gt; Tangerine Way
-Susan Way =&gt; Susan Way
-Kingfisher Way =&gt; Kingfisher Way
-Cass Way =&gt; Cass Way
-Nelson Way =&gt; Nelson Way
-Belleville Way =&gt; Belleville Way
-Military Way =&gt; Military Way
-Cardinal Way =&gt; Cardinal Way
-El Cajon Way =&gt; El Cajon Way
-Zinfandel Way =&gt; Zinfandel Way
-Avellino Way =&gt; Avenuellino Way
-Cork Oak Way =&gt; Cork Oak Way
-Plaza Central =&gt; Plaza Central
-Redwood Circle =&gt; Redwood Circle
-Starr King Circle =&gt; Starr King Circle
-Duluth Circle =&gt; Duluth Circle
-Bobolink Circle =&gt; Bobolink Circle
-Distel Circle =&gt; Distel Circle
-Comstock Circle =&gt; Comstock Circle
-Continental Circle =&gt; Continental Circle
-San Marcos Circle =&gt; San Marcos Circle
-Roosevelt Circle =&gt; Roosevelt Circle
-Rincon Circle =&gt; Rincon Circle
-East Meadow Circle =&gt; East Meadow Circle
-Moffett Circle =&gt; Moffett Circle
-Marcelli Circle =&gt; Marcelli Circle
-San Antonio Circle =&gt; San Antonio Circle
-Van Auken Circle =&gt; Van Auken Circle
-Van Buren Circle =&gt; Van Buren Circle
-Carlson Circle =&gt; Carlson Circle
-Metro Circle =&gt; Metro Circle
-Los Palos Circle =&gt; Los Palos Circle
-Oregon Expressway =&gt; Oregon Expressway
-Foothill Expressway =&gt; Foothill Expressway
-Waverley Oaks =&gt; WAvenuenuerley Oaks
-North Fair Oaks =&gt; North Fair Oaks
-E El Camino Real =&gt; East El Camino Real
-W. El Camino Real =&gt; West El Camino Real
-East El Camino Real =&gt; East El Camino Real
-Easst El Camino Real =&gt; Easst El Camino Real
-El Camino Real =&gt; El Camino Real
-Villa Real =&gt; Villa Real
-W El Camino Real =&gt; West El Camino Real
-West El Camino Real =&gt; West El Camino Real
-Vanderbilt Court East =&gt; Vanderbilt Court East
-Magnolia Drive North =&gt; Magnolia Drive North
-Via Paviso =&gt; Via Paviso
-Villa Vera =&gt; Villa Vera
-Showers Drive STE 2 =&gt; Showers Drive Street
-Magnolia Drive South =&gt; Magnolia Drive South
-Showers Drive STE 7 =&gt; Showers Drive Street
-Via Volante =&gt; Via Volante
-Showers Drive BLDG AA =&gt; Showers Drive Building Aberdeen Athletic Center
-Plymouth Street #C =&gt; Plymouth Street
-Leghorn Street #B =&gt; Leghorn Street
-Menalto Ave. =&gt; Menalto Avenuenue
-Hamilton Ave #140 =&gt; Hamilton Avenue
-Midrock Corners =&gt; Midrock Corners
-Maclane =&gt; Maclane
-W Dana St =&gt; W Dana St
-La Calle =&gt; La Calle
-East Charleston Road APT 9 =&gt; East Charleston Road Apartment
-Bonair Siding =&gt; Bonair Siding
-Miranda Green =&gt; Miranda Green
-Stierlin Ct. =&gt; Stierlin Court
-Via Sorrento =&gt; Via Sorrento
-West Evelyn =&gt; West Evelyn
-Jackson Alley =&gt; Jackson Alley
-Altaire Walk =&gt; Altaire Walk
-Leuven Terrace =&gt; Leuven Terrace
-Holthouse Terrace =&gt; Holthouse Terrace
-Pasito Terrace =&gt; Pasito Terrace
-Riorden Terrace =&gt; Riorden Terrace
-Yellowstone Terrace =&gt; Yellowstone Terrace
-Springfield Terrace =&gt; Springfield Terrace
-Oak Point Terrace =&gt; Oak Point Terrace
-Windsor Terrace =&gt; Windsor Terrace
-Costa Mesa Terrace =&gt; Costa Mesa Terrace
-Pescadero Terrace =&gt; Pescadero Terrace
-Belmont Terrace =&gt; Belmont Terrace
-Lessing Terrace =&gt; Lessing Terrace
-Liege Terrace =&gt; Liege Terrace
-Satsuma Terrace =&gt; Satsuma Terrace
-Avon Terrace =&gt; Avon Terrace
-Wright Terrace =&gt; Wright Terrace
-Wilmington Terrace =&gt; Wilmington Terrace
-Raines Terrace =&gt; Raines Terrace
-Spencer Terrace =&gt; Spencer Terrace
-Manet Terrace =&gt; Manet Terrace
-Redondo Terrace =&gt; Redondo Terrace
-Pyracantha Terrace =&gt; Pyracantha Terrace
-Pistachio Terrace =&gt; Pistachio Terrace
-Pinnacles Terrace =&gt; Pinnacles Terrace
-Santa Rosalia Terrace =&gt; Santa Rosalia Terrace
-Brea Terrace =&gt; Brea Terrace
-Springer Terrace =&gt; Springer Terrace
-Karby Terrace =&gt; Karby Terrace
-Hogarth Terrace =&gt; Hogarth Terrace
-Chabot Terrace =&gt; Chabot Terrace
-Fontana Terrace =&gt; Fontana Terrace
-Avoset Terrace =&gt; Avoset Terrace
-Lautrec Terrace =&gt; Lautrec Terrace
-Markham Terrace =&gt; Markham Terrace
-Devona Terrace =&gt; Devona Terrace
-Anaheim Terrace =&gt; Anaheim Terrace
-Pennyroyal Terrace =&gt; Pennyroyal Terrace
-Vernon Terrace =&gt; Vernon Terrace
-Crown Point Terrace =&gt; Crown Point Terrace
-Amherst Terrace =&gt; Amherst Terrace
-Bridgeport Terrace =&gt; Bridgeport Terrace
-Kearny Terrace =&gt; Kearny Terrace
-Panache Terrace =&gt; Panache Terrace
-Cedarbrook Terrace =&gt; Cedarbrook Terrace
-Pumpkin Terrace =&gt; Pumpkin Terrace
-Reston Terrace =&gt; Reston Terrace
-Miller Terrace =&gt; Miller Terrace
-Bristol Terrace =&gt; Bristol Terrace
-Seneca Terrace =&gt; Seneca Terrace
-Isla Vista Terrace =&gt; Isla Vista Terrace
-Pine Pass Terrace =&gt; Pine Pass Terrace
-Pismo Terrace =&gt; Pismo Terrace
-Town and Country Village =&gt; Town and Country Village
-E Duane Ave =&gt; E Duane Avenue
-S California Ave =&gt; S California Avenue
-El Monte Ave =&gt; El Monte Avenue
-Portage Ave =&gt; Portage Avenue
-University Ave =&gt; University Avenue
-W Washington Ave =&gt; W Washington Avenue
-California Ave =&gt; California Avenue
-W Maude Ave =&gt; W Maude Avenue
-Hollenbeck Ave =&gt; Hollenbeck Avenue
-Bella Corte =&gt; Bella Corte
-</pre>
-</div>
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[8]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython2"><pre><span></span><span class="c1"># zip code</span>
-<span class="k">def</span> <span class="nf">audit_zipcodes</span><span class="p">(</span><span class="n">osmfile</span><span class="p">):</span>
-    <span class="c1"># iter through all zip codes, collect all the zip codes that does not start with 94</span>
-    <span class="n">osm_file</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">osmfile</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span>
-    <span class="n">zip_codes</span> <span class="o">=</span> <span class="p">{}</span>
-    <span class="k">for</span> <span class="n">event</span><span class="p">,</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">cET</span><span class="o">.</span><span class="n">iterparse</span><span class="p">(</span><span class="n">osm_file</span><span class="p">,</span> <span class="n">events</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;start&quot;</span><span class="p">,)):</span>
-        <span class="k">if</span> <span class="n">elem</span><span class="o">.</span><span class="n">tag</span> <span class="o">==</span> <span class="s2">&quot;node&quot;</span> <span class="ow">or</span> <span class="n">elem</span><span class="o">.</span><span class="n">tag</span> <span class="o">==</span> <span class="s2">&quot;way&quot;</span><span class="p">:</span>
-            <span class="k">for</span> <span class="n">tag</span> <span class="ow">in</span> <span class="n">elem</span><span class="o">.</span><span class="n">iter</span><span class="p">(</span><span class="s2">&quot;tag&quot;</span><span class="p">):</span>
-                <span class="k">if</span> <span class="n">tag</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s1">&#39;k&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;addr:postcode&quot;</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">tag</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s1">&#39;v&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;94&#39;</span><span class="p">):</span>
-                    <span class="k">if</span> <span class="n">tag</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s1">&#39;v&#39;</span><span class="p">]</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">zip_codes</span><span class="p">:</span>
-                        <span class="n">zip_codes</span><span class="p">[</span><span class="n">tag</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s1">&#39;v&#39;</span><span class="p">]]</span> <span class="o">=</span> <span class="mi">1</span>
-                    <span class="k">else</span><span class="p">:</span>
-                        <span class="n">zip_codes</span><span class="p">[</span><span class="n">tag</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s1">&#39;v&#39;</span><span class="p">]]</span> <span class="o">+=</span> <span class="mi">1</span>
-    <span class="k">return</span> <span class="n">zip_codes</span>
-
-<span class="n">zipcodes</span> <span class="o">=</span> <span class="n">audit_zipcodes</span><span class="p">(</span><span class="n">MountainViewosm</span><span class="p">)</span>
-<span class="k">for</span> <span class="n">zipcode</span> <span class="ow">in</span> <span class="n">zipcodes</span><span class="p">:</span>
-    <span class="k">print</span> <span class="n">zipcode</span><span class="p">,</span> <span class="n">zipcodes</span><span class="p">[</span><span class="n">zipcode</span><span class="p">]</span>
-<span class="c1"># zipcodes</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area"><div class="prompt"></div>
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>30188 1
-95014-0137 1
-95014-6357 1
-95014-030 1
-95014-0497 1
-95014-0496 1
-95014-0495 1
-95014-0494 1
-95014-0493 1
-95014-0492 2
-95014-0556 1
-95014-0552 4
-95014-0499 1
-95014-0551 4
-95014-6340 1
-95014-6342 1
-95014-6344 1
-95014-6346 1
-95014-6348 1
-95014-0549 10
-95014-0548 10
-95014-0545 9
-95014-0547 4
-95014-0546 5
-95014-0540 5
-95014-0116 7
-95014-0117 3
-95014-0114 1
-95014-0115 6
-95014-0112 3
-95014-0113 1
-95014-0111 1
-95014-0448 6
-95051 23
-95014-0444 12
-95014-0445 8
-95014-0446 5
-95014-0447 4
-95014-0440 3
-95014-0607 1
-95014-6371 1
-95014-0102 2
-95014-0103 4
-95014-0353 1
-95014-0453 5
-95014-0451 8
-95014-0450 1
-95014-0457 10
-95014-0456 10
-95014-0455 5
-95014-0454 5
-95014-6363 1
-95014-6360 1
-95014-0565 5
-95014-0564 4
-95014-0560 3
-CA 94085 1
-CA 94086 1
-95014-0202 1
-95014-0200 1
-95014-0568 8
-95014-0500 1
-95014-0292 1
-95014-6318 5
-95014-6319 3
-95014-6316 8
-95014-6317 5
-95014-6314 3
-95014-6315 7
-95014-6561 1
-95014-6560 5
-95014-6562 5
-95014-0535 4
-95014-0536 2
-95014-0531 4
-95014-0532 5
-95014-0533 4
-95014-0538 3
-95014-0539 1
-95014-0434 1
-95014-0437 9
-95014-0436 1
-95014-0433 1
-95014-0439 1
-95014-0438 6
-95086 1
-95014-6557 9
-95014-6385 1
-95014-6381 1
-95014-0550 6
-95014-0449 8
-95014-0240 1
-95014-0400 1
-95014-6334 1
-95014-0721 1
-95014 26
-95014-6540 1
-95014-0129 2
-95014-0124 5
-95014-0123 4
-95014-0238 1
-95014-0143 3
-95014-0144 3
-95014-6322 1
-515 1
-95014-0529 5
-95014-6539 1
-</pre>
-</div>
-</div>
-
 </div>
 </div>
 
@@ -12801,167 +12012,52 @@ CA 94086 1
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h4 id="strategy-for-updating-zip-code">strategy for updating zip code<a class="anchor-link" href="#strategy-for-updating-zip-code">&#182;</a></h4><p>Since the data also includes the area of Santa Clara, Cupetino, San Jose and Sunnyvale. I have only updated he zipcode of Moutain view which stats from '94' using mapping dictionary.</p>
-
+<h4 id="Audit-zip-codes">Audit zip codes<a class="anchor-link" href="#Audit-zip-codes">&#182;</a></h4>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[70]:</div>
+<div class="prompt input_prompt">In&nbsp;[107]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython2"><pre><span></span><span class="n">mapping</span> <span class="o">=</span> <span class="p">{</span> <span class="s2">&quot;CA 94085&quot;</span><span class="p">:</span><span class="s2">&quot;94085&quot;</span><span class="p">,</span>
-            <span class="s2">&quot;CA 94086&quot;</span><span class="p">:</span><span class="s2">&quot;94086&quot;</span>
-           <span class="p">}</span>
-           
-                     
-<span class="c1"># function that corrects incorrect street names</span>
-<span class="k">def</span> <span class="nf">update_zipcode</span><span class="p">(</span><span class="n">zipcode</span><span class="p">,</span> <span class="n">mapping</span><span class="p">):</span>    
-    <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">mapping</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">zipcode</span><span class="p">:</span>
-            <span class="n">zipcode</span> <span class="o">=</span> <span class="n">string</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">zipcode</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span><span class="n">mapping</span><span class="p">[</span><span class="n">key</span><span class="p">])</span>
-        <span class="k">return</span> <span class="n">zipcode</span>
-       
-          
-<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
-    <span class="k">for</span> <span class="n">zipcode</span> <span class="ow">in</span> <span class="n">zipcodes</span><span class="p">:</span>
-        <span class="n">better_zipcode</span> <span class="o">=</span> <span class="n">update_zipcode</span><span class="p">(</span><span class="n">zipcode</span><span class="p">,</span> <span class="n">mapping</span><span class="p">)</span>
-        <span class="k">print</span> <span class="n">zipcode</span><span class="p">,</span> <span class="s2">&quot;=&gt;&quot;</span><span class="p">,</span> <span class="n">better_zipcode</span>
-        
+<div class=" highlight hl-ipython2"><pre><span></span><span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">zipcodes</span> <span class="o">=</span> <span class="n">audit_zipcodes</span><span class="p">(</span><span class="n">MountainViewosm</span><span class="p">)</span>
+<span class="c1"># for zipcode in zipcodes:</span>
+<span class="c1">#     print zipcode, zipcodes[zipcode]</span>
+<span class="c1"># zipcodes</span>
 </pre></div>
 
 </div>
 </div>
 </div>
 
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area"><div class="prompt"></div>
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>30188 =&gt; 30188
-95014-0137 =&gt; 95014-0137
-95014-6357 =&gt; 95014-6357
-95014-030 =&gt; 95014-030
-95014-0497 =&gt; 95014-0497
-95014-0496 =&gt; 95014-0496
-95014-0495 =&gt; 95014-0495
-95014-0494 =&gt; 95014-0494
-95014-0493 =&gt; 95014-0493
-95014-0492 =&gt; 95014-0492
-95014-0556 =&gt; 95014-0556
-95014-0552 =&gt; 95014-0552
-95014-0499 =&gt; 95014-0499
-95014-0551 =&gt; 95014-0551
-95014-6340 =&gt; 95014-6340
-95014-6342 =&gt; 95014-6342
-95014-6344 =&gt; 95014-6344
-95014-6346 =&gt; 95014-6346
-95014-6348 =&gt; 95014-6348
-95014-0549 =&gt; 95014-0549
-95014-0548 =&gt; 95014-0548
-95014-0545 =&gt; 95014-0545
-95014-0547 =&gt; 95014-0547
-95014-0546 =&gt; 95014-0546
-95014-0540 =&gt; 95014-0540
-95014-0116 =&gt; 95014-0116
-95014-0117 =&gt; 95014-0117
-95014-0114 =&gt; 95014-0114
-95014-0115 =&gt; 95014-0115
-95014-0112 =&gt; 95014-0112
-95014-0113 =&gt; 95014-0113
-95014-0111 =&gt; 95014-0111
-95014-0448 =&gt; 95014-0448
-95051 =&gt; 95051
-95014-0444 =&gt; 95014-0444
-95014-0445 =&gt; 95014-0445
-95014-0446 =&gt; 95014-0446
-95014-0447 =&gt; 95014-0447
-95014-0440 =&gt; 95014-0440
-95014-0607 =&gt; 95014-0607
-95014-6371 =&gt; 95014-6371
-95014-0102 =&gt; 95014-0102
-95014-0103 =&gt; 95014-0103
-95014-0353 =&gt; 95014-0353
-95014-0453 =&gt; 95014-0453
-95014-0451 =&gt; 95014-0451
-95014-0450 =&gt; 95014-0450
-95014-0457 =&gt; 95014-0457
-95014-0456 =&gt; 95014-0456
-95014-0455 =&gt; 95014-0455
-95014-0454 =&gt; 95014-0454
-95014-6363 =&gt; 95014-6363
-95014-6360 =&gt; 95014-6360
-95014-0565 =&gt; 95014-0565
-95014-0564 =&gt; 95014-0564
-95014-0560 =&gt; 95014-0560
-CA 94085 =&gt; 94085
-CA 94086 =&gt; CA 94086
-95014-0202 =&gt; 95014-0202
-95014-0200 =&gt; 95014-0200
-95014-0568 =&gt; 95014-0568
-95014-0500 =&gt; 95014-0500
-95014-0292 =&gt; 95014-0292
-95014-6318 =&gt; 95014-6318
-95014-6319 =&gt; 95014-6319
-95014-6316 =&gt; 95014-6316
-95014-6317 =&gt; 95014-6317
-95014-6314 =&gt; 95014-6314
-95014-6315 =&gt; 95014-6315
-95014-6561 =&gt; 95014-6561
-95014-6560 =&gt; 95014-6560
-95014-6562 =&gt; 95014-6562
-95014-0535 =&gt; 95014-0535
-95014-0536 =&gt; 95014-0536
-95014-0531 =&gt; 95014-0531
-95014-0532 =&gt; 95014-0532
-95014-0533 =&gt; 95014-0533
-95014-0538 =&gt; 95014-0538
-95014-0539 =&gt; 95014-0539
-95014-0434 =&gt; 95014-0434
-95014-0437 =&gt; 95014-0437
-95014-0436 =&gt; 95014-0436
-95014-0433 =&gt; 95014-0433
-95014-0439 =&gt; 95014-0439
-95014-0438 =&gt; 95014-0438
-95086 =&gt; 95086
-95014-6557 =&gt; 95014-6557
-95014-6385 =&gt; 95014-6385
-95014-6381 =&gt; 95014-6381
-95014-0550 =&gt; 95014-0550
-95014-0449 =&gt; 95014-0449
-95014-0240 =&gt; 95014-0240
-95014-0400 =&gt; 95014-0400
-95014-6334 =&gt; 95014-6334
-95014-0721 =&gt; 95014-0721
-95014 =&gt; 95014
-95014-6540 =&gt; 95014-6540
-95014-0129 =&gt; 95014-0129
-95014-0124 =&gt; 95014-0124
-95014-0123 =&gt; 95014-0123
-95014-0238 =&gt; 95014-0238
-95014-0143 =&gt; 95014-0143
-95014-0144 =&gt; 95014-0144
-95014-6322 =&gt; 95014-6322
-515 =&gt; 515
-95014-0529 =&gt; 95014-0529
-95014-6539 =&gt; 95014-6539
-</pre>
 </div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
 </div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="strategy-for-updating-zip-code">strategy for updating zip code<a class="anchor-link" href="#strategy-for-updating-zip-code">&#182;</a></h4><p>Since the data also includes the area of Santa Clara, Cupetino, San Jose and Sunnyvale. I have only updated he zipcode of Moutain view which starts from '94' using mapping dictionary.</p>
 
 </div>
 </div>
-
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[92]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython2"><pre><span></span><span class="c1"># Audit phone number</span>
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">mapping_zipcode</span> <span class="o">=</span> <span class="p">{</span> <span class="s2">&quot;CA 94085&quot;</span><span class="p">:</span><span class="s2">&quot;94085&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;CA 94086&quot;</span><span class="p">:</span><span class="s2">&quot;94086&quot;</span>
+           <span class="p">}</span>          
+                          
+          
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">zipcode</span> <span class="ow">in</span> <span class="n">zipcodes</span><span class="p">:</span>
+        <span class="n">better_zipcode</span> <span class="o">=</span> <span class="n">update_zipcode</span><span class="p">(</span><span class="n">zipcode</span><span class="p">,</span> <span class="n">mapping_zipcode</span><span class="p">)</span>
+<span class="c1">#         print zipcode, &quot;=&gt;&quot;, better_zipcode</span>
+        
 </pre></div>
 
 </div>
@@ -13001,12 +12097,22 @@ CA 94086 =&gt; CA 94086
 </div>
 </div>
 </div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h4 id="Insert-the-JSON-data-into-MongoDB-Database">Insert the JSON data into MongoDB Database<a class="anchor-link" href="#Insert-the-JSON-data-into-MongoDB-Database">&#182;</a></h4>
+</div>
+</div>
+</div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[11]:</div>
+<div class="prompt input_prompt">In&nbsp;[100]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython2"><pre><span></span><span class="n">CREATED</span> <span class="o">=</span> <span class="p">[</span> <span class="s2">&quot;version&quot;</span><span class="p">,</span> <span class="s2">&quot;changeset&quot;</span><span class="p">,</span> <span class="s2">&quot;timestamp&quot;</span><span class="p">,</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="s2">&quot;uid&quot;</span><span class="p">]</span>
+<div class=" highlight hl-ipython2"><pre><span></span><span class="c1"># process the file</span>
+<span class="n">CREATED</span> <span class="o">=</span> <span class="p">[</span> <span class="s2">&quot;version&quot;</span><span class="p">,</span> <span class="s2">&quot;changeset&quot;</span><span class="p">,</span> <span class="s2">&quot;timestamp&quot;</span><span class="p">,</span> <span class="s2">&quot;user&quot;</span><span class="p">,</span> <span class="s2">&quot;uid&quot;</span><span class="p">]</span>
 <span class="k">def</span> <span class="nf">shape_element</span><span class="p">(</span><span class="n">element</span><span class="p">):</span>
     <span class="n">node</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="n">node</span><span class="p">[</span><span class="s2">&quot;created&quot;</span><span class="p">]</span><span class="o">=</span><span class="p">{}</span>
@@ -13046,11 +12152,11 @@ CA 94086 =&gt; CA 94086
                     
                 <span class="k">if</span> <span class="n">tag</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s1">&#39;k&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;addr:postcode&quot;</span><span class="p">:</span>
                     <span class="n">node</span><span class="p">[</span><span class="s2">&quot;address&quot;</span><span class="p">][</span><span class="s2">&quot;postcode&quot;</span><span class="p">]</span><span class="o">=</span><span class="n">tag</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s1">&#39;v&#39;</span><span class="p">]</span>
-                
+                    <span class="n">node</span><span class="p">[</span><span class="s2">&quot;address&quot;</span><span class="p">][</span><span class="s2">&quot;postcode&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">update_name</span><span class="p">(</span><span class="n">node</span><span class="p">[</span><span class="s2">&quot;address&quot;</span><span class="p">][</span><span class="s2">&quot;postcode&quot;</span><span class="p">],</span> <span class="n">mapping_zipcode</span><span class="p">)</span>
                 <span class="c1"># handling the street attribute, update incorrect names using the strategy developed before   </span>
                 <span class="k">if</span> <span class="n">tag</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s1">&#39;k&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;addr:street&quot;</span><span class="p">:</span>
                     <span class="n">node</span><span class="p">[</span><span class="s2">&quot;address&quot;</span><span class="p">][</span><span class="s2">&quot;street&quot;</span><span class="p">]</span><span class="o">=</span><span class="n">tag</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s1">&#39;v&#39;</span><span class="p">]</span>
-                    <span class="n">node</span><span class="p">[</span><span class="s2">&quot;address&quot;</span><span class="p">][</span><span class="s2">&quot;street&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">update_name</span><span class="p">(</span><span class="n">node</span><span class="p">[</span><span class="s2">&quot;address&quot;</span><span class="p">][</span><span class="s2">&quot;street&quot;</span><span class="p">],</span> <span class="n">mapping</span><span class="p">)</span>
+                    <span class="n">node</span><span class="p">[</span><span class="s2">&quot;address&quot;</span><span class="p">][</span><span class="s2">&quot;street&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">update_zipcode</span><span class="p">(</span><span class="n">node</span><span class="p">[</span><span class="s2">&quot;address&quot;</span><span class="p">][</span><span class="s2">&quot;street&quot;</span><span class="p">],</span> <span class="n">mapping_street</span><span class="p">)</span>
 
                 <span class="k">if</span> <span class="n">tag</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s1">&#39;k&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;addr&quot;</span><span class="p">)</span><span class="o">==-</span><span class="mi">1</span><span class="p">:</span>
                     <span class="n">node</span><span class="p">[</span><span class="n">tag</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s1">&#39;k&#39;</span><span class="p">]]</span><span class="o">=</span><span class="n">tag</span><span class="o">.</span><span class="n">attrib</span><span class="p">[</span><span class="s1">&#39;v&#39;</span><span class="p">]</span>
@@ -13067,36 +12173,8 @@ CA 94086 =&gt; CA 94086
         <span class="k">return</span> <span class="n">node</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">None</span>
-
-
-
-<span class="k">def</span> <span class="nf">process_map</span><span class="p">(</span><span class="n">file_in</span><span class="p">,</span> <span class="n">pretty</span> <span class="o">=</span> <span class="bp">False</span><span class="p">):</span>
-    <span class="n">file_out</span> <span class="o">=</span> <span class="s2">&quot;{0}.json&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">file_in</span><span class="p">)</span>
-    <span class="n">data</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="k">with</span> <span class="n">codecs</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">file_out</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">fo</span><span class="p">:</span>
-        <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">element</span> <span class="ow">in</span> <span class="n">cET</span><span class="o">.</span><span class="n">iterparse</span><span class="p">(</span><span class="n">file_in</span><span class="p">):</span>
-            <span class="n">el</span> <span class="o">=</span> <span class="n">shape_element</span><span class="p">(</span><span class="n">element</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">el</span><span class="p">:</span>
-                <span class="n">data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">el</span><span class="p">)</span>
-                <span class="k">if</span> <span class="n">pretty</span><span class="p">:</span>
-                    <span class="n">fo</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">el</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span><span class="o">+</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
-                <span class="k">else</span><span class="p">:</span>
-                    <span class="n">fo</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">el</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">data</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[21]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython2"><pre><span></span><span class="c1"># process the file</span>
-<span class="n">data</span> <span class="o">=</span> <span class="n">process_map</span><span class="p">(</span><span class="n">MountainViewosm</span><span class="p">,</span> <span class="bp">True</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">process_map</span><span class="p">(</span><span class="n">MountainViewosm</span><span class="p">,</span> <span class="bp">True</span><span class="p">)</span>
 <span class="c1"># for d in data:</span>
 <span class="c1">#     print d</span>
 </pre></div>
@@ -13106,18 +12184,9 @@ CA 94086 =&gt; CA 94086
 </div>
 
 </div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h4 id="Insert-the-JSON-data-into-MongoDB-Database">Insert the JSON data into MongoDB Database<a class="anchor-link" href="#Insert-the-JSON-data-into-MongoDB-Database">&#182;</a></h4>
-</div>
-</div>
-</div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[22]:</div>
+<div class="prompt input_prompt">In&nbsp;[74]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="n">client</span> <span class="o">=</span> <span class="n">MongoClient</span><span class="p">()</span>
@@ -13366,19 +12435,18 @@ CA 94086 =&gt; CA 94086
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h4 id="Top-10-methods-used-to-create-data-entry">Top 10 methods used to create data entry<a class="anchor-link" href="#Top-10-methods-used-to-create-data-entry">&#182;</a></h4>
+<h4 id="Top-5-methods-used-to-create-data-entry">Top 5 methods used to create data entry<a class="anchor-link" href="#Top-5-methods-used-to-create-data-entry">&#182;</a></h4>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[38]:</div>
+<div class="prompt input_prompt">In&nbsp;[65]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython2"><pre><span></span><span class="n">pipeline</span> <span class="o">=</span> <span class="p">[{</span><span class="s2">&quot;$group&quot;</span><span class="p">:{</span><span class="s2">&quot;_id&quot;</span><span class="p">:</span> <span class="s2">&quot;$created_by&quot;</span><span class="p">,</span>
-                       <span class="s2">&quot;count&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;$sum&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">}}},</span>
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">pipeline</span> <span class="o">=</span> <span class="p">[{</span><span class="s2">&quot;$group&quot;</span><span class="p">:{</span><span class="s2">&quot;_id&quot;</span><span class="p">:</span> <span class="s2">&quot;$created_by&quot;</span><span class="p">,</span><span class="s2">&quot;count&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;$sum&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">}}},</span>
                      <span class="p">{</span><span class="s2">&quot;$sort&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;count&quot;</span><span class="p">:</span> <span class="o">-</span><span class="mi">1</span><span class="p">}},</span>
-                    <span class="p">{</span><span class="s2">&quot;$limit&quot;</span><span class="p">:</span> <span class="mi">10</span><span class="p">}]</span>
+                    <span class="p">{</span><span class="s2">&quot;$limit&quot;</span><span class="p">:</span> <span class="mi">5</span><span class="p">}]</span>
            
 <span class="n">result</span> <span class="o">=</span> <span class="n">collection</span><span class="o">.</span><span class="n">aggregate</span><span class="p">(</span><span class="n">pipeline</span><span class="p">)</span>
 <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">result</span><span class="p">:</span>
@@ -13399,16 +12467,11 @@ CA 94086 =&gt; CA 94086
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>{u&#39;count&#39;: 5746814, u&#39;_id&#39;: None}
-{u&#39;count&#39;: 4363, u&#39;_id&#39;: u&#39;JOSM&#39;}
-{u&#39;count&#39;: 1490, u&#39;_id&#39;: u&#39;Potlatch 0.10f&#39;}
-{u&#39;count&#39;: 896, u&#39;_id&#39;: u&#39;Potlatch 0.9c&#39;}
-{u&#39;count&#39;: 290, u&#39;_id&#39;: u&#39;Potlatch 0.10b&#39;}
-{u&#39;count&#39;: 243, u&#39;_id&#39;: u&#39;Potlatch 0.10&#39;}
-{u&#39;count&#39;: 215, u&#39;_id&#39;: u&#39;Potlatch 0.8c&#39;}
-{u&#39;count&#39;: 105, u&#39;_id&#39;: u&#39;Potlatch 0.9a&#39;}
-{u&#39;count&#39;: 98, u&#39;_id&#39;: u&#39;Potlatch 0.10e&#39;}
-{u&#39;count&#39;: 80, u&#39;_id&#39;: u&#39;OSMPointy v0.4 iPhone&#39;}
+<pre>{u&#39;count&#39;: 9184592, u&#39;_id&#39;: None}
+{u&#39;count&#39;: 6970, u&#39;_id&#39;: u&#39;JOSM&#39;}
+{u&#39;count&#39;: 2384, u&#39;_id&#39;: u&#39;Potlatch 0.10f&#39;}
+{u&#39;count&#39;: 1430, u&#39;_id&#39;: u&#39;Potlatch 0.9c&#39;}
+{u&#39;count&#39;: 464, u&#39;_id&#39;: u&#39;Potlatch 0.10b&#39;}
 </pre>
 </div>
 </div>
@@ -13428,14 +12491,16 @@ CA 94086 =&gt; CA 94086
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[23]:</div>
+<div class="prompt input_prompt">In&nbsp;[42]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython2"><pre><span></span><span class="c1"># top three users with most contributions</span>
+<div class=" highlight hl-ipython2"><pre><span></span><span class="kn">import</span> <span class="nn">csv</span>
+<span class="c1"># top three users with most contributions</span>
 <span class="n">pipeline</span> <span class="o">=</span> <span class="p">[{</span><span class="s2">&quot;$group&quot;</span><span class="p">:{</span><span class="s2">&quot;_id&quot;</span><span class="p">:</span> <span class="s2">&quot;$created.user&quot;</span><span class="p">,</span>
                        <span class="s2">&quot;count&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;$sum&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">}}},</span>
             <span class="p">{</span><span class="s2">&quot;$sort&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;count&quot;</span><span class="p">:</span> <span class="o">-</span><span class="mi">1</span><span class="p">}},</span>
-            <span class="p">{</span><span class="s2">&quot;$limit&quot;</span><span class="p">:</span> <span class="mi">5</span><span class="p">}]</span>
+            <span class="p">{</span><span class="s2">&quot;$limit&quot;</span><span class="p">:</span> <span class="mi">5</span><span class="p">}</span>
+            <span class="p">]</span>
 <span class="n">result</span> <span class="o">=</span> <span class="n">collection</span><span class="o">.</span><span class="n">aggregate</span><span class="p">(</span><span class="n">pipeline</span><span class="p">)</span>
 <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">result</span><span class="p">:</span>
     <span class="k">print</span> <span class="n">r</span>
@@ -13451,11 +12516,11 @@ CA 94086 =&gt; CA 94086
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>{u&#39;count&#39;: 760464, u&#39;_id&#39;: u&#39;RichRico&#39;}
-{u&#39;count&#39;: 707471, u&#39;_id&#39;: u&#39;ediyes&#39;}
-{u&#39;count&#39;: 601207, u&#39;_id&#39;: u&#39;samely&#39;}
-{u&#39;count&#39;: 582349, u&#39;_id&#39;: u&#39;karitotp&#39;}
-{u&#39;count&#39;: 439029, u&#39;_id&#39;: u&#39;calfarome&#39;}
+<pre>{u&#39;count&#39;: 1215360, u&#39;_id&#39;: u&#39;RichRico&#39;}
+{u&#39;count&#39;: 1130735, u&#39;_id&#39;: u&#39;ediyes&#39;}
+{u&#39;count&#39;: 960835, u&#39;_id&#39;: u&#39;samely&#39;}
+{u&#39;count&#39;: 930727, u&#39;_id&#39;: u&#39;karitotp&#39;}
+{u&#39;count&#39;: 701631, u&#39;_id&#39;: u&#39;calfarome&#39;}
 </pre>
 </div>
 </div>
@@ -13469,52 +12534,9 @@ CA 94086 =&gt; CA 94086
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Top-10-amenity">Top 10 amenity<a class="anchor-link" href="#Top-10-amenity">&#182;</a></h3>
+<h3 id="Additional-Data-exploration">Additional Data exploration<a class="anchor-link" href="#Additional-Data-exploration">&#182;</a></h3>
 </div>
 </div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[18]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython2"><pre><span></span><span class="n">pipeline</span> <span class="o">=</span> <span class="p">[{</span><span class="s1">&#39;$match&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;amenity&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;$exists&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">}}},</span> 
-                                <span class="p">{</span><span class="s1">&#39;$group&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;_id&#39;</span><span class="p">:</span> <span class="s1">&#39;$amenity&#39;</span><span class="p">,</span> 
-                                            <span class="s1">&#39;count&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;$sum&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">}}},</span> 
-                                <span class="p">{</span><span class="s1">&#39;$sort&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;count&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mi">1</span><span class="p">}},</span> 
-                                <span class="p">{</span><span class="s1">&#39;$limit&#39;</span><span class="p">:</span> <span class="mi">10</span><span class="p">}]</span>
-<span class="n">result</span> <span class="o">=</span> <span class="n">collection</span><span class="o">.</span><span class="n">aggregate</span><span class="p">(</span><span class="n">pipeline</span><span class="p">)</span>
-<span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">result</span><span class="p">:</span>
-    <span class="k">print</span> <span class="n">r</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area"><div class="prompt"></div>
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>{u&#39;count&#39;: 4593458, u&#39;_id&#39;: {}}
-{u&#39;count&#39;: 6007, u&#39;_id&#39;: u&#39;parking&#39;}
-{u&#39;count&#39;: 2905, u&#39;_id&#39;: u&#39;restaurant&#39;}
-{u&#39;count&#39;: 2254, u&#39;_id&#39;: u&#39;bicycle_parking&#39;}
-{u&#39;count&#39;: 1442, u&#39;_id&#39;: u&#39;bench&#39;}
-{u&#39;count&#39;: 1221, u&#39;_id&#39;: u&#39;school&#39;}
-{u&#39;count&#39;: 917, u&#39;_id&#39;: u&#39;fast_food&#39;}
-{u&#39;count&#39;: 871, u&#39;_id&#39;: u&#39;post_box&#39;}
-{u&#39;count&#39;: 819, u&#39;_id&#39;: u&#39;cafe&#39;}
-{u&#39;count&#39;: 756, u&#39;_id&#39;: u&#39;place_of_worship&#39;}
-</pre>
-</div>
-</div>
-
-</div>
-</div>
-
 </div>
 <div class="cell border-box-sizing text_cell rendered">
 <div class="prompt input_prompt">
@@ -13527,14 +12549,14 @@ CA 94086 =&gt; CA 94086
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[24]:</div>
+<div class="prompt input_prompt">In&nbsp;[45]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="c1"># Most popular cuisines</span>
 <span class="n">pipeline</span> <span class="o">=</span> <span class="p">[{</span><span class="s2">&quot;$match&quot;</span><span class="p">:{</span><span class="s2">&quot;amenity&quot;</span><span class="p">:{</span><span class="s2">&quot;$exists&quot;</span><span class="p">:</span><span class="mi">1</span><span class="p">},</span> <span class="s2">&quot;amenity&quot;</span><span class="p">:</span><span class="s2">&quot;restaurant&quot;</span><span class="p">,</span> <span class="s2">&quot;cuisine&quot;</span><span class="p">:{</span><span class="s2">&quot;$exists&quot;</span><span class="p">:</span><span class="mi">1</span><span class="p">}}},</span> 
             <span class="p">{</span><span class="s2">&quot;$group&quot;</span><span class="p">:{</span><span class="s2">&quot;_id&quot;</span><span class="p">:</span><span class="s2">&quot;$cuisine&quot;</span><span class="p">,</span> <span class="s2">&quot;count&quot;</span><span class="p">:{</span><span class="s2">&quot;$sum&quot;</span><span class="p">:</span><span class="mi">1</span><span class="p">}}},</span>        
             <span class="p">{</span><span class="s2">&quot;$sort&quot;</span><span class="p">:{</span><span class="s2">&quot;count&quot;</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">}},</span> 
-            <span class="p">{</span><span class="s2">&quot;$limit&quot;</span><span class="p">:</span><span class="mi">10</span><span class="p">}]</span>
+            <span class="p">{</span><span class="s2">&quot;$limit&quot;</span><span class="p">:</span><span class="mi">5</span><span class="p">}]</span>
 <span class="n">result</span> <span class="o">=</span> <span class="n">collection</span><span class="o">.</span><span class="n">aggregate</span><span class="p">(</span><span class="n">pipeline</span><span class="p">)</span>
 <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">result</span><span class="p">:</span>
     <span class="k">print</span> <span class="n">r</span>
@@ -13551,15 +12573,10 @@ CA 94086 =&gt; CA 94086
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
 <pre>{u&#39;count&#39;: 376, u&#39;_id&#39;: {}}
-{u&#39;count&#39;: 190, u&#39;_id&#39;: u&#39;mexican&#39;}
-{u&#39;count&#39;: 175, u&#39;_id&#39;: u&#39;chinese&#39;}
-{u&#39;count&#39;: 170, u&#39;_id&#39;: u&#39;japanese&#39;}
-{u&#39;count&#39;: 145, u&#39;_id&#39;: u&#39;indian&#39;}
-{u&#39;count&#39;: 130, u&#39;_id&#39;: u&#39;pizza&#39;}
-{u&#39;count&#39;: 80, u&#39;_id&#39;: u&#39;thai&#39;}
-{u&#39;count&#39;: 75, u&#39;_id&#39;: u&#39;italian&#39;}
-{u&#39;count&#39;: 65, u&#39;_id&#39;: u&#39;american&#39;}
-{u&#39;count&#39;: 65, u&#39;_id&#39;: u&#39;vietnamese&#39;}
+{u&#39;count&#39;: 304, u&#39;_id&#39;: u&#39;mexican&#39;}
+{u&#39;count&#39;: 280, u&#39;_id&#39;: u&#39;chinese&#39;}
+{u&#39;count&#39;: 272, u&#39;_id&#39;: u&#39;japanese&#39;}
+{u&#39;count&#39;: 232, u&#39;_id&#39;: u&#39;indian&#39;}
 </pre>
 </div>
 </div>
@@ -13620,48 +12637,25 @@ CA 94086 =&gt; CA 94086
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h4 id="10-Places-for-worship">10 Places for worship<a class="anchor-link" href="#10-Places-for-worship">&#182;</a></h4>
+<h4 id="Places-for-worship">Places for worship<a class="anchor-link" href="#Places-for-worship">&#182;</a></h4>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[23]:</div>
+<div class="prompt input_prompt">In&nbsp;[83]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="n">pipeline</span> <span class="o">=</span> <span class="p">[{</span><span class="s2">&quot;$match&quot;</span><span class="p">:{</span><span class="s2">&quot;amenity&quot;</span><span class="p">:{</span><span class="s2">&quot;$exists&quot;</span><span class="p">:</span><span class="mi">1</span><span class="p">},</span> <span class="s2">&quot;amenity&quot;</span><span class="p">:</span> <span class="s2">&quot;place_of_worship&quot;</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">:{</span><span class="s2">&quot;$exists&quot;</span><span class="p">:</span><span class="mi">1</span><span class="p">}}},</span>
             <span class="p">{</span><span class="s2">&quot;$group&quot;</span><span class="p">:{</span><span class="s2">&quot;_id&quot;</span><span class="p">:</span><span class="s2">&quot;$name&quot;</span><span class="p">,</span> <span class="s2">&quot;count&quot;</span><span class="p">:{</span><span class="s2">&quot;$sum&quot;</span><span class="p">:</span><span class="mi">1</span><span class="p">}}},</span>
             <span class="p">{</span><span class="s2">&quot;$sort&quot;</span><span class="p">:{</span><span class="s2">&quot;count&quot;</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">}},</span>
-           <span class="p">{</span><span class="s2">&quot;$limit&quot;</span><span class="p">:</span> <span class="mi">10</span><span class="p">}]</span>
+           <span class="p">{</span><span class="s2">&quot;$limit&quot;</span><span class="p">:</span> <span class="mi">5</span><span class="p">}]</span>
 <span class="n">result</span> <span class="o">=</span> <span class="n">collection</span><span class="o">.</span><span class="n">aggregate</span><span class="p">(</span><span class="n">pipeline</span><span class="p">)</span>
-<span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">result</span><span class="p">:</span>
-    <span class="k">print</span> <span class="n">r</span>
+<span class="c1"># for r in result:</span>
+<span class="c1">#     print r</span>
 </pre></div>
 
 </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area"><div class="prompt"></div>
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>{u&#39;count&#39;: 12, u&#39;_id&#39;: u&#39;Mountain View Chinese Christian Church&#39;}
-{u&#39;count&#39;: 12, u&#39;_id&#39;: u&#39;First United Methodist Church&#39;}
-{u&#39;count&#39;: 12, u&#39;_id&#39;: u&#39;First Church of Christ Scientist&#39;}
-{u&#39;count&#39;: 12, u&#39;_id&#39;: u&#39;Peninsula Bible Church&#39;}
-{u&#39;count&#39;: 12, u&#39;_id&#39;: u&#39;Seventh Day Adventist Church&#39;}
-{u&#39;count&#39;: 12, u&#39;_id&#39;: u&#39;Trinity United Methodist Church&#39;}
-{u&#39;count&#39;: 12, u&#39;_id&#39;: u&#39;The Church of Jesus Christ of Latter-day Saints&#39;}
-{u&#39;count&#39;: 6, u&#39;_id&#39;: u&#39;Holy Korean Martyrs Catholic Church&#39;}
-{u&#39;count&#39;: 6, u&#39;_id&#39;: u&#34;Saint Mark&#39;s Missionary Baptist Church&#34;}
-{u&#39;count&#39;: 6, u&#39;_id&#39;: u&#39;New Hope International&#39;}
-</pre>
-</div>
-</div>
-
 </div>
 </div>
 
@@ -13677,50 +12671,19 @@ CA 94086 =&gt; CA 94086
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[27]:</div>
+<div class="prompt input_prompt">In&nbsp;[82]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="n">pipeline</span> <span class="o">=</span> <span class="p">[{</span><span class="s2">&quot;$match&quot;</span><span class="p">:{</span><span class="s2">&quot;amenity&quot;</span><span class="p">:{</span><span class="s2">&quot;$exists&quot;</span><span class="p">:</span><span class="mi">1</span><span class="p">},</span> <span class="s2">&quot;amenity&quot;</span><span class="p">:</span> <span class="s2">&quot;fuel&quot;</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">:{</span><span class="s2">&quot;$exists&quot;</span><span class="p">:</span><span class="mi">1</span><span class="p">}}},</span>
             <span class="p">{</span><span class="s2">&quot;$group&quot;</span><span class="p">:{</span><span class="s2">&quot;_id&quot;</span><span class="p">:</span><span class="s2">&quot;$name&quot;</span><span class="p">,</span> <span class="s2">&quot;count&quot;</span><span class="p">:{</span><span class="s2">&quot;$sum&quot;</span><span class="p">:</span><span class="mi">1</span><span class="p">}}},</span>
-            <span class="p">{</span><span class="s2">&quot;$sort&quot;</span><span class="p">:{</span><span class="s2">&quot;count&quot;</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">}}]</span>
+            <span class="p">{</span><span class="s2">&quot;$sort&quot;</span><span class="p">:{</span><span class="s2">&quot;count&quot;</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">}},</span>
+           <span class="p">{</span><span class="s2">&quot;$limit&quot;</span><span class="p">:</span> <span class="mi">5</span><span class="p">}]</span>
 <span class="n">result</span> <span class="o">=</span> <span class="n">collection</span><span class="o">.</span><span class="n">aggregate</span><span class="p">(</span><span class="n">pipeline</span><span class="p">)</span>
-<span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">result</span><span class="p">:</span>
-    <span class="k">print</span> <span class="n">r</span>
+<span class="c1"># for r in result:</span>
+<span class="c1">#     print r</span>
 </pre></div>
 
 </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area"><div class="prompt"></div>
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>{u&#39;count&#39;: 50, u&#39;_id&#39;: u&#39;Shell&#39;}
-{u&#39;count&#39;: 40, u&#39;_id&#39;: u&#39;Valero&#39;}
-{u&#39;count&#39;: 35, u&#39;_id&#39;: u&#39;Chevron&#39;}
-{u&#39;count&#39;: 30, u&#39;_id&#39;: u&#39;76&#39;}
-{u&#39;count&#39;: 30, u&#39;_id&#39;: u&#39;Arco&#39;}
-{u&#39;count&#39;: 10, u&#39;_id&#39;: u&#39;valero&#39;}
-{u&#39;count&#39;: 10, u&#39;_id&#39;: u&#39;ARCO&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;World Oil&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Fair Oaks 76&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Willow Cove Gas&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Alliance Gasoline&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Westmore Chevron&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Shell Gas&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Conoco Phillips 76&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Union 76&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;SAP Vehicles Network Demo - Gas Station&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#34;Ranier&#39;s Service Station&#34;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Alliance&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Rotten Robbie&#39;}
-</pre>
-</div>
-</div>
-
 </div>
 </div>
 
@@ -13730,19 +12693,19 @@ CA 94086 =&gt; CA 94086
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h4 id="10-Most-popular-Fast-food-cuisines">10 Most popular Fast food cuisines<a class="anchor-link" href="#10-Most-popular-Fast-food-cuisines">&#182;</a></h4>
+<h4 id="Most-popular-Fast-food-cuisines">Most popular Fast food cuisines<a class="anchor-link" href="#Most-popular-Fast-food-cuisines">&#182;</a></h4>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[24]:</div>
+<div class="prompt input_prompt">In&nbsp;[48]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="n">pipeline</span> <span class="o">=</span> <span class="p">[{</span><span class="s2">&quot;$match&quot;</span><span class="p">:{</span><span class="s2">&quot;amenity&quot;</span><span class="p">:{</span><span class="s2">&quot;$exists&quot;</span><span class="p">:</span><span class="mi">1</span><span class="p">},</span> <span class="s2">&quot;amenity&quot;</span><span class="p">:</span> <span class="s2">&quot;fast_food&quot;</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">:{</span><span class="s2">&quot;$exists&quot;</span><span class="p">:</span><span class="mi">1</span><span class="p">}}},</span>
             <span class="p">{</span><span class="s2">&quot;$group&quot;</span><span class="p">:{</span><span class="s2">&quot;_id&quot;</span><span class="p">:</span><span class="s2">&quot;$name&quot;</span><span class="p">,</span> <span class="s2">&quot;count&quot;</span><span class="p">:{</span><span class="s2">&quot;$sum&quot;</span><span class="p">:</span><span class="mi">1</span><span class="p">}}},</span>
             <span class="p">{</span><span class="s2">&quot;$sort&quot;</span><span class="p">:{</span><span class="s2">&quot;count&quot;</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">}},</span>
-            <span class="p">{</span><span class="s2">&quot;$limit&quot;</span><span class="p">:</span> <span class="mi">10</span><span class="p">}]</span>
+            <span class="p">{</span><span class="s2">&quot;$limit&quot;</span><span class="p">:</span> <span class="mi">5</span><span class="p">}]</span>
 <span class="n">result</span> <span class="o">=</span> <span class="n">collection</span><span class="o">.</span><span class="n">aggregate</span><span class="p">(</span><span class="n">pipeline</span><span class="p">)</span>
 <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">result</span><span class="p">:</span>
     <span class="k">print</span> <span class="n">r</span>
@@ -13758,16 +12721,11 @@ CA 94086 =&gt; CA 94086
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>{u&#39;count&#39;: 84, u&#39;_id&#39;: u&#39;Subway&#39;}
-{u&#39;count&#39;: 42, u&#39;_id&#39;: u&#34;McDonald&#39;s&#34;}
-{u&#39;count&#39;: 30, u&#39;_id&#39;: u&#39;Taco Bell&#39;}
-{u&#39;count&#39;: 30, u&#39;_id&#39;: u&#34;Togo&#39;s&#34;}
-{u&#39;count&#39;: 18, u&#39;_id&#39;: u&#39;KFC&#39;}
-{u&#39;count&#39;: 18, u&#39;_id&#39;: u&#39;Round Table Pizza&#39;}
-{u&#39;count&#39;: 18, u&#39;_id&#39;: u&#39;Burger King&#39;}
-{u&#39;count&#39;: 12, u&#39;_id&#39;: u&#39;Jack in the Box&#39;}
-{u&#39;count&#39;: 12, u&#39;_id&#39;: u&#39;Jamba Juice&#39;}
-{u&#39;count&#39;: 12, u&#39;_id&#39;: u&#39;In-N-Out Burger&#39;}
+<pre>{u&#39;count&#39;: 112, u&#39;_id&#39;: u&#39;Subway&#39;}
+{u&#39;count&#39;: 56, u&#39;_id&#39;: u&#34;McDonald&#39;s&#34;}
+{u&#39;count&#39;: 40, u&#39;_id&#39;: u&#34;Togo&#39;s&#34;}
+{u&#39;count&#39;: 40, u&#39;_id&#39;: u&#39;Taco Bell&#39;}
+{u&#39;count&#39;: 24, u&#39;_id&#39;: u&#39;Burger King&#39;}
 </pre>
 </div>
 </div>
@@ -13837,33 +12795,18 @@ CA 94086 =&gt; CA 94086
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[30]:</div>
+<div class="prompt input_prompt">In&nbsp;[81]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="n">pipeline</span> <span class="o">=</span> <span class="p">[{</span><span class="s2">&quot;$match&quot;</span><span class="p">:{</span><span class="s2">&quot;amenity&quot;</span><span class="p">:{</span><span class="s2">&quot;$exists&quot;</span><span class="p">:</span><span class="mi">1</span><span class="p">},</span> <span class="s2">&quot;amenity&quot;</span><span class="p">:</span> <span class="s2">&quot;beauty&quot;</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">:{</span><span class="s2">&quot;$exists&quot;</span><span class="p">:</span><span class="mi">1</span><span class="p">}}},</span>
             <span class="p">{</span><span class="s2">&quot;$group&quot;</span><span class="p">:{</span><span class="s2">&quot;_id&quot;</span><span class="p">:</span><span class="s2">&quot;$name&quot;</span><span class="p">,</span> <span class="s2">&quot;count&quot;</span><span class="p">:{</span><span class="s2">&quot;$sum&quot;</span><span class="p">:</span><span class="mi">1</span><span class="p">}}},</span>
             <span class="p">{</span><span class="s2">&quot;$sort&quot;</span><span class="p">:{</span><span class="s2">&quot;count&quot;</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">}}]</span>
 <span class="n">result</span> <span class="o">=</span> <span class="n">collection</span><span class="o">.</span><span class="n">aggregate</span><span class="p">(</span><span class="n">pipeline</span><span class="p">)</span>
-<span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">result</span><span class="p">:</span>
-    <span class="k">print</span> <span class="n">r</span>
+<span class="c1"># for r in result:</span>
+<span class="c1">#     print r</span>
 </pre></div>
 
 </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area"><div class="prompt"></div>
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>{u&#39;count&#39;: 8, u&#39;_id&#39;: u&#39;Salon Elizabeth&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Salon 121&#39;}
-</pre>
-</div>
-</div>
-
 </div>
 </div>
 
@@ -13879,32 +12822,18 @@ CA 94086 =&gt; CA 94086
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[31]:</div>
+<div class="prompt input_prompt">In&nbsp;[54]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython2"><pre><span></span><span class="n">pipeline</span> <span class="o">=</span> <span class="p">[{</span><span class="s2">&quot;$match&quot;</span><span class="p">:{</span><span class="s2">&quot;amenity&quot;</span><span class="p">:{</span><span class="s2">&quot;$exists&quot;</span><span class="p">:</span><span class="mi">1</span><span class="p">},</span> <span class="s2">&quot;amenity&quot;</span><span class="p">:</span> <span class="s2">&quot;public_bookcase&quot;</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">:{</span><span class="s2">&quot;$exists&quot;</span><span class="p">:</span><span class="mi">1</span><span class="p">}}},</span>
-            <span class="p">{</span><span class="s2">&quot;$group&quot;</span><span class="p">:{</span><span class="s2">&quot;_id&quot;</span><span class="p">:</span><span class="s2">&quot;$name&quot;</span><span class="p">,</span> <span class="s2">&quot;count&quot;</span><span class="p">:{</span><span class="s2">&quot;$sum&quot;</span><span class="p">:</span><span class="mi">1</span><span class="p">}}},</span>
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">pipeline</span> <span class="o">=</span> <span class="p">[{</span><span class="s2">&quot;$match&quot;</span><span class="p">:{</span><span class="s2">&quot;amenity&quot;</span><span class="p">:{</span><span class="s2">&quot;$exists&quot;</span><span class="p">:</span><span class="mi">1</span><span class="p">},</span> <span class="s2">&quot;amenity&quot;</span><span class="p">:</span> <span class="s2">&quot;library&quot;</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">:{</span><span class="s2">&quot;$exists&quot;</span><span class="p">:</span><span class="mi">1</span><span class="p">}}},</span>
+            <span class="p">{</span><span class="s2">&quot;$group&quot;</span><span class="p">:{</span><span class="s2">&quot;_id&quot;</span><span class="p">:</span><span class="s2">&quot;$name&quot;</span><span class="p">}},</span>
             <span class="p">{</span><span class="s2">&quot;$sort&quot;</span><span class="p">:{</span><span class="s2">&quot;count&quot;</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">}}]</span>
 <span class="n">result</span> <span class="o">=</span> <span class="n">collection</span><span class="o">.</span><span class="n">aggregate</span><span class="p">(</span><span class="n">pipeline</span><span class="p">)</span>
-<span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">result</span><span class="p">:</span>
-    <span class="k">print</span> <span class="n">r</span>
+<span class="c1"># for r in result:</span>
+<span class="c1">#     print r</span>
 </pre></div>
 
 </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area"><div class="prompt"></div>
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>{u&#39;count&#39;: 13, u&#39;_id&#39;: u&#39;Little Free Library&#39;}
-</pre>
-</div>
-</div>
-
 </div>
 </div>
 
@@ -13914,19 +12843,19 @@ CA 94086 =&gt; CA 94086
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h4 id="10-most-poular-schools">10 most poular schools<a class="anchor-link" href="#10-most-poular-schools">&#182;</a></h4>
+<h4 id="most-poular-schools">most poular schools<a class="anchor-link" href="#most-poular-schools">&#182;</a></h4>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[26]:</div>
+<div class="prompt input_prompt">In&nbsp;[55]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="n">pipeline</span> <span class="o">=</span> <span class="p">[{</span><span class="s2">&quot;$match&quot;</span><span class="p">:{</span><span class="s2">&quot;amenity&quot;</span><span class="p">:{</span><span class="s2">&quot;$exists&quot;</span><span class="p">:</span><span class="mi">1</span><span class="p">},</span> <span class="s2">&quot;amenity&quot;</span><span class="p">:</span> <span class="s2">&quot;school&quot;</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">:{</span><span class="s2">&quot;$exists&quot;</span><span class="p">:</span><span class="mi">1</span><span class="p">}}},</span>
             <span class="p">{</span><span class="s2">&quot;$group&quot;</span><span class="p">:{</span><span class="s2">&quot;_id&quot;</span><span class="p">:</span><span class="s2">&quot;$name&quot;</span><span class="p">,</span> <span class="s2">&quot;count&quot;</span><span class="p">:{</span><span class="s2">&quot;$sum&quot;</span><span class="p">:</span><span class="mi">1</span><span class="p">}}},</span>
             <span class="p">{</span><span class="s2">&quot;$sort&quot;</span><span class="p">:{</span><span class="s2">&quot;count&quot;</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">}},</span>
-           <span class="p">{</span><span class="s2">&quot;$limit&quot;</span><span class="p">:</span> <span class="mi">10</span><span class="p">}]</span>
+           <span class="p">{</span><span class="s2">&quot;$limit&quot;</span><span class="p">:</span> <span class="mi">5</span><span class="p">}]</span>
 <span class="n">result</span> <span class="o">=</span> <span class="n">collection</span><span class="o">.</span><span class="n">aggregate</span><span class="p">(</span><span class="n">pipeline</span><span class="p">)</span>
 <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">result</span><span class="p">:</span>
     <span class="k">print</span> <span class="n">r</span>
@@ -13942,16 +12871,11 @@ CA 94086 =&gt; CA 94086
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>{u&#39;count&#39;: 12, u&#39;_id&#39;: u&#39;Union Academy&#39;}
-{u&#39;count&#39;: 12, u&#39;_id&#39;: u&#39;Pinewood School&#39;}
-{u&#39;count&#39;: 12, u&#39;_id&#39;: u&#39;Laurelwood Elementary School&#39;}
-{u&#39;count&#39;: 12, u&#39;_id&#39;: u&#39;Stratford School&#39;}
-{u&#39;count&#39;: 12, u&#39;_id&#39;: u&#39;Palo Verde Elementary School&#39;}
-{u&#39;count&#39;: 12, u&#39;_id&#39;: u&#39;Kumon&#39;}
-{u&#39;count&#39;: 12, u&#39;_id&#39;: u&#39;Athena Academy&#39;}
-{u&#39;count&#39;: 12, u&#39;_id&#39;: u&#39;Ohlone Elementary School&#39;}
-{u&#39;count&#39;: 12, u&#39;_id&#39;: u&#39;Lucille M Nixon Elementary School&#39;}
-{u&#39;count&#39;: 9, u&#39;_id&#39;: u&#39;Jane Lathrop Stanford Middle School&#39;}
+<pre>{u&#39;count&#39;: 16, u&#39;_id&#39;: u&#39;Ohlone Elementary School&#39;}
+{u&#39;count&#39;: 16, u&#39;_id&#39;: u&#39;Union Academy&#39;}
+{u&#39;count&#39;: 16, u&#39;_id&#39;: u&#39;Pinewood School&#39;}
+{u&#39;count&#39;: 16, u&#39;_id&#39;: u&#39;Lucille M Nixon Elementary School&#39;}
+{u&#39;count&#39;: 16, u&#39;_id&#39;: u&#39;Palo Verde Elementary School&#39;}
 </pre>
 </div>
 </div>
@@ -13965,48 +12889,25 @@ CA 94086 =&gt; CA 94086
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h4 id="10-Most-popular-Parkings">10 Most popular Parkings<a class="anchor-link" href="#10-Most-popular-Parkings">&#182;</a></h4>
+<h4 id="Most-popular-Parkings">Most popular Parkings<a class="anchor-link" href="#Most-popular-Parkings">&#182;</a></h4>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[27]:</div>
+<div class="prompt input_prompt">In&nbsp;[80]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="n">pipeline</span> <span class="o">=</span> <span class="p">[{</span><span class="s2">&quot;$match&quot;</span><span class="p">:{</span><span class="s2">&quot;amenity&quot;</span><span class="p">:{</span><span class="s2">&quot;$exists&quot;</span><span class="p">:</span><span class="mi">1</span><span class="p">},</span> <span class="s2">&quot;amenity&quot;</span><span class="p">:</span> <span class="s2">&quot;parking&quot;</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">:{</span><span class="s2">&quot;$exists&quot;</span><span class="p">:</span><span class="mi">1</span><span class="p">}}},</span>
             <span class="p">{</span><span class="s2">&quot;$group&quot;</span><span class="p">:{</span><span class="s2">&quot;_id&quot;</span><span class="p">:</span><span class="s2">&quot;$name&quot;</span><span class="p">,</span> <span class="s2">&quot;count&quot;</span><span class="p">:{</span><span class="s2">&quot;$sum&quot;</span><span class="p">:</span><span class="mi">1</span><span class="p">}}},</span>
             <span class="p">{</span><span class="s2">&quot;$sort&quot;</span><span class="p">:{</span><span class="s2">&quot;count&quot;</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">}},</span>
-           <span class="p">{</span><span class="s2">&quot;$limit&quot;</span><span class="p">:</span> <span class="mi">10</span><span class="p">}]</span>
+           <span class="p">{</span><span class="s2">&quot;$limit&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">}]</span>
 <span class="n">result</span> <span class="o">=</span> <span class="n">collection</span><span class="o">.</span><span class="n">aggregate</span><span class="p">(</span><span class="n">pipeline</span><span class="p">)</span>
-<span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">result</span><span class="p">:</span>
-    <span class="k">print</span> <span class="n">r</span>
+<span class="c1"># for r in result:</span>
+<span class="c1">#     print r</span>
 </pre></div>
 
 </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area"><div class="prompt"></div>
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>{u&#39;count&#39;: 78, u&#39;_id&#39;: u&#34;Visitor&#39;s Parking&#34;}
-{u&#39;count&#39;: 63, u&#39;_id&#39;: u&#39;Apartment Visitor Parking&#39;}
-{u&#39;count&#39;: 18, u&#39;_id&#39;: u&#39;Employee Parking&#39;}
-{u&#39;count&#39;: 18, u&#39;_id&#39;: u&#39;Customer Parking&#39;}
-{u&#39;count&#39;: 12, u&#39;_id&#39;: u&#39;Lot 8&#39;}
-{u&#39;count&#39;: 12, u&#39;_id&#39;: u&#39;Lot 6&#39;}
-{u&#39;count&#39;: 12, u&#39;_id&#39;: u&#39;Sunnyvale Caltrain Station&#39;}
-{u&#39;count&#39;: 12, u&#39;_id&#39;: u&#39;Lot 7&#39;}
-{u&#39;count&#39;: 12, u&#39;_id&#39;: u&#39;Lot 4&#39;}
-{u&#39;count&#39;: 12, u&#39;_id&#39;: u&#39;Lot 1&#39;}
-</pre>
-</div>
-</div>
-
 </div>
 </div>
 
@@ -14016,45 +12917,26 @@ CA 94086 =&gt; CA 94086
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h4 id="10-Most-popular-Car-wash">10 Most popular Car wash<a class="anchor-link" href="#10-Most-popular-Car-wash">&#182;</a></h4>
+<h4 id="Popular-Car-wash">Popular Car wash<a class="anchor-link" href="#Popular-Car-wash">&#182;</a></h4>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[34]:</div>
+<div class="prompt input_prompt">In&nbsp;[79]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="n">pipeline</span> <span class="o">=</span> <span class="p">[{</span><span class="s2">&quot;$match&quot;</span><span class="p">:{</span><span class="s2">&quot;amenity&quot;</span><span class="p">:{</span><span class="s2">&quot;$exists&quot;</span><span class="p">:</span><span class="mi">1</span><span class="p">},</span> <span class="s2">&quot;amenity&quot;</span><span class="p">:</span> <span class="s2">&quot;car_wash&quot;</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">:{</span><span class="s2">&quot;$exists&quot;</span><span class="p">:</span><span class="mi">1</span><span class="p">}}},</span>
             <span class="p">{</span><span class="s2">&quot;$group&quot;</span><span class="p">:{</span><span class="s2">&quot;_id&quot;</span><span class="p">:</span><span class="s2">&quot;$name&quot;</span><span class="p">,</span> <span class="s2">&quot;count&quot;</span><span class="p">:{</span><span class="s2">&quot;$sum&quot;</span><span class="p">:</span><span class="mi">1</span><span class="p">}}},</span>
-            <span class="p">{</span><span class="s2">&quot;$sort&quot;</span><span class="p">:{</span><span class="s2">&quot;count&quot;</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">}}]</span>
+            <span class="p">{</span><span class="s2">&quot;$sort&quot;</span><span class="p">:{</span><span class="s2">&quot;count&quot;</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">}},</span>
+            <span class="p">{</span><span class="s2">&quot;$sort&quot;</span><span class="p">:{</span><span class="s2">&quot;count&quot;</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">}},</span>
+           <span class="p">{</span><span class="s2">&quot;$limit&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">}]</span>
 <span class="n">result</span> <span class="o">=</span> <span class="n">collection</span><span class="o">.</span><span class="n">aggregate</span><span class="p">(</span><span class="n">pipeline</span><span class="p">)</span>
-<span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">result</span><span class="p">:</span>
-    <span class="k">print</span> <span class="n">r</span>
+<span class="c1"># for r in result:</span>
+<span class="c1">#     print r</span>
 </pre></div>
 
 </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area"><div class="prompt"></div>
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;SV Express&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Clear Water Car Wash&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Thrifty&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Lozano Brushless Car Wash&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#34;Lozano&#39;s Car Wash&#34;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Car Wash&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Shell&#39;}
-{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Bubbles Hand Wash&#39;}
-</pre>
-</div>
-</div>
-
 </div>
 </div>
 
@@ -14070,32 +12952,18 @@ CA 94086 =&gt; CA 94086
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[35]:</div>
+<div class="prompt input_prompt">In&nbsp;[78]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="n">pipeline</span> <span class="o">=</span> <span class="p">[{</span><span class="s2">&quot;$match&quot;</span><span class="p">:{</span><span class="s2">&quot;amenity&quot;</span><span class="p">:{</span><span class="s2">&quot;$exists&quot;</span><span class="p">:</span><span class="mi">1</span><span class="p">},</span> <span class="s2">&quot;amenity&quot;</span><span class="p">:</span> <span class="s2">&quot;post_box&quot;</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">:{</span><span class="s2">&quot;$exists&quot;</span><span class="p">:</span><span class="mi">1</span><span class="p">}}},</span>
             <span class="p">{</span><span class="s2">&quot;$group&quot;</span><span class="p">:{</span><span class="s2">&quot;_id&quot;</span><span class="p">:</span><span class="s2">&quot;$name&quot;</span><span class="p">,</span> <span class="s2">&quot;count&quot;</span><span class="p">:{</span><span class="s2">&quot;$sum&quot;</span><span class="p">:</span><span class="mi">1</span><span class="p">}}},</span>
             <span class="p">{</span><span class="s2">&quot;$sort&quot;</span><span class="p">:{</span><span class="s2">&quot;count&quot;</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">}}]</span>
 <span class="n">result</span> <span class="o">=</span> <span class="n">collection</span><span class="o">.</span><span class="n">aggregate</span><span class="p">(</span><span class="n">pipeline</span><span class="p">)</span>
-<span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">result</span><span class="p">:</span>
-    <span class="k">print</span> <span class="n">r</span>
+<span class="c1"># for r in result:</span>
+<span class="c1">#     print r</span>
 </pre></div>
 
 </div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area"><div class="prompt"></div>
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>{u&#39;count&#39;: 5, u&#39;_id&#39;: u&#39;Mailbox&#39;}
-</pre>
-</div>
-</div>
-
 </div>
 </div>
 
@@ -14105,19 +12973,19 @@ CA 94086 =&gt; CA 94086
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h4 id="10-most-populr-Coffe-shops">10 most populr Coffe shops<a class="anchor-link" href="#10-most-populr-Coffe-shops">&#182;</a></h4>
+<h4 id="most-populr-Coffe-shops">most populr Coffe shops<a class="anchor-link" href="#most-populr-Coffe-shops">&#182;</a></h4>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[29]:</div>
+<div class="prompt input_prompt">In&nbsp;[58]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="n">pipeline</span> <span class="o">=</span> <span class="p">[{</span><span class="s2">&quot;$match&quot;</span><span class="p">:{</span><span class="s2">&quot;amenity&quot;</span><span class="p">:{</span><span class="s2">&quot;$exists&quot;</span><span class="p">:</span><span class="mi">1</span><span class="p">},</span> <span class="s2">&quot;amenity&quot;</span><span class="p">:</span> <span class="s2">&quot;cafe&quot;</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">:{</span><span class="s2">&quot;$exists&quot;</span><span class="p">:</span><span class="mi">1</span><span class="p">}}},</span>
             <span class="p">{</span><span class="s2">&quot;$group&quot;</span><span class="p">:{</span><span class="s2">&quot;_id&quot;</span><span class="p">:</span><span class="s2">&quot;$name&quot;</span><span class="p">,</span> <span class="s2">&quot;count&quot;</span><span class="p">:{</span><span class="s2">&quot;$sum&quot;</span><span class="p">:</span><span class="mi">1</span><span class="p">}}},</span>
             <span class="p">{</span><span class="s2">&quot;$sort&quot;</span><span class="p">:{</span><span class="s2">&quot;count&quot;</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">}},</span>
-           <span class="p">{</span><span class="s2">&quot;$limit&quot;</span><span class="p">:</span> <span class="mi">10</span><span class="p">}]</span>
+           <span class="p">{</span><span class="s2">&quot;$limit&quot;</span><span class="p">:</span> <span class="mi">5</span><span class="p">}]</span>
 <span class="n">result</span> <span class="o">=</span> <span class="n">collection</span><span class="o">.</span><span class="n">aggregate</span><span class="p">(</span><span class="n">pipeline</span><span class="p">)</span>
 <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">result</span><span class="p">:</span>
     <span class="k">print</span> <span class="n">r</span>
@@ -14133,16 +13001,11 @@ CA 94086 =&gt; CA 94086
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>{u&#39;count&#39;: 126, u&#39;_id&#39;: u&#39;Starbucks&#39;}
-{u&#39;count&#39;: 18, u&#39;_id&#39;: u&#39;Starbucks Coffee&#39;}
-{u&#39;count&#39;: 18, u&#39;_id&#39;: u&#39;Tea Era&#39;}
-{u&#39;count&#39;: 12, u&#39;_id&#39;: u&#34;Peet&#39;s Coffee &amp; Tea&#34;}
-{u&#39;count&#39;: 12, u&#39;_id&#39;: u&#39;Peets Coffee&#39;}
-{u&#39;count&#39;: 12, u&#39;_id&#39;: u&#34;Peet&#39;s Coffee&#34;}
-{u&#39;count&#39;: 12, u&#39;_id&#39;: u&#39;Cloud Cafe&#39;}
-{u&#39;count&#39;: 12, u&#39;_id&#39;: u&#39;Philz Coffee&#39;}
-{u&#39;count&#39;: 6, u&#39;_id&#39;: u&#39;Threads&#39;}
-{u&#39;count&#39;: 6, u&#39;_id&#39;: u&#39;Dana Street Roasting Company&#39;}
+<pre>{u&#39;count&#39;: 168, u&#39;_id&#39;: u&#39;Starbucks&#39;}
+{u&#39;count&#39;: 24, u&#39;_id&#39;: u&#39;Starbucks Coffee&#39;}
+{u&#39;count&#39;: 24, u&#39;_id&#39;: u&#39;Tea Era&#39;}
+{u&#39;count&#39;: 16, u&#39;_id&#39;: u&#39;Cloud Cafe&#39;}
+{u&#39;count&#39;: 16, u&#39;_id&#39;: u&#34;Peet&#39;s Coffee&#34;}
 </pre>
 </div>
 </div>
@@ -14156,18 +13019,18 @@ CA 94086 =&gt; CA 94086
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h4 id="Top-10-unique-contributor-of-data">Top 10 unique contributor of data<a class="anchor-link" href="#Top-10-unique-contributor-of-data">&#182;</a></h4>
+<h4 id="Top-5-unique-contributor-of-data">Top 5 unique contributor of data<a class="anchor-link" href="#Top-5-unique-contributor-of-data">&#182;</a></h4>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[31]:</div>
+<div class="prompt input_prompt">In&nbsp;[59]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="n">pipeline</span> <span class="o">=</span><span class="p">[{</span><span class="s2">&quot;$group&quot;</span><span class="p">:{</span><span class="s2">&quot;_id&quot;</span><span class="p">:</span><span class="s2">&quot;$created.user&quot;</span><span class="p">,</span> <span class="s2">&quot;count&quot;</span><span class="p">:{</span><span class="s2">&quot;$sum&quot;</span><span class="p">:</span><span class="mi">1</span><span class="p">}}},</span>
             <span class="p">{</span><span class="s2">&quot;$sort&quot;</span><span class="p">:{</span><span class="s2">&quot;count&quot;</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">}},</span>
-           <span class="p">{</span><span class="s2">&quot;$limit&quot;</span><span class="p">:</span> <span class="mi">10</span><span class="p">}]</span>
+           <span class="p">{</span><span class="s2">&quot;$limit&quot;</span><span class="p">:</span> <span class="mi">5</span><span class="p">}]</span>
 <span class="n">result</span> <span class="o">=</span> <span class="n">collection</span><span class="o">.</span><span class="n">aggregate</span><span class="p">(</span><span class="n">pipeline</span><span class="p">)</span>
 <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">result</span><span class="p">:</span>
     <span class="k">print</span> <span class="n">r</span>
@@ -14183,16 +13046,11 @@ CA 94086 =&gt; CA 94086
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>{u&#39;count&#39;: 912096, u&#39;_id&#39;: u&#39;RichRico&#39;}
-{u&#39;count&#39;: 848559, u&#39;_id&#39;: u&#39;ediyes&#39;}
-{u&#39;count&#39;: 721083, u&#39;_id&#39;: u&#39;samely&#39;}
-{u&#39;count&#39;: 698475, u&#39;_id&#39;: u&#39;karitotp&#39;}
-{u&#39;count&#39;: 526563, u&#39;_id&#39;: u&#39;calfarome&#39;}
-{u&#39;count&#39;: 420660, u&#39;_id&#39;: u&#39;oldtopos&#39;}
-{u&#39;count&#39;: 361137, u&#39;_id&#39;: u&#39;dannykath&#39;}
-{u&#39;count&#39;: 316620, u&#39;_id&#39;: u&#39;n76&#39;}
-{u&#39;count&#39;: 297894, u&#39;_id&#39;: u&#39;Luis36995&#39;}
-{u&#39;count&#39;: 225096, u&#39;_id&#39;: u&#39;matthieun&#39;}
+<pre>{u&#39;count&#39;: 1215360, u&#39;_id&#39;: u&#39;RichRico&#39;}
+{u&#39;count&#39;: 1130735, u&#39;_id&#39;: u&#39;ediyes&#39;}
+{u&#39;count&#39;: 960835, u&#39;_id&#39;: u&#39;samely&#39;}
+{u&#39;count&#39;: 930727, u&#39;_id&#39;: u&#39;karitotp&#39;}
+{u&#39;count&#39;: 701631, u&#39;_id&#39;: u&#39;calfarome&#39;}
 </pre>
 </div>
 </div>
@@ -14206,68 +13064,18 @@ CA 94086 =&gt; CA 94086
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h4 id="Top-10-version-of-contribution-of-data">Top 10 version of contribution of data<a class="anchor-link" href="#Top-10-version-of-contribution-of-data">&#182;</a></h4>
+<h4 id="Top-5-timestamps-when-the-data-is--contributed">Top 5 timestamps when the data is  contributed<a class="anchor-link" href="#Top-5-timestamps-when-the-data-is--contributed">&#182;</a></h4>
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[39]:</div>
-<div class="inner_cell">
-    <div class="input_area">
-<div class=" highlight hl-ipython2"><pre><span></span><span class="n">pipeline</span> <span class="o">=</span><span class="p">[{</span><span class="s2">&quot;$group&quot;</span><span class="p">:{</span><span class="s2">&quot;_id&quot;</span><span class="p">:</span><span class="s2">&quot;$created.version&quot;</span><span class="p">,</span> <span class="s2">&quot;count&quot;</span><span class="p">:{</span><span class="s2">&quot;$sum&quot;</span><span class="p">:</span><span class="mi">1</span><span class="p">}}},</span>
-            <span class="p">{</span><span class="s2">&quot;$sort&quot;</span><span class="p">:{</span><span class="s2">&quot;count&quot;</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">}},</span>
-           <span class="p">{</span><span class="s2">&quot;$limit&quot;</span><span class="p">:</span> <span class="mi">10</span><span class="p">}]</span>
-<span class="n">result</span> <span class="o">=</span> <span class="n">collection</span><span class="o">.</span><span class="n">aggregate</span><span class="p">(</span><span class="n">pipeline</span><span class="p">)</span>
-<span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">result</span><span class="p">:</span>
-    <span class="k">print</span> <span class="n">r</span>
-</pre></div>
-
-</div>
-</div>
-</div>
-
-<div class="output_wrapper">
-<div class="output">
-
-
-<div class="output_area"><div class="prompt"></div>
-<div class="output_subarea output_stream output_stdout output_text">
-<pre>{u&#39;count&#39;: 4786041, u&#39;_id&#39;: u&#39;1&#39;}
-{u&#39;count&#39;: 1625298, u&#39;_id&#39;: u&#39;2&#39;}
-{u&#39;count&#39;: 290949, u&#39;_id&#39;: u&#39;3&#39;}
-{u&#39;count&#39;: 96186, u&#39;_id&#39;: u&#39;4&#39;}
-{u&#39;count&#39;: 37587, u&#39;_id&#39;: u&#39;5&#39;}
-{u&#39;count&#39;: 21669, u&#39;_id&#39;: u&#39;6&#39;}
-{u&#39;count&#39;: 13233, u&#39;_id&#39;: u&#39;7&#39;}
-{u&#39;count&#39;: 7656, u&#39;_id&#39;: u&#39;8&#39;}
-{u&#39;count&#39;: 5469, u&#39;_id&#39;: u&#39;9&#39;}
-{u&#39;count&#39;: 3681, u&#39;_id&#39;: u&#39;10&#39;}
-</pre>
-</div>
-</div>
-
-</div>
-</div>
-
-</div>
-<div class="cell border-box-sizing text_cell rendered">
-<div class="prompt input_prompt">
-</div>
-<div class="inner_cell">
-<div class="text_cell_render border-box-sizing rendered_html">
-<h4 id="Top-10-timestamps-when-the-data-is--contributed">Top 10 timestamps when the data is  contributed<a class="anchor-link" href="#Top-10-timestamps-when-the-data-is--contributed">&#182;</a></h4>
-</div>
-</div>
-</div>
-<div class="cell border-box-sizing code_cell rendered">
-<div class="input">
-<div class="prompt input_prompt">In&nbsp;[25]:</div>
+<div class="prompt input_prompt">In&nbsp;[68]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="n">pipeline</span> <span class="o">=</span><span class="p">[{</span><span class="s2">&quot;$group&quot;</span><span class="p">:{</span><span class="s2">&quot;_id&quot;</span><span class="p">:</span><span class="s2">&quot;$created.timestamp&quot;</span><span class="p">,</span> <span class="s2">&quot;count&quot;</span><span class="p">:{</span><span class="s2">&quot;$sum&quot;</span><span class="p">:</span><span class="mi">1</span><span class="p">}}},</span>
             <span class="p">{</span><span class="s2">&quot;$sort&quot;</span><span class="p">:{</span><span class="s2">&quot;count&quot;</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">}},</span>
-           <span class="p">{</span><span class="s2">&quot;$limit&quot;</span><span class="p">:</span> <span class="mi">10</span><span class="p">}]</span>
+           <span class="p">{</span><span class="s2">&quot;$limit&quot;</span><span class="p">:</span> <span class="mi">5</span><span class="p">}]</span>
 <span class="n">result</span> <span class="o">=</span> <span class="n">collection</span><span class="o">.</span><span class="n">aggregate</span><span class="p">(</span><span class="n">pipeline</span><span class="p">)</span>
 <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">result</span><span class="p">:</span>
     <span class="k">print</span> <span class="n">r</span>
@@ -14283,16 +13091,11 @@ CA 94086 =&gt; CA 94086
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>{u&#39;count&#39;: 1032, u&#39;_id&#39;: u&#39;2016-02-05T18:42:04Z&#39;}
-{u&#39;count&#39;: 1018, u&#39;_id&#39;: u&#39;2016-01-15T15:11:35Z&#39;}
-{u&#39;count&#39;: 997, u&#39;_id&#39;: u&#39;2016-01-15T15:11:34Z&#39;}
-{u&#39;count&#39;: 976, u&#39;_id&#39;: u&#39;2016-02-04T19:41:43Z&#39;}
-{u&#39;count&#39;: 927, u&#39;_id&#39;: u&#39;2016-02-03T16:54:41Z&#39;}
-{u&#39;count&#39;: 927, u&#39;_id&#39;: u&#39;2016-02-08T14:25:39Z&#39;}
-{u&#39;count&#39;: 924, u&#39;_id&#39;: u&#39;2016-02-03T16:54:40Z&#39;}
-{u&#39;count&#39;: 923, u&#39;_id&#39;: u&#39;2016-02-04T19:05:40Z&#39;}
-{u&#39;count&#39;: 913, u&#39;_id&#39;: u&#39;2015-11-23T16:53:08Z&#39;}
-{u&#39;count&#39;: 910, u&#39;_id&#39;: u&#39;2016-02-04T19:05:39Z&#39;}
+<pre>{u&#39;count&#39;: 1179, u&#39;_id&#39;: u&#39;2016-02-05T18:42:04Z&#39;}
+{u&#39;count&#39;: 1163, u&#39;_id&#39;: u&#39;2016-01-15T15:11:35Z&#39;}
+{u&#39;count&#39;: 1139, u&#39;_id&#39;: u&#39;2016-01-15T15:11:34Z&#39;}
+{u&#39;count&#39;: 1115, u&#39;_id&#39;: u&#39;2016-02-04T19:41:43Z&#39;}
+{u&#39;count&#39;: 1059, u&#39;_id&#39;: u&#39;2016-02-03T16:54:41Z&#39;}
 </pre>
 </div>
 </div>
@@ -14312,12 +13115,12 @@ CA 94086 =&gt; CA 94086
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[24]:</div>
+<div class="prompt input_prompt">In&nbsp;[67]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="n">pipeline</span> <span class="o">=</span><span class="p">[{</span><span class="s2">&quot;$group&quot;</span><span class="p">:{</span><span class="s2">&quot;_id&quot;</span><span class="p">:</span><span class="s2">&quot;$highway&quot;</span><span class="p">,</span> <span class="s2">&quot;count&quot;</span><span class="p">:{</span><span class="s2">&quot;$sum&quot;</span><span class="p">:</span><span class="mi">1</span><span class="p">}}},</span>
             <span class="p">{</span><span class="s2">&quot;$sort&quot;</span><span class="p">:{</span><span class="s2">&quot;count&quot;</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">}},</span>
-           <span class="p">{</span><span class="s2">&quot;$limit&quot;</span><span class="p">:</span> <span class="mi">10</span><span class="p">}</span>
+           <span class="p">{</span><span class="s2">&quot;$limit&quot;</span><span class="p">:</span><span class="mi">5</span><span class="p">}</span>
            <span class="p">]</span>
 <span class="n">result</span> <span class="o">=</span> <span class="n">collection</span><span class="o">.</span><span class="n">aggregate</span><span class="p">(</span><span class="n">pipeline</span><span class="p">)</span>
 <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">result</span><span class="p">:</span>
@@ -14334,16 +13137,11 @@ CA 94086 =&gt; CA 94086
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>{u&#39;count&#39;: 7883934, u&#39;_id&#39;: None}
-{u&#39;count&#39;: 51700, u&#39;_id&#39;: u&#39;service&#39;}
-{u&#39;count&#39;: 27995, u&#39;_id&#39;: u&#39;residential&#39;}
-{u&#39;count&#39;: 17572, u&#39;_id&#39;: u&#39;footway&#39;}
-{u&#39;count&#39;: 12156, u&#39;_id&#39;: u&#39;stop&#39;}
-{u&#39;count&#39;: 11033, u&#39;_id&#39;: u&#39;secondary&#39;}
-{u&#39;count&#39;: 9408, u&#39;_id&#39;: u&#39;turning_circle&#39;}
-{u&#39;count&#39;: 6050, u&#39;_id&#39;: u&#39;traffic_signals&#39;}
-{u&#39;count&#39;: 5395, u&#39;_id&#39;: u&#39;tertiary&#39;}
-{u&#39;count&#39;: 5140, u&#39;_id&#39;: u&#39;primary&#39;}
+<pre>{u&#39;count&#39;: 9007803, u&#39;_id&#39;: None}
+{u&#39;count&#39;: 59072, u&#39;_id&#39;: u&#39;service&#39;}
+{u&#39;count&#39;: 31984, u&#39;_id&#39;: u&#39;residential&#39;}
+{u&#39;count&#39;: 20078, u&#39;_id&#39;: u&#39;footway&#39;}
+{u&#39;count&#39;: 13887, u&#39;_id&#39;: u&#39;stop&#39;}
 </pre>
 </div>
 </div>
@@ -14363,12 +13161,12 @@ CA 94086 =&gt; CA 94086
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[26]:</div>
+<div class="prompt input_prompt">In&nbsp;[66]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython2"><pre><span></span><span class="n">pipeline</span> <span class="o">=</span><span class="p">[{</span><span class="s2">&quot;$group&quot;</span><span class="p">:{</span><span class="s2">&quot;_id&quot;</span><span class="p">:</span><span class="s2">&quot;$exit_to&quot;</span><span class="p">,</span> <span class="s2">&quot;count&quot;</span><span class="p">:{</span><span class="s2">&quot;$sum&quot;</span><span class="p">:</span><span class="mi">1</span><span class="p">}}},</span>
             <span class="p">{</span><span class="s2">&quot;$sort&quot;</span><span class="p">:{</span><span class="s2">&quot;count&quot;</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">}},</span>
-           <span class="p">{</span><span class="s2">&quot;$limit&quot;</span><span class="p">:</span> <span class="mi">10</span><span class="p">}</span>
+           <span class="p">{</span><span class="s2">&quot;$limit&quot;</span><span class="p">:</span> <span class="mi">5</span><span class="p">}</span>
            <span class="p">]</span>
 <span class="n">result</span> <span class="o">=</span> <span class="n">collection</span><span class="o">.</span><span class="n">aggregate</span><span class="p">(</span><span class="n">pipeline</span><span class="p">)</span>
 <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">result</span><span class="p">:</span>
@@ -14385,16 +13183,11 @@ CA 94086 =&gt; CA 94086
 
 <div class="output_area"><div class="prompt"></div>
 <div class="output_subarea output_stream output_stdout output_text">
-<pre>{u&#39;count&#39;: 8049217, u&#39;_id&#39;: None}
-{u&#39;count&#39;: 21, u&#39;_id&#39;: u&#39;Mathilda Avenue South&#39;}
-{u&#39;count&#39;: 14, u&#39;_id&#39;: u&#39;Moffett Boulevard;NASA Parkway&#39;}
-{u&#39;count&#39;: 14, u&#39;_id&#39;: u&#39;SR-85 South;Cupertino;Santa Cruz&#39;}
-{u&#39;count&#39;: 14, u&#39;_id&#39;: u&#39;Ellis Street;Moffett South Gate&#39;}
-{u&#39;count&#39;: 14, u&#39;_id&#39;: u&#39;Mathilda Avenue North&#39;}
-{u&#39;count&#39;: 14, u&#39;_id&#39;: u&#39;El Monte Road;Moody Road&#39;}
-{u&#39;count&#39;: 14, u&#39;_id&#39;: u&#39;SR-82 North;Mountain View;El Camino Real&#39;}
-{u&#39;count&#39;: 14, u&#39;_id&#39;: u&#39;Evelyn Avenue&#39;}
-{u&#39;count&#39;: 14, u&#39;_id&#39;: u&#39;SR-82 South;Sunnyvale;El Camino Real&#39;}
+<pre>{u&#39;count&#39;: 9196646, u&#39;_id&#39;: None}
+{u&#39;count&#39;: 24, u&#39;_id&#39;: u&#39;Mathilda Avenue South&#39;}
+{u&#39;count&#39;: 16, u&#39;_id&#39;: u&#39;Middlefield Road;Maude Avenue&#39;}
+{u&#39;count&#39;: 16, u&#39;_id&#39;: u&#39;SR-82 South;Sunnyvale;El Camino Real&#39;}
+{u&#39;count&#39;: 16, u&#39;_id&#39;: u&#39;Mathilda Avenue North&#39;}
 </pre>
 </div>
 </div>
@@ -14408,18 +13201,72 @@ CA 94086 =&gt; CA 94086
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h3 id="Other-Ideas-about-data-set">Other Ideas about data set<a class="anchor-link" href="#Other-Ideas-about-data-set">&#182;</a></h3><p>Since the data consist of inconsistent phone numbers like "650-322-2554", "+16508570333" etc. During the collection of the data from user, it should follow the rule format of phone number of given country or area which is generraly in ITU E.123 standard:</p>
+<h4 id="Most-common-building-types">Most common building types<a class="anchor-link" href="#Most-common-building-types">&#182;</a></h4>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[77]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython2"><pre><span></span><span class="n">pipeline</span> <span class="o">=</span>  <span class="p">[{</span><span class="s1">&#39;$match&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;building&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;$exists&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">}}},</span> 
+    <span class="p">{</span><span class="s1">&#39;$group&#39;</span><span class="p">:</span> <span class="p">{</span> <span class="s1">&#39;_id&#39;</span><span class="p">:</span> <span class="s1">&#39;$building&#39;</span><span class="p">,</span><span class="s1">&#39;count&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;$sum&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">}}},</span>
+    <span class="p">{</span><span class="s1">&#39;$sort&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;count&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mi">1</span><span class="p">}},</span> <span class="p">{</span><span class="s1">&#39;$limit&#39;</span><span class="p">:</span> <span class="mi">5</span><span class="p">}</span>
+<span class="p">]</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">collection</span><span class="o">.</span><span class="n">aggregate</span><span class="p">(</span><span class="n">pipeline</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">result</span><span class="p">:</span>
+    <span class="k">print</span> <span class="n">r</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area"><div class="prompt"></div>
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>{u&#39;count&#39;: 667972, u&#39;_id&#39;: u&#39;yes&#39;}
+{u&#39;count&#39;: 75630, u&#39;_id&#39;: u&#39;house&#39;}
+{u&#39;count&#39;: 27904, u&#39;_id&#39;: u&#39;residential&#39;}
+{u&#39;count&#39;: 4006, u&#39;_id&#39;: u&#39;apartments&#39;}
+{u&#39;count&#39;: 3505, u&#39;_id&#39;: u&#39;roof&#39;}
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Other-Ideas-about-data-set">Other Ideas about data set<a class="anchor-link" href="#Other-Ideas-about-data-set">&#182;</a></h3><ol>
+<li><p>Since the data consist of inconsistent phone numbers like "650-322-2554", "+16508570333" etc. During the collection of the data from user, it should follow the rule format of phone number of given country or area which is generraly in ITU E.123 standard:</p>
 <ul>
 <li>"+"</li>
-<li>the national code (1 for the USA)</li>
+<li>1.2 the national code (1 for the USA)</li>
 <li>space</li>
 <li>the area/regional code</li>
 <li>space</li>
 <li>the local exchange</li>
 <li>space</li>
-<li>the local number</li>
+<li>the local number<br /></li>
 </ul>
-<p>There are some fields of node is missing like County, the data collection should follow the structured format. But it trivial because Nosql database can pretty much handle the non structured data.</p>
+</li>
+<li><p>There are some fields of node is missing like County, the data collection should follow the structured format. But it trivial because Nosql database can pretty much handle the non structured data.<br /></p>
+</li>
+<li><p>To ensure the data collections lead to rich infomation about the nodes, the interface of website may follow some protocols while entering data using some altert like user can only enter data within this range depends on the region for which data is being entered.<br /></p>
+</li>
+<li><p>To encourange contribution in data collection there might be some kind of gamification for the people.</p>
+</li>
+</ol>
 
 </div>
 </div>
