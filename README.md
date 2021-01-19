@@ -1,2 +1,2 @@
 # Mountain View, CA Open Street Data Analysis
-Mountain View open street data wrangling and imported cleaned data into mongoDB database top perform several queries.
+The aim of the priject is to select the map from the region of world, get the data, audit the data and fix the problems encountered in data. Then import the cleaned data into databse and perform several queries against it.
