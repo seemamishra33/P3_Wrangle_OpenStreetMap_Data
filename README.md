@@ -6,7 +6,7 @@ The aim of the priject is to select the map from the region of world, get the da
 ### OSM Data ###
 
 * I am using OpenStreetMap data of Mountain View city, California downloaded from [mapzen](https://mapzen.com/data/metro-extracts/). The date of downloading the dataset is March 27, 2017 at 10:21 AM.
-* The format of datafile is in XML format, and we can find the description og Open Street XML format [here](http://wiki.openstreetmap.org/wiki/OSM_XML).
+* The format of datafile is in XML format, and we can find the description of Open Street XML format [here](http://wiki.openstreetmap.org/wiki/OSM_XML).
 
 ### Database###
 
